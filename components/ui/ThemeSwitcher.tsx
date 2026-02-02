@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { useTheme, THEMES, ThemeColor } from '../context/ThemeContext';
+import { useTheme, THEMES, ThemeColor } from '../../context/ThemeContext';
 import { Palette, Check } from 'lucide-react';
 
 export const ThemeSwitcher: React.FC = () => {
@@ -9,7 +9,7 @@ export const ThemeSwitcher: React.FC = () => {
 
   return (
     <div className="relative">
-      <button 
+      <button
         onClick={() => setIsOpen(!isOpen)}
         className="p-2 text-slate-500 hover:text-slate-900 transition-colors flex items-center gap-2 group outline-none"
         title="Change Theme"
@@ -19,8 +19,8 @@ export const ThemeSwitcher: React.FC = () => {
 
       {isOpen && (
         <>
-          <div 
-            className="fixed inset-0 z-40" 
+          <div
+            className="fixed inset-0 z-40"
             onClick={() => setIsOpen(false)}
           />
           <div className="absolute right-0 mt-4 w-56 bg-white border border-slate-200 shadow-xl z-50 p-2 rounded-2xl animate-in fade-in zoom-in-95 duration-200">
@@ -33,14 +33,13 @@ export const ThemeSwitcher: React.FC = () => {
                     setColor(key);
                     setIsOpen(false);
                   }}
-                  className={`flex items-center justify-between w-full px-3 py-2 rounded-xl text-xs font-medium transition-all ${
-                    activeColor === key ? 'bg-slate-900 text-white' : 'text-slate-600 hover:bg-slate-50'
-                  }`}
+                  className={`flex items-center justify-between w-full px-3 py-2 rounded-xl text-xs font-medium transition-all ${activeColor === key ? 'bg-slate-900 text-white' : 'text-slate-600 hover:bg-slate-50'
+                    }`}
                 >
                   <div className="flex items-center gap-3">
-                    <div 
-                      className="w-3.5 h-3.5 rounded-full border border-white/20" 
-                      style={{ backgroundColor: THEMES[key].primary }} 
+                    <div
+                      className="w-3.5 h-3.5 rounded-full border border-white/20"
+                      style={{ backgroundColor: THEMES[key].primary }}
                     />
                     <span>{THEMES[key].name}</span>
                   </div>

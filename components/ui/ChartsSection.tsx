@@ -1,17 +1,17 @@
 
 import React from 'react';
-import { 
-  AreaChart, 
-  Area, 
-  XAxis, 
-  YAxis, 
-  CartesianGrid, 
-  Tooltip, 
+import {
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
   ResponsiveContainer,
   BarChart,
   Bar
 } from 'recharts';
-import { CHART_DATA } from '../constants';
+import { CHART_DATA } from '../../constants';
 
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
@@ -40,31 +40,31 @@ export const RevenueChart: React.FC = () => {
         <AreaChart data={CHART_DATA} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
           <defs>
             <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#4f46e5" stopOpacity={0.15}/>
-              <stop offset="95%" stopColor="#4f46e5" stopOpacity={0}/>
+              <stop offset="5%" stopColor="#4f46e5" stopOpacity={0.15} />
+              <stop offset="95%" stopColor="#4f46e5" stopOpacity={0} />
             </linearGradient>
           </defs>
           <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-          <XAxis 
-            dataKey="name" 
-            axisLine={false} 
-            tickLine={false} 
-            tick={{ fill: '#94a3b8', fontSize: 10, fontWeight: 600 }} 
+          <XAxis
+            dataKey="name"
+            axisLine={false}
+            tickLine={false}
+            tick={{ fill: '#94a3b8', fontSize: 10, fontWeight: 600 }}
             dy={10}
           />
-          <YAxis 
-            axisLine={false} 
-            tickLine={false} 
-            tick={{ fill: '#94a3b8', fontSize: 10, fontWeight: 600 }} 
+          <YAxis
+            axisLine={false}
+            tickLine={false}
+            tick={{ fill: '#94a3b8', fontSize: 10, fontWeight: 600 }}
           />
           <Tooltip content={<CustomTooltip />} cursor={{ stroke: '#e2e8f0', strokeWidth: 1 }} />
-          <Area 
-            type="monotone" 
-            dataKey="revenue" 
-            stroke="#4f46e5" 
+          <Area
+            type="monotone"
+            dataKey="revenue"
+            stroke="#4f46e5"
             strokeWidth={2.5}
-            fillOpacity={1} 
-            fill="url(#colorRevenue)" 
+            fillOpacity={1}
+            fill="url(#colorRevenue)"
             animationDuration={1500}
           />
         </AreaChart>
@@ -79,17 +79,17 @@ export const SalesTargetChart: React.FC = () => {
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={CHART_DATA} margin={{ top: 10, right: 10, left: -20, bottom: 0 }} barGap={6}>
           <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-          <XAxis 
-            dataKey="name" 
-            axisLine={false} 
-            tickLine={false} 
-            tick={{ fill: '#94a3b8', fontSize: 10, fontWeight: 600 }} 
+          <XAxis
+            dataKey="name"
+            axisLine={false}
+            tickLine={false}
+            tick={{ fill: '#94a3b8', fontSize: 10, fontWeight: 600 }}
             dy={10}
           />
-          <YAxis 
-            axisLine={false} 
-            tickLine={false} 
-            tick={{ fill: '#94a3b8', fontSize: 10, fontWeight: 600 }} 
+          <YAxis
+            axisLine={false}
+            tickLine={false}
+            tick={{ fill: '#94a3b8', fontSize: 10, fontWeight: 600 }}
           />
           <Tooltip content={<CustomTooltip />} cursor={{ fill: '#f8fafc' }} />
           <Bar dataKey="target" fill="#e2e8f0" radius={[4, 4, 0, 0]} barSize={12} />

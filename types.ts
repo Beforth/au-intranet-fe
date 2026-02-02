@@ -34,3 +34,10 @@ export interface AppNotification {
   type: 'order' | 'system' | 'inventory' | 'customer';
   read: boolean;
 }
+
+export type WidgetId = 'revenue-chart' | 'goal-chart' | 'activity-table' | 'global-reach';
+
+export interface WidgetConfig {
+  id: WidgetId;
+  span: 1 | 2 | 3;
+}

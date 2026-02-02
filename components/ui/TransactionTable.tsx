@@ -1,11 +1,11 @@
 
 import React, { useMemo } from 'react';
-import { RECENT_TRANSACTIONS } from '../constants';
-import { Badge } from './ui/Badge';
-import { DataTable, Column } from './ui/DataTable';
+import { RECENT_TRANSACTIONS } from '../../constants';
+import { Badge } from './Badge';
+import { DataTable, Column } from './DataTable';
 import { MoreHorizontal } from 'lucide-react';
-import { Transaction } from '../types';
-import { useApp } from '../App';
+import { Transaction } from '../../types';
+import { useApp } from '../../App';
 
 const EXTENDED_TRANSACTIONS: Transaction[] = [
   ...RECENT_TRANSACTIONS,
@@ -21,7 +21,7 @@ export const TransactionTable: React.FC = () => {
 
   const filteredTransactions = useMemo(() => {
     const term = globalSearch.toLowerCase();
-    return EXTENDED_TRANSACTIONS.filter(tx => 
+    return EXTENDED_TRANSACTIONS.filter(tx =>
       tx.customer.toLowerCase().includes(term) ||
       tx.email.toLowerCase().includes(term) ||
       tx.status.toLowerCase().includes(term)
@@ -44,8 +44,8 @@ export const TransactionTable: React.FC = () => {
       label: 'Status',
       render: (tx) => (
         <Badge variant={
-          tx.status === 'Completed' ? 'success' : 
-          tx.status === 'Pending' ? 'warning' : 'error'
+          tx.status === 'Completed' ? 'success' :
+            tx.status === 'Pending' ? 'warning' : 'error'
         } className="text-[9px] py-0 h-4 flex items-center justify-center font-black uppercase tracking-tighter">
           {tx.status}
         </Badge>
@@ -77,10 +77,10 @@ export const TransactionTable: React.FC = () => {
 
   return (
     <div className="min-w-full">
-      <DataTable 
-        data={filteredTransactions} 
-        columns={columns} 
-        rowKey={(tx) => tx.id} 
+      <DataTable
+        data={filteredTransactions}
+        columns={columns}
+        rowKey={(tx) => tx.id}
       />
     </div>
   );
