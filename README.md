@@ -1,85 +1,123 @@
-# Aether ERP Design System & AI Development Guide
+# Aether ERP | Enterprise Design System & Documentation
 
-This guide defines the visual language and implementation standards for the Aether ERP project. It is intended to be read by AI assistants to ensure perfect visual consistency when generating new UI components or pages.
-
-## 🎨 Design Philosophy
-The design is **Modern Enterprise Premium**. It prioritizes extreme clarity, subtle depth (soft shadows), and high-end "Apple-like" aesthetics. 
-
-**Key Principles:**
-- **Hauline Borders**: Use very subtle borders (`slate-200/60` or `slate-50`). Avoid heavy `#ccc` or dark borders.
-- **Soft Depth**: Shadows should be multi-layered and almost imperceptible (`rgba(0,0,0,0.02)`).
-- **Breathability**: High whitespace density. Default page padding is generous (`2rem`+).
-- **Micro-interactivity**: Every interactive element must have a transition (usually `duration-300`).
+Aether ERP is a high-performance, modern dashboard system built with React and Tailwind CSS. This document serves as the absolute source of truth for the design system, component architecture, and implementation standards.
 
 ---
 
-## 🛠️ Design Tokens (CSS Variables)
+## 🎨 Design Philosophy
+The Aether design system is centered around **Subtle Premiumism**. It prioritizes extreme clarity, hairline depth, and high-end "Pro" aesthetics inspired by modern SaaS platforms.
 
-Defined in `index.html`:
-- `--primary`: `#4f46e5` (Indigo 600)
-- `--primary-muted`: `rgba(79, 70, 229, 0.05)`
-- `--ui-padding`: `2rem` (32px)
-- `--ui-gap`: `1.5rem` (24px)
-- `--ui-radius`: `1rem` (16px)
+**Core Directives:**
+- **Zero Bulk**: No heavy shadows, no thick borders, no high-contrast saturation.
+- **Glass & Air**: Use subtle translucency (`/60`) and generous whitespace (`2rem`+).
+- **Hauline Borders**: All borders must use `slate-200/60` or lighter (`slate-50`).
+- **Micro-Interactivity**: Every click and hover must have a soft transition (default `300ms`).
+
+---
+
+## 🛠️ Visual Specification (Tokens)
+
+### 1. Color Palette
+- **Primary**: `#4f46e5` (Indigo 600) - Used for primary actions, active states, and highlights.
+- **Primary Muted**: `rgba(79, 70, 229, 0.05)` - Soft Indigo tint for secondary backgrounds and icons.
+- **Backgrounds**:
+  - Main Body: `#f8fafc` (Slate 50)
+  - Component Surface: `#ffffff` (Pure White)
+  - Header Surfaces: `#fafafa` (Very light grey for contrast)
+- **Text Layers**:
+  - `slate-900`: Main content, headings, and critical labels.
+  - `slate-600`: Standard body text.
+  - `slate-400`: Sub-labels, secondary data, and breadcrumbs.
+- **Status Semantic Colors**:
+  - **Success**: `emerald` (Text: 600, Bg: 50, Icon: 500)
+  - **Warning**: `amber` (Text: 600, Bg: 50, Icon: 500)
+  - **Error/Negative**: `rose` (Text: 600, Bg: 50, Icon: 600)
+
+### 2. Typography (Inter Variable)
+- **Primary Page Headers**: `text-2xl font-semibold tracking-tight text-slate-900`
+- **Component Titles**: `text-[13px] font-bold tracking-tight text-slate-900`
+- **Sub-labels/Descriptions**: `text-[11px] font-medium text-slate-400`
+- **System Labels (Metadata)**: `text-[9px] or [10px] font-black uppercase tracking-widest text-slate-400`
+- **Table Data**: Always use `tabular-nums` for prices, units, and dates to ensure vertical alignment.
+- **Main Body**: `text-[13px] or text-sm` for optimal readability.
+
+### 3. Shadows & Depth (The "Pro" Layer)
+- **Soft Border**: `border border-slate-200/60`
+- **Elevation 1 (Cards)**: `shadow-[0_2px_4px_rgba(0,0,0,0.02),0_1px_0_rgba(0,0,0,0.02)]`
+- **Elevation 2 (Hover)**: `shadow-xl shadow-indigo-500/5 hover:border-indigo-200/50`
+- **Corner Radius**: 
+  - Main Cards: `1rem` (16px) 
+  - Buttons/Inputs: `0.75rem` (12px)
+  - Badges/Icons: `0.5rem` (8px)
 
 ---
 
 ## 📦 Core Component Standards
 
-### 1. The Standard Card (`Card.tsx`)
-The `Card` is the foundation of the UI. **Never create raw divs for containers; always use the `Card` component.**
-- **Radius**: `1rem` (forced via style prop)
-- **Border**: `slate-200/60`
-- **Shadow**: `[0_2px_4px_rgba(0,0,0,0.02),0_1px_0_rgba(0,0,0,0.02)]`
-- **Header Title**: `text-[13px] font-bold text-slate-900 tracking-tight`
-- **Header Description**: `text-[11px] text-slate-400 font-medium mt-0.5`
-- **Hover State**: `hover:shadow-xl hover:shadow-indigo-500/5 hover:border-indigo-200/50`
+### `Card.tsx`
+The primary layout unit.
+- **API**: `title`, `description`, `noPadding`, `headerAction`, `onClick`, `maxHeight`.
+- **Implementation**: 
+  - Custom `borderRadius: '1rem'` forced via style.
+  - Internal header padding: `px-6 py-5`.
+  - Content padding: `p-6` (unless `noPadding` is true).
+- **Shadow**: Custom multi-layered shadow for that "hauline" feel.
 
-### 2. Typography Hierarchy
-- **Page Titles**: `text-2xl font-semibold text-slate-900 tracking-tight`
-- **Section Headers**: `text-[13px] font-bold uppercase tracking-widest text-slate-400`
-- **Body Text**: `text-sm text-slate-600`
-- **Small Detail/Labels**: `text-[10px] or [9px] font-black uppercase tracking-widest text-slate-400`
-- **Tabular Data**: Always use `tabular-nums` for alignment.
+### `StatCard.tsx`
+Designed for KPIs and high-level metrics.
+- **Metrics**: `text-2xl font-bold tracking-tight`.
+- **Icon Container**: `w-9 h-9 bg-slate-50 border border-slate-100 rounded-lg`.
+- **Transitions**: Scale and color shift on parent group hover.
 
-### 3. Buttons (`Button.tsx`)
-- Default is a custom rounded style.
-- Use `size="sm"` for most table/card actions.
-- Action icons should be `size={14}` with `strokeWidth={2.5}` or `3`.
+### `DeleteButton.tsx`
+A specialized reusable semantic button.
+- **Design**: Minimalist trash icon, black by default, turns `rose-600` on hover with a splash of `rose-50`.
+- **Interaction**: `active:scale-95 transition-all`.
 
----
-
-## 📐 Layout Rules
-
-### Page Structure
-Always wrap page content in `PageLayout.tsx`:
-```tsx
-<PageLayout 
-  title="Page Title" 
-  description="Brief description." 
-  actions={<Button>Action</Button>}
->
-  {/* Content goes here with standard grid gaps */}
-</PageLayout>
-```
-
-### Grid Spacing
-- Use `gap-8` for main page grids.
-- Use `gap-4` or `gap-6` for internal card content.
-- Page padding is managed by `DashboardLayout.tsx` using `calc(var(--ui-padding) * 2)` for top spacing.
+### `DataTable.tsx`
+The standard for presenting structured data.
+- **Headers**: `px-4 py-3 bg-slate-50/30 border-b border-slate-100 text-[10px] font-bold uppercase tracking-widest text-slate-400`.
+- **Cell Content**: `text-[13px] text-slate-600 font-medium`.
+- **Row Hover**: `hover:bg-slate-50/20`.
 
 ---
 
-## 🚦 Color & Status System
-- **Success**: `emerald` (Text: 600/700, Bg: 50). Dot/Indication: `emerald-500`.
-- **Warning/Pending**: `amber` (Text: 700, Bg: 50).
-- **Error/Negative**: `rose` (Text: 600, Bg: 50).
-- **Info/Neutral**: `indigo` or `slate`.
+## 📐 Layout & Spacing
+
+### 1. Sidebar & Navigation
+- **Dimensions**: `w-60` (240px). Reduced from standard bulk to felt more agile.
+- **Icons**: Lucide icons at `size={18}` with `strokeWidth={2}`.
+- **Spacing**: Internal item padding `px-3 py-2.5`, margin between items `my-0.5`.
+- **Active State**: Soft `indigo-50` background with `indigo-600` text and `font-semibold`.
+
+### 2. Page Structure
+- **Global Gap**: `gap-8` for major grids (Cards).
+- **Page Margins**: 
+  - Top: `4rem` (64px) via `calc(var(--ui-padding) * 2)`.
+  - Sides: `2rem` (32px).
+- **Responsive Handling**: Grids should shift from `grid-cols-1` on mobile to `lg:grid-cols-3` or `lg:grid-cols-4` on desktop.
 
 ---
 
-## 🤖 Guide for AI Task Execution
-1. **Consistency First**: When adding a new field or row, check `FinancialsPage.tsx` or `CustomersPage.tsx` for the latest "Small Label / Big Value" pattern.
-2. **Iconography**: Use `lucide-react`. Keep icons thin and consistent.
-3. **Empty States**: Always handle empty data with a centered `text-slate-400` message.
-4. **No Placeholders**: Use real-world business data like "Wayne Enterprises" or "Acme Corp" for demos.
+## 🚦 Coding Patterns & Best Practices
+
+1. **Utility-First**: Use Tailwind primitives for everything. Only use `style={{...}}` for dynamic values (like chart heights or specific radii not in the system).
+2. **Conditional Classes**: Always use the `cn()` utility (`lib/utils.ts`) to merge classes safely.
+3. **Lucide Icon Props**: Stick to `size={14}` and `strokeWidth={2.5}` for small actions and `size={18}` for sidebar items.
+4. **Data Integrity**: Populate components with real-world demo data. Never use "Lorem Ipsum" or generic "Card Title 1".
+5. **Transitions**: Apply `transition-all duration-300` to all hoverable elements.
+
+---
+
+## 🚀 Development Quickstart
+- `npm run dev`: Starts the local development server (default port 3000).
+- `npm run build`: Generates the production bundle in `/dist`.
+- `npm run preview`: Previews the production build locally.
+
+## 📂 Project Structure
+- `/components/ui`: Atomic, reusable UI elements.
+- `/components/layout`: Global navigation, sidebar, and page layout wrappers.
+- `/pages`: View-level components mapped to routes.
+- `/lib`: Helper utilities and shared libraries.
+- `demoData.ts`: Centralized data store for simulating a live system environment.
+- `types.ts`: Global TypeScript interface definitions.
