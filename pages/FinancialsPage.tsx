@@ -1,9 +1,10 @@
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Card } from '../components/ui/Card';
 import { Badge } from '../components/ui/Badge';
 import { DataTable, Column } from '../components/ui/DataTable';
-import { CreditCard, DollarSign, ArrowUpRight, ArrowDownRight, Briefcase, TrendingUp } from 'lucide-react';
+import { Input } from '../components/ui/Input';
+import { CreditCard, DollarSign, ArrowUpRight, ArrowDownRight, Briefcase, TrendingUp, Search } from 'lucide-react';
 import { useApp } from '../App';
 
 interface LedgerEntry {
@@ -13,25 +14,28 @@ interface LedgerEntry {
   status: string;
 }
 
+const LEDGER_DATA: LedgerEntry[] = [
+  { label: 'Cloud Hosting Sub', amount: '-$1,200.00', date: 'Oct 15, 2023', status: 'Paid' },
+  { label: 'Client Retention Bonus', amount: '+$5,400.00', date: 'Oct 14, 2023', status: 'Hold' },
+  { label: 'Payroll - Dept A', amount: '-$22,500.00', date: 'Oct 12, 2023', status: 'Paid' },
+  { label: 'Maintenance Fee', amount: '-$450.00', date: 'Oct 10, 2023', status: 'Paid' },
+  { label: 'Global Licensing', amount: '+$12,000.00', date: 'Oct 09, 2023', status: 'Pending' },
+];
+
 export const FinancialsPage: React.FC = () => {
-  const { showToast } = useApp();
+  const { showToast, globalSearch, setGlobalSearch } = useApp();
 
   const handleDownload = () => {
     showToast('Generating fiscal year-end report...', 'info');
     setTimeout(() => showToast('Report generated successfully', 'success'), 1500);
   };
 
-  const handleCardClick = (title: string) => {
-    showToast(`Opening analytics for ${title}`, 'info');
-  };
-
-  const ledgerData: LedgerEntry[] = [
-    { label: 'Cloud Hosting Sub', amount: '-$1,200.00', date: 'Oct 15, 2023', status: 'Paid' },
-    { label: 'Client Retention Bonus', amount: '+$5,400.00', date: 'Oct 14, 2023', status: 'Hold' },
-    { label: 'Payroll - Dept A', amount: '-$22,500.00', date: 'Oct 12, 2023', status: 'Paid' },
-    { label: 'Maintenance Fee', amount: '-$450.00', date: 'Oct 10, 2023', status: 'Paid' },
-    { label: 'Global Licensing', amount: '+$12,000.00', date: 'Oct 09, 2023', status: 'Pending' },
-  ];
+  const filteredLedger = useMemo(() => {
+    return LEDGER_DATA.filter(item => 
+      item.label.toLowerCase().includes(globalSearch.toLowerCase()) ||
+      item.status.toLowerCase().includes(globalSearch.toLowerCase())
+    );
+  }, [globalSearch]);
 
   const columns: Column<LedgerEntry>[] = [
     {
@@ -82,7 +86,7 @@ export const FinancialsPage: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card onClick={() => handleCardClick('Net Profit')}>
+        <Card onClick={() => showToast('Detailing Net Profit...', 'info')}>
           <div className="flex items-center justify-between mb-4">
             <div className="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center">
               <DollarSign size={16} className="text-blue-600" />
@@ -97,7 +101,7 @@ export const FinancialsPage: React.FC = () => {
           </div>
         </Card>
 
-        <Card onClick={() => handleCardClick('Operating Expenses')}>
+        <Card onClick={() => showToast('Detailing Op. Expenses...', 'info')}>
           <div className="flex items-center justify-between mb-4">
             <div className="w-8 h-8 bg-rose-50 rounded-lg flex items-center justify-center">
               <Briefcase size={16} className="text-rose-600" />
@@ -112,7 +116,7 @@ export const FinancialsPage: React.FC = () => {
           </div>
         </Card>
 
-        <Card onClick={() => handleCardClick('Outstanding Credit')}>
+        <Card onClick={() => showToast('Detailing Credit Risk...', 'info')}>
           <div className="flex items-center justify-between mb-4">
             <div className="w-8 h-8 bg-amber-50 rounded-lg flex items-center justify-center">
               <CreditCard size={16} className="text-amber-600" />
@@ -144,8 +148,20 @@ export const FinancialsPage: React.FC = () => {
           </div>
         </Card>
         <Card noPadding title="Ledger Highlights" description="Latest verified system entries.">
+          <div className="px-5 py-3 border-b border-slate-100 bg-white">
+            <Input 
+              variant="white"
+              inputSize="sm"
+              className="max-w-xs rounded-full shadow-sm"
+              placeholder="Filter ledger entries..."
+              value={globalSearch}
+              onChange={(e) => setGlobalSearch(e.target.value)}
+              onClear={() => setGlobalSearch('')}
+              icon={<Search size={14} className="text-slate-400" strokeWidth={2.5} />}
+            />
+          </div>
           <DataTable 
-            data={ledgerData}
+            data={filteredLedger}
             columns={columns}
             rowKey={(item) => item.label + item.date}
             className="border-none"

@@ -1,65 +1,47 @@
 
 import React from 'react';
-import { NavItem } from '../../types';
+import { NavLink, Link } from 'react-router-dom';
 import { SIDEBAR_LINKS, SECONDARY_LINKS } from '../../constants';
+import { NavItem } from '../../types';
 
-/**
- * Navigation Sidebar featuring primary and secondary links.
- * Stays fixed to the left of the viewport.
- */
-interface SidebarProps {
-  currentPath: string;
-  onNavigate: (path: string) => void;
-}
-
-export const Sidebar: React.FC<SidebarProps> = ({ currentPath, onNavigate }) => {
+export const Sidebar: React.FC = () => {
   return (
-    <aside className="w-64 h-screen bg-white border-r border-slate-200 flex flex-col fixed left-0 top-0 z-30 transition-colors duration-300">
+    <aside className="w-64 h-screen bg-white border-r border-slate-200 flex flex-col fixed left-0 top-0 z-30">
       <div className="p-6">
-        <button 
-          onClick={() => onNavigate('/')}
-          className="flex items-center gap-2 mb-8 hover:opacity-80 transition-opacity"
+        <Link 
+          to="/"
+          className="flex items-center gap-2.5 mb-8 hover:opacity-80 transition-all"
         >
-          <div className="w-8 h-8 bg-[var(--primary)] rounded-lg flex items-center justify-center transition-colors">
-            <span className="text-white font-bold text-xl">A</span>
+          <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center shadow-md">
+            <span className="text-white font-bold text-lg">A</span>
           </div>
           <span className="text-xl font-bold tracking-tight text-slate-900">
-            Aether<span className="text-[var(--primary)] transition-colors">ERP</span>
+            Aether<span className="text-slate-400 font-medium">ERP</span>
           </span>
-        </button>
+        </Link>
 
         <nav className="space-y-1">
-          <p className="px-3 text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-2">Main Menu</p>
+          <p className="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">Main Menu</p>
           {SIDEBAR_LINKS.map((item) => (
-            <SidebarItem 
-              key={item.title} 
-              item={item} 
-              active={currentPath === item.href} 
-              onClick={() => onNavigate(item.href)} 
-            />
+            <SidebarItem key={item.title} item={item} />
           ))}
         </nav>
       </div>
 
-      <div className="mt-auto p-6 border-t border-slate-100">
-        <nav className="space-y-1">
+      <div className="mt-auto p-4 border-t border-slate-100">
+        <nav className="space-y-0.5">
           {SECONDARY_LINKS.map((item) => (
-            <SidebarItem 
-              key={item.title} 
-              item={item} 
-              active={currentPath === item.href} 
-              onClick={() => onNavigate(item.href)} 
-            />
+            <SidebarItem key={item.title} item={item} />
           ))}
         </nav>
         
-        <div className="mt-6 flex items-center gap-3 p-2 rounded-lg border border-slate-100 bg-slate-50">
-          <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center overflow-hidden">
+        <div className="mt-4 flex items-center gap-3 p-3 rounded-xl border border-slate-100 bg-slate-50/50">
+          <div className="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center overflow-hidden shrink-0">
             <img src="https://i.pravatar.cc/100?u=alex" alt="Avatar" />
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-xs font-semibold text-slate-900 truncate">Alex Rivera</p>
-            <p className="text-[10px] text-slate-500 truncate uppercase font-bold tracking-tighter">Administrator</p>
+            <p className="text-[10px] text-slate-500 font-medium">Administrator</p>
           </div>
         </div>
       </div>
@@ -67,27 +49,34 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentPath, onNavigate }) => 
   );
 };
 
-const SidebarItem: React.FC<{ item: NavItem; active: boolean; onClick: () => void }> = ({ item, active, onClick }) => {
+const SidebarItem: React.FC<{ item: NavItem }> = ({ item }) => {
   return (
-    <button
-      onClick={onClick}
-      className={`group flex items-center justify-between w-full px-3 py-2 rounded-md text-sm transition-all duration-200 ${
-        active 
-          ? 'bg-[var(--primary-muted)] text-[var(--primary)] font-bold' 
-          : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
-      }`}
+    <NavLink
+      to={item.href}
+      className={({ isActive }) => `
+        group flex items-center justify-between w-full px-3 py-2 rounded-lg text-[13px] transition-all duration-200 font-medium
+        ${isActive 
+          ? 'bg-indigo-50 text-indigo-700 font-semibold' 
+          : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900'}
+      `}
     >
-      <div className="flex items-center gap-3">
-        <item.icon size={18} className={active ? 'text-[var(--primary)]' : 'text-slate-400 group-hover:text-slate-600'} />
-        <span>{item.title}</span>
-      </div>
-      {item.badge && (
-        <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold ${
-          active ? 'bg-[var(--primary)] text-white' : 'bg-slate-200 text-slate-600'
-        }`}>
-          {item.badge}
-        </span>
+      {({ isActive }) => (
+        <>
+          <div className="flex items-center gap-3">
+            <item.icon 
+              size={18} 
+              strokeWidth={isActive ? 2.5 : 2} 
+              className={isActive ? 'text-indigo-600' : 'text-slate-400 group-hover:text-slate-600'} 
+            />
+            <span>{item.title}</span>
+          </div>
+          {item.badge && (
+            <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold ${isActive ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-500'}`}>
+              {item.badge}
+            </span>
+          )}
+        </>
       )}
-    </button>
+    </NavLink>
   );
 };

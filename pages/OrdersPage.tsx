@@ -1,8 +1,10 @@
 
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Card } from '../components/ui/Card';
 import { Badge } from '../components/ui/Badge';
 import { DataTable, Column } from '../components/ui/DataTable';
+import { Input } from '../components/ui/Input';
+import { Button } from '../components/ui/Button';
 import { 
   Search, 
   Filter, 
@@ -133,36 +135,36 @@ export const OrdersPage: React.FC = () => {
            >
             {isDownloading ? <Loader2 size={18} className="animate-spin text-slate-400" /> : <Download size={18} className="text-slate-600" />}
           </button>
-          <button 
+          <Button 
             onClick={() => setIsCreateOpen(true)}
-            className="flex items-center gap-2 bg-[var(--primary)] text-white px-6 h-11 rounded-xl text-xs font-black uppercase tracking-widest hover:brightness-110 active:scale-95 transition-all shadow-lg shadow-[var(--primary)]/20"
+            leftIcon={<Plus size={18} strokeWidth={3} />}
           >
-            <Plus size={18} strokeWidth={3} />
-            <span>Generate New Order</span>
-          </button>
+            Generate New Order
+          </Button>
         </div>
       </div>
 
       <Card noPadding className="overflow-hidden border-slate-200/60 shadow-md">
         <div className="p-5 border-b border-slate-100 flex flex-wrap gap-4 items-center justify-between bg-white">
-          <div className="flex items-center gap-3 bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 min-w-[350px] focus-within:ring-4 focus-within:ring-[var(--primary)]/5 focus-within:bg-white transition-all shadow-sm">
-            <Search size={18} className="text-slate-400" strokeWidth={2.5} />
-            <input 
-              type="text" 
-              placeholder="Filter by Reference, Client, or Module..." 
-              className="bg-transparent border-none text-[13px] font-bold focus:ring-0 w-full outline-none placeholder:text-slate-400"
-              value={globalSearch}
-              onChange={(e) => setGlobalSearch(e.target.value)}
-            />
-          </div>
+          <Input 
+            variant="white"
+            inputSize="sm"
+            className="max-w-md rounded-full shadow-sm"
+            placeholder="Search orders..." 
+            value={globalSearch}
+            onChange={(e) => setGlobalSearch(e.target.value)}
+            icon={<Search size={14} className="text-slate-400" strokeWidth={2.5} />}
+          />
           <div className="flex items-center gap-2">
-            <button 
+            <Button 
+              variant="outline" 
+              size="sm"
+              className="rounded-full"
               onClick={() => showToast('Advanced filtering options enabled', 'info')}
-              className="flex items-center gap-2 px-4 py-2.5 border border-slate-200 rounded-xl text-xs font-black text-slate-600 hover:bg-slate-50 transition-all active:scale-95"
+              leftIcon={<Filter size={14} strokeWidth={2.5} />}
             >
-              <Filter size={16} strokeWidth={2.5} />
-              <span className="uppercase tracking-widest">Advanced Filters</span>
-            </button>
+              Filters
+            </Button>
           </div>
         </div>
 
@@ -176,8 +178,8 @@ export const OrdersPage: React.FC = () => {
         <div className="p-5 border-t border-slate-100 flex items-center justify-between text-[11px] font-black text-slate-400 uppercase tracking-widest bg-slate-50/30">
           <p>Displaying {filteredOrders.length} active records</p>
           <div className="flex gap-2">
-            <button className="px-5 py-2 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors disabled:opacity-30 font-black uppercase tracking-widest" disabled>Prev</button>
-            <button className="px-5 py-2 border border-slate-200 rounded-lg bg-white hover:bg-slate-50 transition-all active:scale-95 font-black uppercase tracking-widest text-slate-600">Next</button>
+            <Button variant="outline" size="xs" disabled>Prev</Button>
+            <Button variant="outline" size="xs">Next</Button>
           </div>
         </div>
       </Card>
@@ -188,10 +190,11 @@ export const OrdersPage: React.FC = () => {
         title="Initialize New Transaction"
       >
         <form className="space-y-5" onSubmit={handleCreateOrder}>
-           <div className="space-y-2">
-            <label className="text-[11px] font-black text-slate-500 uppercase tracking-widest">Client Identity</label>
-            <input type="text" required className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold focus:ring-4 focus:ring-[var(--primary)]/10 focus:border-[var(--primary)] outline-none transition-all" placeholder="Legal business name" />
-          </div>
+           <Input 
+            label="Client Identity"
+            required 
+            placeholder="Legal business name" 
+          />
           <div className="space-y-2">
             <label className="text-[11px] font-black text-slate-500 uppercase tracking-widest">Asset Allocation</label>
             <select className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold focus:ring-4 focus:ring-[var(--primary)]/10 focus:border-[var(--primary)] outline-none transition-all">
@@ -202,8 +205,8 @@ export const OrdersPage: React.FC = () => {
             </select>
           </div>
           <div className="pt-6 flex justify-end gap-3">
-             <button type="button" onClick={() => setIsCreateOpen(false)} className="px-5 py-2.5 text-xs font-black uppercase tracking-widest text-slate-500 hover:text-slate-900 transition-colors">Cancel</button>
-             <button type="submit" className="px-7 py-2.5 bg-[var(--primary)] text-white rounded-xl text-xs font-black uppercase tracking-widest shadow-lg shadow-[var(--primary)]/20 active:scale-95 transition-all">Create Record</button>
+             <Button variant="ghost" type="button" onClick={() => setIsCreateOpen(false)}>Cancel</Button>
+             <Button type="submit">Create Record</Button>
           </div>
         </form>
       </Modal>

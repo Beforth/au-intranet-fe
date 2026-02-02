@@ -1,14 +1,14 @@
 
 import React from 'react';
+import { cn } from '../../lib/utils';
 
 interface BadgeProps {
   children: React.ReactNode;
   variant?: 'default' | 'success' | 'warning' | 'error' | 'outline';
-  // Fixed: Added optional className to BadgeProps to resolve property 'className' does not exist error in consumers
   className?: string;
 }
 
-export const Badge: React.FC<BadgeProps> = ({ children, variant = 'default', className = '' }) => {
+export const Badge: React.FC<BadgeProps> = ({ children, variant = 'default', className }) => {
   const styles = {
     default: 'bg-slate-100 text-slate-800',
     success: 'bg-emerald-50 text-emerald-700 border border-emerald-100',
@@ -18,7 +18,11 @@ export const Badge: React.FC<BadgeProps> = ({ children, variant = 'default', cla
   };
 
   return (
-    <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${styles[variant]} ${className}`}>
+    <span className={cn(
+      'px-2 py-0.5 rounded-full text-xs font-medium inline-flex items-center',
+      styles[variant],
+      className
+    )}>
       {children}
     </span>
   );

@@ -1,12 +1,12 @@
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { RECENT_TRANSACTIONS } from '../constants';
 import { Badge } from './ui/Badge';
 import { DataTable, Column } from './ui/DataTable';
 import { MoreHorizontal } from 'lucide-react';
 import { Transaction } from '../types';
+import { useApp } from '../App';
 
-// Extended dummy data to trigger dynamic card scaling/scrolling
 const EXTENDED_TRANSACTIONS: Transaction[] = [
   ...RECENT_TRANSACTIONS,
   { id: '6', customer: 'Sophia Lopez', email: 'sophia@example.com', amount: '$1,250.00', status: 'Completed', date: '2023-06-28' },
@@ -17,6 +17,17 @@ const EXTENDED_TRANSACTIONS: Transaction[] = [
 ];
 
 export const TransactionTable: React.FC = () => {
+  const { globalSearch } = useApp();
+
+  const filteredTransactions = useMemo(() => {
+    const term = globalSearch.toLowerCase();
+    return EXTENDED_TRANSACTIONS.filter(tx => 
+      tx.customer.toLowerCase().includes(term) ||
+      tx.email.toLowerCase().includes(term) ||
+      tx.status.toLowerCase().includes(term)
+    );
+  }, [globalSearch]);
+
   const columns: Column<Transaction>[] = [
     {
       key: 'customer',
@@ -67,7 +78,7 @@ export const TransactionTable: React.FC = () => {
   return (
     <div className="min-w-full">
       <DataTable 
-        data={EXTENDED_TRANSACTIONS} 
+        data={filteredTransactions} 
         columns={columns} 
         rowKey={(tx) => tx.id} 
       />

@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { GripVertical, Maximize2 } from 'lucide-react';
+import { cn } from '../../lib/utils';
 
 interface CardProps {
   title?: string;
@@ -17,13 +18,14 @@ interface CardProps {
   onResize?: () => void;
   noPadding?: boolean;
   maxHeight?: string;
+  contentClassName?: string;
 }
 
 export const Card: React.FC<CardProps> = ({ 
   title, 
   description, 
   children, 
-  className = '', 
+  className, 
   headerAction,
   onClick,
   isDraggable,
@@ -33,7 +35,8 @@ export const Card: React.FC<CardProps> = ({
   showHandle,
   onResize,
   noPadding = false,
-  maxHeight = 'none'
+  maxHeight = 'none',
+  contentClassName
 }) => {
   return (
     <div 
@@ -41,22 +44,21 @@ export const Card: React.FC<CardProps> = ({
       onDragStart={onDragStart}
       onDragOver={onDragOver}
       onDrop={onDrop}
-      className={`bg-white rounded-2xl border border-slate-200/60 transition-all duration-500 ease-out relative group/card flex flex-col min-h-[140px] shadow-sm
-        ${onClick ? 'cursor-pointer hover:border-[var(--primary)]/40 hover:shadow-xl hover:shadow-[var(--primary)]/5 hover:-translate-y-0.5' : ''} 
-        ${isDraggable ? 'cursor-move active:scale-[0.98]' : ''}
-        ${className}`}
-      style={{ 
-        maxHeight: maxHeight,
-      }}
+      className={cn(
+        'bg-white rounded-xl border border-slate-200 transition-all duration-300 relative group/card flex flex-col min-h-[140px] shadow-sm',
+        onClick && 'cursor-pointer hover:shadow-md hover:border-slate-300',
+        isDraggable && 'cursor-move active:scale-[0.99]',
+        className
+      )}
+      style={{ maxHeight }}
       onClick={onClick}
     >
-      {/* Interaction Layer */}
       {showHandle && (
         <div className="absolute top-3 right-3 flex items-center gap-1 opacity-0 group-hover/card:opacity-100 transition-opacity z-20">
           {onResize && (
             <button 
               onClick={(e) => { e.stopPropagation(); onResize(); }}
-              className="p-1.5 hover:bg-slate-50 rounded-lg text-slate-400 pointer-events-auto transition-colors"
+              className="p-1.5 hover:bg-slate-100 rounded-lg text-slate-400 transition-colors"
             >
               <Maximize2 size={12} />
             </button>
@@ -67,31 +69,28 @@ export const Card: React.FC<CardProps> = ({
         </div>
       )}
       
-      {/* Dynamic Header */}
       {(title || description || headerAction) && (
-        <div className="px-6 py-4 border-b border-slate-100/80 flex justify-between items-center bg-white rounded-t-2xl sticky top-0 z-10">
+        <div className="px-5 py-4 border-b border-slate-50 flex justify-between items-center">
           <div className="min-w-0 pr-6">
-            {title && <h3 className="text-[11px] font-black text-slate-900 tracking-widest truncate uppercase leading-none">{title}</h3>}
-            {description && <p className="text-[10px] text-slate-400 font-medium truncate mt-1.5 tracking-tight leading-none">{description}</p>}
+            {title && <h3 className="text-sm font-semibold text-slate-900 tracking-tight">{title}</h3>}
+            {description && <p className="text-[11px] text-slate-400 font-medium mt-0.5">{description}</p>}
           </div>
           {headerAction && <div className="shrink-0">{headerAction}</div>}
         </div>
       )}
       
-      {/* Fluid Content Area */}
       <div 
-        className={`flex-1 group/content relative ${noPadding ? '' : 'p-[var(--ui-padding,1.25rem)]'} ${maxHeight !== 'none' ? 'overflow-y-auto scrollbar-hide' : ''}`}
-        style={{ scrollBehavior: 'smooth' }}
+        className={cn(
+          'flex-1 group/content relative',
+          !noPadding && 'p-[var(--ui-padding,1.25rem)]',
+          maxHeight !== 'none' && 'overflow-y-auto scrollbar-hide',
+          contentClassName
+        )}
       >
-        <div className="animate-in fade-in slide-in-from-bottom-2 duration-500">
+        <div className="animate-in fade-in duration-500">
           {children}
         </div>
       </div>
-
-      {/* Dynamic shadow indicator only if height is constrained */}
-      {maxHeight !== 'none' && (
-        <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-white to-transparent pointer-events-none opacity-0 group-hover/card:opacity-100 transition-opacity"></div>
-      )}
     </div>
   );
 };

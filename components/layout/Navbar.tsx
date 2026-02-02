@@ -1,139 +1,108 @@
 
-import React, { useState, useMemo } from 'react';
-import { Search, Bell, Settings, Command, X, ShoppingBag, ShieldAlert, Package, MessageSquare } from 'lucide-react';
-import { ThemeSwitcher } from '../ThemeSwitcher';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Search, Bell, Settings, Command, ShoppingBag, ShieldAlert, Package, MessageSquare, User, ArrowRight, LayoutDashboard, FileText, PieChart, CreditCard, X } from 'lucide-react';
 import { useApp } from '../../App';
 
-/**
- * Top Global Header. Includes primary search input and notification system.
- */
 export const Navbar: React.FC = () => {
-  const { showToast, onNavigate, globalSearch, setGlobalSearch, notifications, setNotifications, unreadCount } = useApp();
-  const [isNotifOpen, setIsNotifOpen] = useState(false);
+  const navigate = useNavigate();
+  const { 
+    globalSearch, 
+    setGlobalSearch, 
+    unreadCount 
+  } = useApp();
+  
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
-  const handleMarkAllRead = () => {
-    setNotifications(prev => prev.map(n => ({ ...n, read: true })));
-    showToast('All notifications cleared', 'success');
-  };
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        searchInputRef.current?.focus();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
-  const getNotifIcon = (type: string) => {
-    switch (type) {
-      case 'order': return <ShoppingBag size={14} className="text-blue-500" />;
-      case 'system': return <ShieldAlert size={14} className="text-rose-500" />;
-      case 'inventory': return <Package size={14} className="text-amber-500" />;
-      default: return <MessageSquare size={14} className="text-slate-400" />;
-    }
-  };
+  const SEARCHABLE_ITEMS = useMemo(() => [
+    { id: 'nav-1', category: 'Pages', title: 'Dashboard', icon: LayoutDashboard, href: '/' },
+    { id: 'nav-2', category: 'Pages', title: 'Orders Registry', icon: ShoppingBag, href: '/orders' },
+    { id: 'nav-3', category: 'Pages', title: 'Customer Base', icon: User, href: '/customers' },
+    { id: 'nav-4', category: 'Pages', title: 'Inventory Logs', icon: Package, href: '/inventory' },
+    { id: 'nav-5', category: 'Pages', title: 'Financial Ledger', icon: CreditCard, href: '/financials' },
+    { id: 'nav-6', category: 'Pages', title: 'Analytics Reports', icon: PieChart, href: '/reports' },
+    { id: 'nav-7', category: 'Pages', title: 'Invoice Manager', icon: FileText, href: '/invoices' },
+  ], []);
 
-  const filteredNotifications = useMemo(() => {
+  const searchResults = useMemo(() => {
     const term = globalSearch.trim().toLowerCase();
-    if (!term) return notifications;
-    
-    return notifications.filter(
-      n => n.title.toLowerCase().includes(term) || 
-           n.message.toLowerCase().includes(term)
+    if (!term) return [];
+    return SEARCHABLE_ITEMS.filter(item => 
+      item.title.toLowerCase().includes(term) || 
+      item.category.toLowerCase().includes(term)
     );
-  }, [notifications, globalSearch]);
+  }, [globalSearch, SEARCHABLE_ITEMS]);
 
   return (
-    <header className="h-16 sticky top-0 bg-[#fafafa]/80 backdrop-blur-md z-20 ml-64 flex items-center px-10 justify-between w-auto border-b border-slate-100">
-      <div className="flex-1 max-w-xl group">
-        <div className="relative flex items-center">
-          <Search 
-            className="absolute left-4 text-slate-400 group-focus-within:text-[var(--primary)] transition-all pointer-events-none" 
-            size={16} 
-            strokeWidth={2.5}
-          />
+    <header className="h-16 sticky top-0 bg-white/80 backdrop-blur-md z-40 ml-64 flex items-center px-8 justify-between border-b border-slate-200">
+      <div className="flex-1 max-w-lg relative">
+        <div className="relative group">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-indigo-600 transition-colors" size={14} />
           <input 
-            type="text" 
+            ref={searchInputRef}
+            type="text"
+            className="w-full bg-slate-50 border border-slate-200 rounded-lg h-9 pl-10 pr-12 text-xs font-medium text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-4 focus:ring-indigo-500/5 focus:border-indigo-500/30 transition-all"
+            placeholder="Quick search... (⌘K)"
             value={globalSearch}
             onChange={(e) => setGlobalSearch(e.target.value)}
-            placeholder="Search enterprise indices..." 
-            className="w-full h-10 pl-11 pr-14 bg-white border border-slate-200 rounded-full text-[13px] font-medium placeholder:text-slate-400 focus:outline-none focus:border-[var(--primary)] focus:ring-4 focus:ring-[var(--primary)]/10 transition-all shadow-sm focus:shadow-md"
+            onFocus={() => setIsSearchFocused(true)}
+            onBlur={() => setTimeout(() => setIsSearchFocused(false), 200)}
           />
-          <div className="absolute right-4 flex items-center gap-2">
-            {globalSearch && (
-              <button 
-                onClick={() => setGlobalSearch('')}
-                className="p-1 hover:bg-slate-100 rounded-full text-slate-400 transition-colors"
-              >
-                <X size={14} strokeWidth={2.5} />
-              </button>
-            )}
-            <div className="hidden md:flex items-center gap-1 opacity-40 group-focus-within:opacity-100 transition-opacity pointer-events-none border-l border-slate-200 pl-2 ml-1">
-               <Command size={11} strokeWidth={3} />
-               <span className="text-[10px] font-black uppercase tracking-tighter">K</span>
+          <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1 opacity-40 group-focus-within:opacity-80 transition-opacity">
+            <Command size={10} />
+            <span className="text-[10px] font-bold">K</span>
+          </div>
+        </div>
+
+        {isSearchFocused && globalSearch.length > 0 && (
+          <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-slate-200 shadow-xl rounded-xl overflow-hidden animate-in fade-in slide-in-from-top-1 duration-200">
+            <div className="p-1.5 max-h-[380px] overflow-y-auto">
+              {searchResults.length > 0 ? (
+                <div className="space-y-1">
+                  {searchResults.map(item => (
+                    <button
+                      key={item.id}
+                      onClick={() => { navigate(item.href); setGlobalSearch(''); }}
+                      className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left hover:bg-slate-50 transition-colors group"
+                    >
+                      <item.icon size={14} className="text-slate-400 group-hover:text-indigo-600" />
+                      <span className="text-xs font-medium text-slate-700">{item.title}</span>
+                      <ArrowRight size={12} className="ml-auto text-slate-300 opacity-0 group-hover:opacity-100" />
+                    </button>
+                  ))}
+                </div>
+              ) : (
+                <div className="py-4 text-center text-slate-400 text-xs">No matches found</div>
+              )}
             </div>
           </div>
-        </div>
+        )}
       </div>
 
-      <div className="flex items-center gap-4">
-        <div className="flex items-center gap-1">
-          <ThemeSwitcher />
-          
-          <div className="relative">
-            <button 
-              onClick={() => setIsNotifOpen(!isNotifOpen)}
-              className={`p-2 transition-all relative active:scale-90 rounded-full hover:bg-slate-100 ${
-                unreadCount > 0 || isNotifOpen ? 'text-slate-600' : 'text-slate-300'
-              }`}
-            >
-              <Bell size={20} strokeWidth={(unreadCount > 0 || isNotifOpen) ? 2 : 1.5} />
-              {unreadCount > 0 && (
-                <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-[var(--primary)] rounded-full border-2 border-[#fafafa] animate-in fade-in zoom-in duration-300"></span>
-              )}
-            </button>
-
-            {isNotifOpen && (
-              <>
-                <div className="fixed inset-0 z-40" onClick={() => setIsNotifOpen(false)} />
-                <div className="absolute right-0 mt-4 w-80 bg-white border border-slate-200 shadow-2xl z-50 rounded-2xl animate-in fade-in zoom-in-95 duration-200 overflow-hidden">
-                  <div className="px-4 py-3 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
-                    <div className="flex flex-col">
-                      <h4 className="text-[11px] font-black text-slate-900 uppercase tracking-widest">Activity</h4>
-                      {globalSearch && (
-                        <span className="text-[8px] text-[var(--primary)] font-black uppercase tracking-tighter">Filtering: "{globalSearch}"</span>
-                      )}
-                    </div>
-                    {unreadCount > 0 && !globalSearch && (
-                      <button onClick={handleMarkAllRead} className="text-[10px] font-bold text-[var(--primary)] hover:underline uppercase tracking-widest">Clear</button>
-                    )}
-                  </div>
-                  <div className="max-h-[350px] overflow-y-auto divide-y divide-slate-50">
-                    {filteredNotifications.length > 0 ? filteredNotifications.map((notif) => (
-                      <div key={notif.id} className={`p-4 flex gap-3 transition-colors hover:bg-slate-50 cursor-default group relative ${!notif.read ? 'bg-[var(--primary-muted)]/20' : ''}`}>
-                        <div className="w-8 h-8 rounded-lg bg-white border border-slate-100 flex items-center justify-center shrink-0 shadow-sm group-hover:scale-105 transition-transform">
-                          {getNotifIcon(notif.type)}
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center justify-between gap-2">
-                            <h5 className="text-xs font-bold text-slate-900 truncate leading-none mb-1">{notif.title}</h5>
-                            <span className="text-[9px] font-medium text-slate-400 whitespace-nowrap">{notif.time}</span>
-                          </div>
-                          <p className="text-[11px] text-slate-500 font-medium leading-tight line-clamp-2">{notif.message}</p>
-                        </div>
-                      </div>
-                    )) : (
-                      <div className="py-12 text-center px-4">
-                        <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">No matching alerts</p>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </>
-            )}
-          </div>
-
-          <button onClick={() => onNavigate('/settings')} className="p-2 text-slate-400 hover:text-slate-900 transition-all active:scale-90 rounded-full hover:bg-slate-100">
-            <Settings size={20} />
-          </button>
-        </div>
-
-        <div className="flex items-center pl-4 border-l border-slate-200">
-          <div onClick={() => onNavigate('/settings')} className="w-8 h-8 rounded-full cursor-pointer border border-slate-200 hover:border-[var(--primary)] transition-all overflow-hidden shadow-sm">
-            <img src="https://i.pravatar.cc/100?u=alex" alt="User" className="w-full h-full object-cover" />
-          </div>
+      <div className="flex items-center gap-3">
+        <button className="p-2 text-slate-400 hover:text-slate-900 transition-all rounded-lg hover:bg-slate-100 relative">
+          <Bell size={18} strokeWidth={2} />
+          {unreadCount > 0 && (
+            <span className="absolute top-2 right-2 w-2 h-2 bg-indigo-500 rounded-full border-2 border-white"></span>
+          )}
+        </button>
+        <button onClick={() => navigate('/settings')} className="p-2 text-slate-400 hover:text-slate-900 transition-all rounded-lg hover:bg-slate-100">
+          <Settings size={18} strokeWidth={2} />
+        </button>
+        <div className="w-8 h-8 rounded-full border border-slate-200 overflow-hidden ml-2 cursor-pointer hover:border-indigo-400 transition-all">
+          <img src="https://i.pravatar.cc/100?u=alex" alt="User" />
         </div>
       </div>
     </header>

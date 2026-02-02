@@ -1,21 +1,44 @@
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Card } from '../components/ui/Card';
 import { HelpCircle, MessageSquare, Book, FileQuestion, ArrowRight, Search } from 'lucide-react';
+import { Input } from '../components/ui/Input';
+import { useApp } from '../App';
+
+const KNOWLEDGE_BASE = [
+  'Security protocol for resetting root admin credentials',
+  'Configuring automated regional tax calculation zones',
+  'Synchronizing high-volume data streams with API v2.5',
+  'Legacy migration path for structural warehouse data',
+  'Billing cycle adjustment for enterprise clients',
+  'Custom reporting modules and predictive analytics setup',
+];
 
 export const SupportPage: React.FC = () => {
+  const { globalSearch, setGlobalSearch } = useApp();
+
+  const filteredQuestions = useMemo(() => {
+    return KNOWLEDGE_BASE.filter(q => 
+      q.toLowerCase().includes(globalSearch.toLowerCase())
+    );
+  }, [globalSearch]);
+
   return (
     <div className="space-y-12 animate-in fade-in duration-500">
       <div className="text-center max-w-3xl mx-auto space-y-6 py-12">
         <h1 className="text-4xl font-black text-slate-900 tracking-tighter leading-none">Global Help Center</h1>
-        <p className="text-slate-500 text-lg font-medium max-w-xl mx-auto">Search our knowledge base or connect with a dedicated ERP specialist for immediate assistance.</p>
-        <div className="relative max-w-xl mx-auto group">
-          <input 
-            type="text" 
-            placeholder="How can we help you today? Search documentation..." 
-            className="w-full pl-14 pr-6 h-14 bg-white border border-slate-200 rounded-2xl shadow-xl shadow-slate-200/50 text-base font-medium focus:ring-4 focus:ring-[var(--primary)]/10 focus:border-[var(--primary)] outline-none transition-all"
+        <p className="text-slate-500 text-lg font-medium max-w-xl mx-auto">Search our knowledge base or connect with a dedicated ERP specialist.</p>
+        <div className="max-w-xl mx-auto">
+          <Input 
+            variant="white"
+            inputSize="lg"
+            className="rounded-2xl shadow-xl shadow-slate-200/50"
+            placeholder="Search documentation..."
+            value={globalSearch}
+            onChange={(e) => setGlobalSearch(e.target.value)}
+            onClear={() => setGlobalSearch('')}
+            icon={<Search size={22} className="text-slate-400" strokeWidth={2.5} />}
           />
-          <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-[var(--primary)] transition-colors" size={24} strokeWidth={2.5} />
         </div>
       </div>
 
@@ -40,12 +63,7 @@ export const SupportPage: React.FC = () => {
 
       <Card title="Knowledge Base: Popular Queries" description="Quick resolution for common enterprise inquiries.">
         <div className="divide-y divide-slate-100 -mx-6 -mb-6">
-          {[
-            'Security protocol for resetting root admin credentials',
-            'Configuring automated regional tax calculation zones',
-            'Synchronizing high-volume data streams with API v2.5',
-            'Legacy migration path for structural warehouse data',
-          ].map((q, i) => (
+          {filteredQuestions.length > 0 ? filteredQuestions.map((q, i) => (
             <button key={i} className="w-full px-8 py-5 flex items-center justify-between group hover:bg-slate-50 transition-all text-left">
               <div className="flex items-center gap-5">
                 <div className="w-8 h-8 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center group-hover:bg-white group-hover:border-[var(--primary)]/20 transition-all">
@@ -58,7 +76,11 @@ export const SupportPage: React.FC = () => {
                 <ArrowRight size={14} className="text-[var(--primary)]" strokeWidth={3} />
               </div>
             </button>
-          ))}
+          )) : (
+            <div className="px-8 py-12 text-center">
+              <p className="text-xs font-black text-slate-400 uppercase tracking-widest">No matching help articles found.</p>
+            </div>
+          )}
         </div>
       </Card>
     </div>

@@ -1,8 +1,9 @@
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Card } from '../components/ui/Card';
 import { DataTable, Column } from '../components/ui/DataTable';
-import { FileText, Download, Clock, ExternalLink, BarChart3 } from 'lucide-react';
+import { Input } from '../components/ui/Input';
+import { FileText, Download, Clock, ExternalLink, BarChart3, Search } from 'lucide-react';
 import { useApp } from '../App';
 
 interface ReportTemplate {
@@ -11,16 +12,23 @@ interface ReportTemplate {
   size: string;
 }
 
-export const ReportsPage: React.FC = () => {
-  const { showToast } = useApp();
+const TEMPLATES: ReportTemplate[] = [
+  { name: 'Annual Growth Forecast', type: 'Predictive', size: '2.4 MB' },
+  { name: 'Weekly Operational Audit', type: 'Summary', size: '1.1 MB' },
+  { name: 'Quarterly Financial Review', type: 'Audit', size: '4.8 MB' },
+  { name: 'Regional Perf Matrix', type: 'Compare', size: '3.2 MB' },
+  { name: 'Inventory Lifecycle Log', type: 'Logistics', size: '0.8 MB' },
+];
 
-  const templates: ReportTemplate[] = [
-    { name: 'Annual Growth Forecast', type: 'Predictive', size: '2.4 MB' },
-    { name: 'Weekly Operational Audit', type: 'Summary', size: '1.1 MB' },
-    { name: 'Quarterly Financial Review', type: 'Audit', size: '4.8 MB' },
-    { name: 'Regional Perf Matrix', type: 'Compare', size: '3.2 MB' },
-    { name: 'Inventory Lifecycle Log', type: 'Logistics', size: '0.8 MB' },
-  ];
+export const ReportsPage: React.FC = () => {
+  const { showToast, globalSearch, setGlobalSearch } = useApp();
+
+  const filteredTemplates = useMemo(() => {
+    return TEMPLATES.filter(t => 
+      t.name.toLowerCase().includes(globalSearch.toLowerCase()) ||
+      t.type.toLowerCase().includes(globalSearch.toLowerCase())
+    );
+  }, [globalSearch]);
 
   const columns: Column<ReportTemplate>[] = [
     {
@@ -63,9 +71,11 @@ export const ReportsPage: React.FC = () => {
 
   return (
     <div className="space-y-6 animate-in fade-in duration-500">
-      <div>
-        <h1 className="text-2xl font-black text-slate-900 tracking-tight">Enterprise Reports</h1>
-        <p className="text-slate-500 text-xs font-medium">Generate and manage comprehensive business insights.</p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-black text-slate-900 tracking-tight">Enterprise Reports</h1>
+          <p className="text-slate-500 text-xs font-medium">Generate and manage comprehensive business insights.</p>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -96,8 +106,20 @@ export const ReportsPage: React.FC = () => {
       </div>
 
       <Card noPadding title="Templates" description="Predefined auditing structures.">
+        <div className="px-5 py-3 border-b border-slate-100 bg-white">
+          <Input 
+            variant="white"
+            inputSize="sm"
+            className="max-w-xs rounded-full shadow-sm"
+            placeholder="Search report templates..."
+            value={globalSearch}
+            onChange={(e) => setGlobalSearch(e.target.value)}
+            onClear={() => setGlobalSearch('')}
+            icon={<Search size={14} className="text-slate-400" strokeWidth={2.5} />}
+          />
+        </div>
         <DataTable 
-          data={templates}
+          data={filteredTemplates}
           columns={columns}
           rowKey={(item) => item.name}
           className="border-none"

@@ -1,11 +1,8 @@
 
 import React from 'react';
 import { Loader2 } from 'lucide-react';
+import { cn } from '../../lib/utils';
 
-/**
- * Reusable Button component following ERP design standards.
- * Supports multiple variants and sizes to prevent class duplication.
- */
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger' | 'link';
   size?: 'xs' | 'sm' | 'md' | 'lg';
@@ -21,44 +18,44 @@ export const Button: React.FC<ButtonProps> = ({
   isLoading = false,
   leftIcon,
   rightIcon,
-  className = '',
+  className,
   disabled,
   ...props
 }) => {
-  // Base styles for all buttons
-  const baseStyles = 'inline-flex items-center justify-center font-black uppercase tracking-widest transition-all active:scale-95 disabled:opacity-50 disabled:pointer-events-none rounded-xl';
-
-  // Variant mapping
   const variants = {
-    primary: 'bg-[var(--primary)] text-white shadow-lg shadow-[var(--primary)]/20 hover:brightness-110',
-    secondary: 'bg-slate-900 text-white border-slate-900 shadow-md',
-    outline: 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 shadow-sm',
-    ghost: 'text-slate-500 hover:bg-slate-50 hover:text-slate-900',
-    danger: 'bg-rose-500 text-white shadow-lg shadow-rose-500/20 hover:bg-rose-600',
-    link: 'text-[var(--primary)] hover:underline normal-case tracking-normal font-bold p-0 h-auto',
+    primary: 'bg-indigo-600 text-white shadow-sm hover:bg-indigo-700 hover:shadow-indigo-500/20 transition-all duration-200',
+    secondary: 'bg-slate-900 text-white hover:bg-slate-800 shadow-sm transition-all duration-200',
+    outline: 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50 hover:border-slate-300 transition-all shadow-xs',
+    ghost: 'text-slate-500 hover:bg-slate-100 hover:text-slate-900 transition-colors',
+    danger: 'bg-rose-600 text-white hover:bg-rose-700 transition-all shadow-sm',
+    link: 'text-indigo-600 hover:underline font-semibold p-0 h-auto transition-colors',
   };
 
-  // Size mapping
   const sizes = {
-    xs: 'h-8 px-3 text-[9px]',
-    sm: 'h-9 px-4 text-[10px]',
-    md: 'h-11 px-6 text-xs',
-    lg: 'h-14 px-8 text-sm',
+    xs: 'h-8 px-3 text-[10px] rounded-lg uppercase tracking-widest font-bold',
+    sm: 'h-9 px-4 text-xs rounded-lg font-bold',
+    md: 'h-10 px-5 text-sm rounded-lg font-bold',
+    lg: 'h-12 px-8 text-base rounded-xl font-bold',
   };
 
   return (
     <button
-      className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`}
+      className={cn(
+        'inline-flex items-center justify-center transition-all active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none',
+        variants[variant],
+        sizes[size],
+        className
+      )}
       disabled={isLoading || disabled}
       {...props}
     >
       {isLoading ? (
         <Loader2 className="animate-spin mr-2" size={16} />
       ) : (
-        leftIcon && <span className="mr-2">{leftIcon}</span>
+        leftIcon && <span className="mr-2 opacity-90">{leftIcon}</span>
       )}
       {children}
-      {!isLoading && rightIcon && <span className="ml-2">{rightIcon}</span>}
+      {!isLoading && rightIcon && <span className="ml-2 opacity-90">{rightIcon}</span>}
     </button>
   );
 };

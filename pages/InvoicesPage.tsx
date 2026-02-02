@@ -3,7 +3,9 @@ import React, { useMemo } from 'react';
 import { Card } from '../components/ui/Card';
 import { Badge } from '../components/ui/Badge';
 import { DataTable, Column } from '../components/ui/DataTable';
-import { FileText, MoreHorizontal, Search, Plus, Filter, X } from 'lucide-react';
+import { Input } from '../components/ui/Input';
+import { Button } from '../components/ui/Button';
+import { FileText, MoreHorizontal, Search, Plus, Filter } from 'lucide-react';
 import { useApp } from '../App';
 
 interface Invoice {
@@ -83,37 +85,36 @@ export const InvoicesPage: React.FC = () => {
           <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Billing & Invoices</h1>
           <p className="text-slate-500 text-xs">Issue and manage enterprise billing documents.</p>
         </div>
-        <button 
+        <Button 
           onClick={() => showToast('Invoice generator launched', 'info')}
-          className="bg-[var(--primary)] text-white px-4 py-2 rounded-lg text-xs font-bold hover:opacity-95 shadow-sm flex items-center gap-2 active:scale-95 transition-all"
+          leftIcon={<Plus size={16} />}
+          className="rounded-full"
         >
-          <Plus size={16} />
-          <span>New Invoice</span>
-        </button>
+          New Invoice
+        </Button>
       </div>
 
       <Card noPadding className="overflow-hidden border-slate-200/60 shadow-md">
         <div className="p-4 flex flex-wrap gap-4 items-center justify-between bg-white border-b border-slate-100">
-          <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-lg px-3 py-1.5 min-w-[300px] focus-within:ring-2 focus-within:ring-[var(--primary)]/10 transition-all relative">
-            <Search size={16} className="text-slate-400" />
-            <input 
-              type="text" 
-              placeholder="Search invoices..." 
-              className="bg-transparent border-none text-xs focus:ring-0 w-full outline-none"
-              value={globalSearch}
-              onChange={(e) => setGlobalSearch(e.target.value)}
-            />
-            {globalSearch && (
-              <button onClick={() => setGlobalSearch('')} className="absolute right-2 text-slate-300 hover:text-slate-500">
-                <X size={14} />
-              </button>
-            )}
-          </div>
+          <Input 
+            variant="white"
+            inputSize="sm"
+            className="max-w-xs rounded-full shadow-sm"
+            placeholder="Search billing..." 
+            value={globalSearch}
+            onChange={(e) => setGlobalSearch(e.target.value)}
+            icon={<Search size={14} className="text-slate-400" strokeWidth={2.5} />}
+          />
           <div className="flex gap-2">
-             <button onClick={() => showToast('Filter menu applied', 'info')} className="flex items-center gap-2 px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-[11px] font-black uppercase tracking-widest text-slate-600 hover:bg-slate-50 transition-colors active:scale-95">
-              <Filter size={14} />
-              <span>Filter Status</span>
-            </button>
+             <Button 
+              variant="outline" 
+              size="sm"
+              className="rounded-full"
+              onClick={() => showToast('Filter menu applied', 'info')}
+              leftIcon={<Filter size={14} />}
+            >
+              Filter
+            </Button>
           </div>
         </div>
 

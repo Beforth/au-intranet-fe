@@ -55,13 +55,16 @@ export const CustomersPage: React.FC = () => {
 
       <div className="flex items-center gap-3">
         <Input 
-          icon={<Search size={16} strokeWidth={2.5} />}
-          placeholder="Search records by name, email, or firm..." 
+          variant="white"
+          inputSize="sm"
+          className="rounded-full shadow-sm"
+          icon={<Search size={14} strokeWidth={2.5} />}
+          placeholder="Filter customer records..." 
           value={globalSearch}
           onChange={(e) => setGlobalSearch(e.target.value)}
           containerClassName="max-w-md"
         />
-        <Button variant="outline" size="sm">Filter Status</Button>
+        <Button variant="outline" size="sm" className="rounded-full">Filter Status</Button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

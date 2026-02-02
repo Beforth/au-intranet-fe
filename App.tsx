@@ -1,5 +1,6 @@
 
 import React, { useState, useMemo, createContext, useContext, useEffect } from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { DashboardLayout } from './components/layout/DashboardLayout';
 import { DASHBOARD_STATS } from './constants';
 import { StatCard } from './components/StatCard';
@@ -10,6 +11,7 @@ import { RevenueChart, SalesTargetChart } from './components/ChartsSection';
 import { Download, Layout as LayoutIcon, Check } from 'lucide-react';
 import { ThemeProvider } from './context/ThemeContext';
 import { OrdersPage } from './pages/OrdersPage';
+import { QuotationsPage } from './pages/QuotationsPage';
 import { CustomersPage } from './pages/CustomersPage';
 import { InventoryPage } from './pages/InventoryPage';
 import { FinancialsPage } from './pages/FinancialsPage';
@@ -22,13 +24,11 @@ import { AppNotification } from './types';
 
 interface AppContextType {
   showToast: (message: string, type?: ToastType) => void;
-  onNavigate: (path: string) => void;
   globalSearch: string;
   setGlobalSearch: (val: string) => void;
   notifications: AppNotification[];
   setNotifications: React.Dispatch<React.SetStateAction<AppNotification[]>>;
   unreadCount: number;
-  currentPath: string;
   toast: { message: string; type: ToastType } | null;
   onCloseToast: () => void;
 }
@@ -58,17 +58,22 @@ const INITIAL_NOTIFICATIONS: AppNotification[] = [
   { id: '1', title: 'New Order Received', message: 'Order #ORD-7237 processed for Sarah Jenkins.', time: '2m ago', type: 'order', read: false },
   { id: '2', title: 'System Security Alert', message: 'New login detected from Austin, TX.', time: '15m ago', type: 'system', read: false },
   { id: '3', title: 'Inventory Warning', message: 'Premium ERP License stock is below 15%.', time: '1h ago', type: 'inventory', read: false },
-  { id: '4', title: 'Report Generated', message: 'Quarterly fiscal audit is ready for download.', time: '3h ago', type: 'system', read: true },
 ];
 
 const DashboardView: React.FC = () => {
   const { showToast } = useApp();
   const [isExporting, setIsExporting] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
+  
   const [layout, setLayout] = useState<WidgetConfig[]>(() => {
-    const saved = localStorage.getItem('dashboard-layout');
-    return saved ? JSON.parse(saved) : DEFAULT_LAYOUT;
+    try {
+      const saved = localStorage.getItem('dashboard-layout');
+      return saved ? JSON.parse(saved) : DEFAULT_LAYOUT;
+    } catch (e) {
+      return DEFAULT_LAYOUT;
+    }
   });
+  
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
 
   useEffect(() => {
@@ -111,7 +116,7 @@ const DashboardView: React.FC = () => {
       onDrop: () => handleDrop(layout.indexOf(config)),
       onResize: () => toggleResize(config.id),
       className: `${config.span === 1 ? 'col-span-1' : config.span === 2 ? 'col-span-2' : 'col-span-3'} 
-                  ${isEditMode ? 'ring-2 ring-dashed ring-slate-300 scale-[0.99] opacity-90 shadow-xl' : ''}`
+                  ${isEditMode ? 'ring-2 ring-dashed ring-slate-200' : ''}`
     };
 
     switch (config.id) {
@@ -138,24 +143,26 @@ const DashboardView: React.FC = () => {
           <Card key={config.id} {...commonProps} title="Global Reach" description="Operational distribution.">
             <div className="space-y-6">
               {[
-                { region: 'Americas', val: 75, color: 'bg-[var(--primary)]' },
-                { region: 'EMEA', val: 45, color: 'bg-[var(--primary)]/60' },
-                { region: 'APAC', val: 32, color: 'bg-[var(--primary)]/30' },
-                { region: 'LATAM', val: 18, color: 'bg-[var(--primary)]/10' },
+                { region: 'Americas', val: 75 },
+                { region: 'EMEA', val: 45 },
+                { region: 'APAC', val: 32 },
+                { region: 'LATAM', val: 18 },
               ].map((item) => (
                 <div key={item.region} className="space-y-2">
-                  <div className="flex justify-between text-[10px] font-black uppercase tracking-widest text-slate-400">
+                  <div className="flex justify-between text-[11px] font-semibold text-slate-500 uppercase tracking-tight">
                     <span>{item.region}</span>
                     <span className="text-slate-900">{item.val}%</span>
                   </div>
-                  <div className="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
-                    <div className={`${item.color} h-full rounded-full transition-all duration-1000`} style={{ width: `${item.val}%` }}></div>
+                  <div className="w-full bg-slate-100 rounded-full h-1.5 overflow-hidden">
+                    <div className="bg-[var(--primary)] h-full rounded-full transition-all duration-1000" style={{ width: `${item.val}%` }}></div>
                   </div>
                 </div>
               ))}
             </div>
           </Card>
         );
+      default:
+        return null;
     }
   };
 
@@ -168,31 +175,30 @@ const DashboardView: React.FC = () => {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 max-w-[1400px] mx-auto">
       <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4">
         <div>
-          <h1 className="text-4xl font-black text-slate-900 tracking-tighter leading-none">Enterprise Overview</h1>
-          <p className="text-slate-500 text-sm font-medium mt-3">Monitoring real-time operational status and metrics.</p>
+          <h1 className="text-2xl font-semibold text-slate-900 tracking-tight">Enterprise Overview</h1>
+          <p className="text-slate-500 text-sm mt-1">Monitoring real-time operational status and metrics.</p>
         </div>
         <div className="flex items-center gap-3">
           <Button 
-            variant={isEditMode ? 'secondary' : 'outline'}
+            variant={isEditMode ? 'primary' : 'outline'}
             size="sm"
             onClick={() => {
               setIsEditMode(!isEditMode);
               if (isEditMode) showToast('Dashboard configuration saved', 'success');
-              else showToast('Layout unlocked. Use handle to move, square icon to resize.', 'info');
+              else showToast('Layout unlocked.', 'info');
             }}
-            leftIcon={isEditMode ? <Check size={14} strokeWidth={3} /> : <LayoutIcon size={14} strokeWidth={3} />}
+            leftIcon={isEditMode ? <Check size={14} /> : <LayoutIcon size={14} />}
           >
-            {isEditMode ? 'Lock Layout' : 'Customize Dashboard'}
+            {isEditMode ? 'Save Layout' : 'Customize Dashboard'}
           </Button>
-          
           <Button 
             size="sm"
             onClick={handleExport}
             isLoading={isExporting}
-            leftIcon={<Download size={14} strokeWidth={3} />}
+            leftIcon={<Download size={14} />}
           >
             Export CSV
           </Button>
@@ -205,7 +211,7 @@ const DashboardView: React.FC = () => {
         ))}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 auto-rows-max transition-all duration-300">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 transition-all duration-300">
         {layout.map(config => renderWidget(config))}
       </div>
     </div>
@@ -213,7 +219,6 @@ const DashboardView: React.FC = () => {
 };
 
 const AppMain: React.FC = () => {
-  const [currentPath, setCurrentPath] = useState('/');
   const [globalSearch, setGlobalSearch] = useState('');
   const [notifications, setNotifications] = useState<AppNotification[]>(INITIAL_NOTIFICATIONS);
   const [toast, setToast] = useState<{ message: string; type: ToastType } | null>(null);
@@ -224,40 +229,34 @@ const AppMain: React.FC = () => {
 
   const contextValue = useMemo(() => ({
     showToast,
-    onNavigate: (path: string) => {
-      setCurrentPath(path);
-      setGlobalSearch('');
-    },
     globalSearch,
     setGlobalSearch,
     notifications,
     setNotifications,
     unreadCount,
-    currentPath,
     toast,
     onCloseToast: () => setToast(null)
-  }), [globalSearch, notifications, unreadCount, currentPath, toast]);
-
-  const PageComponent = useMemo(() => {
-    switch (currentPath) {
-      case '/': return <DashboardView />;
-      case '/orders': return <OrdersPage />;
-      case '/customers': return <CustomersPage />;
-      case '/inventory': return <InventoryPage />;
-      case '/financials': return <FinancialsPage />;
-      case '/reports': return <ReportsPage />;
-      case '/invoices': return <InvoicesPage />;
-      case '/settings': return <SettingsPage />;
-      case '/support': return <SupportPage />;
-      default: return null;
-    }
-  }, [currentPath]);
+  }), [globalSearch, notifications, unreadCount, toast]);
 
   return (
     <AppContext.Provider value={contextValue}>
-      <DashboardLayout>
-        {PageComponent}
-      </DashboardLayout>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<DashboardLayout />}>
+            <Route index element={<DashboardView />} />
+            <Route path="orders" element={<OrdersPage />} />
+            <Route path="quotations" element={<QuotationsPage />} />
+            <Route path="customers" element={<CustomersPage />} />
+            <Route path="inventory" element={<InventoryPage />} />
+            <Route path="financials" element={<FinancialsPage />} />
+            <Route path="reports" element={<ReportsPage />} />
+            <Route path="invoices" element={<InvoicesPage />} />
+            <Route path="settings" element={<SettingsPage />} />
+            <Route path="support" element={<SupportPage />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
     </AppContext.Provider>
   );
 };

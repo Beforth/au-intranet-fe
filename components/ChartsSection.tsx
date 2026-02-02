@@ -13,15 +13,35 @@ import {
 } from 'recharts';
 import { CHART_DATA } from '../constants';
 
+const CustomTooltip = ({ active, payload, label }: any) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="bg-white border border-slate-200 p-3 rounded-xl shadow-xl">
+        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">{label}</p>
+        {payload.map((entry: any, index: number) => (
+          <div key={index} className="flex items-center justify-between gap-4 mb-1">
+            <div className="flex items-center gap-2">
+              <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: entry.color }} />
+              <span className="text-xs text-slate-600 font-medium capitalize">{entry.dataKey}</span>
+            </div>
+            <span className="text-xs font-bold text-slate-900">${entry.value.toLocaleString()}</span>
+          </div>
+        ))}
+      </div>
+    );
+  }
+  return null;
+};
+
 export const RevenueChart: React.FC = () => {
   return (
-    <div className="h-[300px] w-full">
+    <div className="h-[300px] w-full pt-4">
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart data={CHART_DATA} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
           <defs>
             <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="var(--primary)" stopOpacity={0.15}/>
-              <stop offset="95%" stopColor="var(--primary)" stopOpacity={0}/>
+              <stop offset="5%" stopColor="#4f46e5" stopOpacity={0.15}/>
+              <stop offset="95%" stopColor="#4f46e5" stopOpacity={0}/>
             </linearGradient>
           </defs>
           <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
@@ -29,31 +49,23 @@ export const RevenueChart: React.FC = () => {
             dataKey="name" 
             axisLine={false} 
             tickLine={false} 
-            tick={{ fill: '#94a3b8', fontSize: 11, fontWeight: 600 }} 
+            tick={{ fill: '#94a3b8', fontSize: 10, fontWeight: 600 }} 
             dy={10}
           />
           <YAxis 
             axisLine={false} 
             tickLine={false} 
-            tick={{ fill: '#94a3b8', fontSize: 11, fontWeight: 600 }} 
+            tick={{ fill: '#94a3b8', fontSize: 10, fontWeight: 600 }} 
           />
-          <Tooltip 
-            contentStyle={{ 
-              borderRadius: '12px', 
-              border: '1px solid #e2e8f0', 
-              boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)',
-              fontSize: '12px',
-              fontWeight: '700'
-            }}
-          />
+          <Tooltip content={<CustomTooltip />} cursor={{ stroke: '#e2e8f0', strokeWidth: 1 }} />
           <Area 
             type="monotone" 
             dataKey="revenue" 
-            stroke="var(--primary)" 
+            stroke="#4f46e5" 
             strokeWidth={2.5}
             fillOpacity={1} 
             fill="url(#colorRevenue)" 
-            animationDuration={1000}
+            animationDuration={1500}
           />
         </AreaChart>
       </ResponsiveContainer>
@@ -63,35 +75,25 @@ export const RevenueChart: React.FC = () => {
 
 export const SalesTargetChart: React.FC = () => {
   return (
-    <div className="h-[300px] w-full">
+    <div className="h-[300px] w-full pt-4">
       <ResponsiveContainer width="100%" height="100%">
-        <BarChart data={CHART_DATA} margin={{ top: 10, right: 10, left: -20, bottom: 0 }} barGap={8}>
+        <BarChart data={CHART_DATA} margin={{ top: 10, right: 10, left: -20, bottom: 0 }} barGap={6}>
           <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
           <XAxis 
             dataKey="name" 
             axisLine={false} 
             tickLine={false} 
-            tick={{ fill: '#94a3b8', fontSize: 11, fontWeight: 600 }} 
+            tick={{ fill: '#94a3b8', fontSize: 10, fontWeight: 600 }} 
             dy={10}
           />
           <YAxis 
             axisLine={false} 
             tickLine={false} 
-            tick={{ fill: '#94a3b8', fontSize: 11, fontWeight: 600 }} 
+            tick={{ fill: '#94a3b8', fontSize: 10, fontWeight: 600 }} 
           />
-          <Tooltip 
-            cursor={{ fill: '#f8fafc', opacity: 0.4 }}
-            contentStyle={{ 
-              borderRadius: '12px', 
-              border: '1px solid #e2e8f0', 
-              boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)',
-              fontSize: '12px',
-              fontWeight: '700'
-            }}
-          />
-          {/* Target bar changed from #f1f5f9 to #e2e8f0 (slate-200) for better visibility */}
+          <Tooltip content={<CustomTooltip />} cursor={{ fill: '#f8fafc' }} />
           <Bar dataKey="target" fill="#e2e8f0" radius={[4, 4, 0, 0]} barSize={12} />
-          <Bar dataKey="revenue" fill="var(--primary)" radius={[4, 4, 0, 0]} barSize={12} animationDuration={1500} />
+          <Bar dataKey="revenue" fill="#4f46e5" radius={[4, 4, 0, 0]} barSize={12} animationDuration={2000} />
         </BarChart>
       </ResponsiveContainer>
     </div>
