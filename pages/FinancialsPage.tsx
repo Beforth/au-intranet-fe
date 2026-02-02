@@ -22,6 +22,11 @@ const LEDGER_DATA: LedgerEntry[] = [
   { label: 'Payroll - Dept A', amount: '-$22,500.00', date: 'Oct 12, 2023', status: 'Paid' },
   { label: 'Maintenance Fee', amount: '-$450.00', date: 'Oct 10, 2023', status: 'Paid' },
   { label: 'Global Licensing', amount: '+$12,000.00', date: 'Oct 09, 2023', status: 'Pending' },
+  { label: 'Hardware Procurement', amount: '-$8,200.00', date: 'Oct 08, 2023', status: 'Paid' },
+  { label: 'Service Contract #A2', amount: '+$3,100.00', date: 'Oct 07, 2023', status: 'Paid' },
+  { label: 'Marketing Retainer', amount: '-$2,500.00', date: 'Oct 05, 2023', status: 'Paid' },
+  { label: 'Consultancy Retainer', amount: '+$1,800.00', date: 'Oct 04, 2023', status: 'Pending' },
+  { label: 'Azure Dynamics (Monthly)', amount: '-$450.00', date: 'Oct 02, 2023', status: 'Paid' },
 ];
 
 export const FinancialsPage: React.FC = () => {
@@ -89,7 +94,7 @@ export const FinancialsPage: React.FC = () => {
       actions={actions}
     >
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         <Card onClick={() => showToast('Detailing Net Profit...', 'info')}>
           <div className="flex items-center justify-between mb-4">
             <div className="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center">
@@ -137,7 +142,7 @@ export const FinancialsPage: React.FC = () => {
         </Card>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-4">
         <Card title="Revenue Stream" description="Q4 Predictive analysis vs Actual performance.">
           <div className="flex gap-4 mb-4">
             <div className="flex items-center gap-1.5">
@@ -149,7 +154,7 @@ export const FinancialsPage: React.FC = () => {
               <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Predicted</span>
             </div>
           </div>
-          <div className="h-[140px] flex items-end gap-1.5 px-0.5 relative group">
+          <div className="h-[140px] flex items-end gap-1.5 px-2 relative group">
             <div className="absolute inset-0 top-4 bottom-8 flex flex-col justify-between pointer-events-none opacity-20">
               <div className="border-t border-slate-200 w-full h-px"></div>
               <div className="border-t border-slate-200 w-full h-px"></div>

@@ -33,6 +33,10 @@ const INITIAL_ORDERS: Order[] = [
   { id: '#ORD-7234', customer: 'Robert Fox', product: 'Support Plan Pro', amount: '$2,100.00', status: 'Canceled', date: 'Oct 15, 2023' },
   { id: '#ORD-7235', customer: 'Emma Watson', product: 'API Access Key', amount: '$150.00', status: 'Delivered', date: 'Oct 15, 2023' },
   { id: '#ORD-7236', customer: 'David Bowie', product: 'Integration Kit', amount: '$420.00', status: 'Delivered', date: 'Oct 16, 2023' },
+  { id: '#ORD-7237', customer: 'Global Tech Corp', product: 'Enterprise License', amount: '$45,000.00', status: 'Delivered', date: 'Oct 20, 2023' },
+  { id: '#ORD-7238', customer: 'Cyberdyne Systems', product: 'AI Core Module', amount: '$82,500.00', status: 'Processing', date: 'Oct 21, 2023' },
+  { id: '#ORD-7239', customer: 'Wayne Enterprises', product: 'Security Suite', amount: '$12,400.00', status: 'Shipped', date: 'Oct 22, 2023' },
+  { id: '#ORD-7240', customer: 'Stark Industries', product: 'Power Grid OS', amount: '$250,000.00', status: 'Processing', date: 'Oct 23, 2023' },
 ];
 
 export const OrdersPage: React.FC = () => {
@@ -148,7 +152,7 @@ export const OrdersPage: React.FC = () => {
       actions={actions}
     >
 
-      <Card noPadding className="overflow-hidden border-slate-200/60 shadow-md">
+      <Card noPadding className="overflow-hidden">
         <div className="p-5 border-b border-slate-100 flex flex-wrap gap-4 items-center justify-between bg-white">
           <Input
             variant="white"

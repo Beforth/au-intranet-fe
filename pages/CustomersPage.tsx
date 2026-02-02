@@ -15,6 +15,9 @@ const CUSTOMERS = [
   { id: 'CUST-004', name: 'Julia Roberts', role: 'HR Director', company: 'Studio Hub', email: 'julia@studio.com', status: 'Active', avatar: 'https://i.pravatar.cc/150?u=julia' },
   { id: 'CUST-005', name: 'Leon Kennedy', role: 'Security Consultant', company: 'Umbrella Ops', email: 'leon@umbrella.com', status: 'Inactive', avatar: 'https://i.pravatar.cc/150?u=leon' },
   { id: 'CUST-006', name: 'Ada Wong', role: 'Field Agent', company: 'Cipher', email: 'ada@cipher.net', status: 'Active', avatar: 'https://i.pravatar.cc/150?u=ada' },
+  { id: 'CUST-007', name: 'Bruce Wayne', role: 'CEO', company: 'Wayne Enterprises', email: 'bruce@wayne.com', status: 'Active', avatar: 'https://i.pravatar.cc/150?u=bruce' },
+  { id: 'CUST-008', name: 'Tony Stark', role: 'Chief Engineer', company: 'Stark Industries', email: 'tony@stark.com', status: 'Active', avatar: 'https://i.pravatar.cc/150?u=tony' },
+  { id: 'CUST-009', name: 'Clark Kent', role: 'Journalist', company: 'Daily Planet', email: 'clark@dailyplanet.com', status: 'Active', avatar: 'https://i.pravatar.cc/150?u=clark' },
 ];
 
 export const CustomersPage: React.FC = () => {
@@ -77,16 +80,16 @@ export const CustomersPage: React.FC = () => {
         {filteredCustomers.length > 0 ? filteredCustomers.map((customer) => {
           const statusStyle = getStatusConfig(customer.status);
           return (
-            <Card key={customer.id} noPadding className="group hover:border-[var(--primary)]/40 overflow-hidden">
-              <div className="p-5 border-b border-slate-100 flex items-start justify-between bg-slate-50/40">
+            <Card key={customer.id} noPadding className="group hover:border-indigo-200/50 overflow-hidden">
+              <div className="p-5 border-b border-slate-50 flex items-start justify-between bg-slate-50/30">
                 <div className="flex items-center gap-4">
                   <div className="relative">
-                    <img src={customer.avatar} alt="" className="w-12 h-12 rounded-xl object-cover border-2 border-white shadow-md group-hover:scale-105 transition-transform" />
+                    <img src={customer.avatar} alt="" className="w-12 h-12 rounded-xl object-cover border-2 border-white shadow-sm group-hover:scale-105 transition-transform" />
                     <div className={`absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full border-2 border-white ${customer.status === 'Active' ? 'bg-emerald-500' : 'bg-slate-300'}`}></div>
                   </div>
                   <div className="min-w-0">
-                    <h3 className="font-black text-slate-900 text-sm truncate leading-none uppercase tracking-tight">{customer.name}</h3>
-                    <span className="text-[10px] text-slate-400 font-black uppercase tracking-widest mt-2 inline-block leading-none">{customer.id}</span>
+                    <h3 className="font-bold text-slate-900 text-sm truncate leading-none tracking-tight">{customer.name}</h3>
+                    <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-2 inline-block leading-none">{customer.id}</span>
                   </div>
                 </div>
                 <Button
@@ -100,15 +103,15 @@ export const CustomersPage: React.FC = () => {
               <div className="p-6 space-y-5">
                 <div className="grid grid-cols-2 gap-6">
                   <div className="space-y-1.5">
-                    <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Organization</p>
-                    <div className="flex items-center gap-2 text-[12px] font-bold text-slate-700">
+                    <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Organization</p>
+                    <div className="flex items-center gap-2 text-[12px] font-semibold text-slate-700">
                       <Building2 size={12} className="text-slate-300" />
                       <span className="truncate">{customer.company}</span>
                     </div>
                   </div>
                   <div className="space-y-1.5 text-right flex flex-col items-end">
-                    <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Status</p>
-                    <Badge className={`text-[8px] px-2.5 h-5 font-black uppercase tracking-widest inline-flex items-center gap-1.5 border-none shadow-sm ${statusStyle.containerClass}`}>
+                    <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Status</p>
+                    <Badge className={`text-[8px] px-2 h-4.5 font-bold uppercase tracking-widest inline-flex items-center gap-1.5 border-none shadow-sm ${statusStyle.containerClass}`}>
                       <span className={`w-1 h-1 rounded-full ${statusStyle.dotClass}`} />
                       {customer.status}
                     </Badge>
@@ -116,12 +119,12 @@ export const CustomersPage: React.FC = () => {
                 </div>
               </div>
 
-              <div className="px-6 py-4 bg-slate-50/50 border-t border-slate-100 flex items-center justify-between">
+              <div className="px-6 py-4 bg-slate-50/20 border-t border-slate-50 flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <ShieldCheck size={12} className="text-emerald-500" />
-                  <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Secure Client</span>
+                  <ShieldCheck size={12} className="text-emerald-500/80" />
+                  <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Secure Client</span>
                 </div>
-                <Button variant="link" size="xs" rightIcon={<ArrowUpRight size={12} strokeWidth={3} />}>
+                <Button variant="link" size="xs" className="text-indigo-600 hover:text-indigo-700 font-bold" rightIcon={<ArrowUpRight size={12} strokeWidth={3} />}>
                   View Portfolio
                 </Button>
               </div>

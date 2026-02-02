@@ -92,7 +92,7 @@ export const DashboardPage: React.FC = () => {
                 );
             case 'activity-table':
                 return (
-                    <Card key={config.id} {...commonProps} title="Recent Activity" description="Latest verified system events." className={`${commonProps.className} p-0`} maxHeight="none">
+                    <Card key={config.id} {...commonProps} title="Recent Activity" description="Latest verified system events." noPadding maxHeight="none">
                         <TransactionTable />
                     </Card>
                 );

@@ -72,7 +72,7 @@ export const Navbar: React.FC = () => {
 
   return (
     <header
-      className="h-16 sticky top-0 bg-white/5 backdrop-blur-md z-40 ml-64 flex items-center justify-between relative transition-all duration-300"
+      className="h-16 sticky top-0 bg-white/5 backdrop-blur-md z-40 ml-60 flex items-center justify-between relative transition-all duration-300"
       style={{ paddingLeft: 'var(--ui-padding)', paddingRight: 'var(--ui-padding)' }}
     >
       <div className="absolute bottom-0 left-8 right-8 h-px bg-slate-200/50" />

@@ -23,6 +23,11 @@ const INVOICES: Invoice[] = [
   { id: 'INV-2023-003', customer: 'Global Traders', amount: '$8,900.00', date: 'Oct 08, 2023', status: 'Overdue' },
   { id: 'INV-2023-004', customer: 'Studio Hub', amount: '$1,200.00', date: 'Oct 18, 2023', status: 'Draft' },
   { id: 'INV-2023-005', customer: 'Umbrella Ops', amount: '$24,000.00', date: 'Oct 20, 2023', status: 'Pending' },
+  { id: 'INV-2023-006', customer: 'Hooli Corp', amount: '$56,000.00', date: 'Oct 22, 2023', status: 'Paid' },
+  { id: 'INV-2023-007', customer: 'Pied Piper', amount: '$1,500.00', date: 'Oct 23, 2023', status: 'Paid' },
+  { id: 'INV-2023-008', customer: 'Initech', amount: '$3,400.00', date: 'Oct 24, 2023', status: 'Overdue' },
+  { id: 'INV-2023-009', customer: 'Tyrell Corp', amount: '$94,000.00', date: 'Oct 25, 2023', status: 'Pending' },
+  { id: 'INV-2023-010', customer: 'Weyland-Yutani', amount: '$312,000.00', date: 'Oct 26, 2023', status: 'Paid' },
 ];
 
 export const InvoicesPage: React.FC = () => {
@@ -100,7 +105,7 @@ export const InvoicesPage: React.FC = () => {
       actions={actions}
     >
 
-      <Card noPadding className="overflow-hidden border-slate-200/60 shadow-md">
+      <Card noPadding className="overflow-hidden">
         <div className="p-4 flex flex-wrap gap-4 items-center justify-between bg-white border-b border-slate-100">
           <Input
             variant="white"

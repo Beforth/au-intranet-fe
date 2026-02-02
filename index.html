@@ -1,12 +1,13 @@
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aether ERP | Enterprise Design</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
     <style>
         :root {
             --primary: #4f46e5;
@@ -18,8 +19,10 @@
             --border: #e2e8f0;
             --zinc-900: #0f172a;
             --zinc-500: #64748b;
-            --ui-padding: 1.25rem;
+            --ui-padding: 2rem;
+            --ui-gap: 1.5rem;
         }
+
         body {
             font-family: 'Inter', sans-serif;
             background-color: var(--background);
@@ -31,29 +34,35 @@
             font-size: calc(1rem * var(--ui-scale, 1));
             transition: font-size 0.3s ease;
         }
+
         #root {
             min-height: 100vh;
         }
+
         /* Modern Pro Scrollbar */
         ::-webkit-scrollbar {
             width: 6px;
         }
+
         ::-webkit-scrollbar-track {
             background: transparent;
         }
+
         ::-webkit-scrollbar-thumb {
             background: #cbd5e1;
             border-radius: 10px;
         }
+
         ::-webkit-scrollbar-thumb:hover {
             background: #94a3b8;
         }
+
         ::selection {
             background: rgba(79, 70, 229, 0.1);
             color: #4f46e5;
         }
     </style>
-<script type="importmap">
+    <script type="importmap">
 {
   "imports": {
     "react": "https://esm.sh/react@19.0.0",
@@ -72,8 +81,10 @@
 }
 </script>
 </head>
+
 <body class="antialiased">
     <div id="root"></div>
     <script type="module" src="/index.tsx"></script>
 </body>
+
 </html>

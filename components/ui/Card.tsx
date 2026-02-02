@@ -45,12 +45,12 @@ export const Card: React.FC<CardProps> = ({
       onDragOver={onDragOver}
       onDrop={onDrop}
       className={cn(
-        'bg-white border border-slate-200 transition-all duration-300 relative group/card flex flex-col min-h-[140px] shadow-sm',
-        onClick && 'cursor-pointer hover:shadow-md hover:border-slate-300',
+        'bg-white border border-slate-200/60 transition-all duration-300 relative group/card flex flex-col min-h-[140px] shadow-[0_2px_4px_rgba(0,0,0,0.02),0_1px_0_rgba(0,0,0,0.02)]',
+        onClick && 'cursor-pointer hover:shadow-xl hover:shadow-indigo-500/5 hover:border-indigo-200/50',
         isDraggable && 'cursor-move active:scale-[0.99]',
         className
       )}
-      style={{ maxHeight, borderRadius: 'var(--ui-radius, 0.75rem)' }}
+      style={{ maxHeight, borderRadius: '1rem' }}
       onClick={onClick}
     >
       {showHandle && (
@@ -58,7 +58,7 @@ export const Card: React.FC<CardProps> = ({
           {onResize && (
             <button
               onClick={(e) => { e.stopPropagation(); onResize(); }}
-              className="p-1.5 hover:bg-slate-100 rounded-lg text-slate-400 transition-colors"
+              className="p-1.5 hover:bg-slate-50 rounded-lg text-slate-400 transition-colors"
             >
               <Maximize2 size={12} />
             </button>
@@ -70,9 +70,9 @@ export const Card: React.FC<CardProps> = ({
       )}
 
       {(title || description || headerAction) && (
-        <div className="px-5 py-4 border-b border-slate-50 flex justify-between items-center">
+        <div className="px-6 py-5 flex justify-between items-center border-b border-slate-50">
           <div className="min-w-0 pr-6">
-            {title && <h3 className="text-sm font-semibold text-slate-900 tracking-tight">{title}</h3>}
+            {title && <h3 className="text-[13px] font-bold text-slate-900 tracking-tight">{title}</h3>}
             {description && <p className="text-[11px] text-slate-400 font-medium mt-0.5">{description}</p>}
           </div>
           {headerAction && <div className="shrink-0">{headerAction}</div>}
@@ -82,12 +82,12 @@ export const Card: React.FC<CardProps> = ({
       <div
         className={cn(
           'flex-1 group/content relative',
-          !noPadding && 'p-[var(--ui-padding,1.25rem)]',
+          !noPadding && 'p-6',
           maxHeight !== 'none' && 'overflow-y-auto scrollbar-hide',
           contentClassName
         )}
       >
-        <div className="animate-in fade-in duration-500">
+        <div className="animate-in fade-in duration-500 h-full">
           {children}
         </div>
       </div>

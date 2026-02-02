@@ -23,6 +23,10 @@ const STOCK_DATA: StockItem[] = [
   { sku: 'SEC-202', name: 'Encryption Key V2', stock: 450, status: 'In Stock', category: 'Security' },
   { sku: 'SRV-X86', name: 'Baremetal Instance', stock: 0, status: 'Out of Stock', category: 'Infrastructure' },
   { sku: 'API-PRO', name: 'Advanced API Key', stock: 89, status: 'In Stock', category: 'Software' },
+  { sku: 'NET-004', name: 'CDN Node (Edge)', stock: 5, status: 'Low Stock', category: 'Infrastructure' },
+  { sku: 'LCN-ENT', name: 'Enterprise Seat Pack', stock: 1200, status: 'In Stock', category: 'Software' },
+  { sku: 'DB-X1', name: 'Postgres Instance (XL)', stock: 15, status: 'In Stock', category: 'Database' },
+  { sku: 'AUTH-V3', name: 'Auth Module V3', stock: 340, status: 'In Stock', category: 'Security' },
 ];
 
 export const InventoryPage: React.FC = () => {
@@ -122,7 +126,7 @@ export const InventoryPage: React.FC = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
         <div className="lg:col-span-3">
-          <Card noPadding className="border-slate-200/60 shadow-sm">
+          <Card noPadding>
             <div className="px-5 py-3 bg-white border-b border-slate-100 flex flex-wrap gap-4 items-center justify-between">
               <Input
                 variant="white"
@@ -145,7 +149,7 @@ export const InventoryPage: React.FC = () => {
 
         <div className="space-y-4">
           <Card
-            className="border-amber-200 bg-amber-50/20 shadow-amber-900/5 shadow-xl"
+            className="border-amber-200/60 bg-amber-50/10 shadow-amber-900/5 shadow-xl"
             title="Operational Alert"
             description="Procurement threshold detected."
           >

@@ -21,7 +21,7 @@ export const PageLayout: React.FC<PageLayoutProps> = ({
             className={`mx-auto transition-all duration-300 max-w-[1400px] w-full animate-in fade-in ${className}`}
             style={{ gap: 'var(--ui-gap)', display: 'flex', flexDirection: 'column' }}
         >
-            <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4">
+            <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 mb-8">
                 <div>
                     <h1 className="text-2xl font-semibold text-slate-900 tracking-tight">{title}</h1>
                     {description && (
@@ -29,7 +29,7 @@ export const PageLayout: React.FC<PageLayoutProps> = ({
                     )}
                 </div>
                 {actions && (
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-3 pb-0.5">
                         {actions}
                     </div>
                 )}
