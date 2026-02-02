@@ -7,8 +7,9 @@ import { Card } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
 import { TransactionTable } from '../components/ui/TransactionTable';
 import { RevenueChart, SalesTargetChart } from '../components/ui/ChartsSection';
-import { Download, Layout as LayoutIcon, Check } from 'lucide-react';
-import { WidgetConfig, WidgetId } from '../types';
+import { Download, Layout as LayoutIcon, Check, Bell, Activity, RefreshCw } from 'lucide-react';
+import { WidgetConfig, WidgetId, AppNotification } from '../types';
+import { PageLayout } from '../components/layout/PageLayout';
 
 const DEFAULT_LAYOUT: WidgetConfig[] = [
     { id: 'revenue-chart', span: 2 },
@@ -18,7 +19,7 @@ const DEFAULT_LAYOUT: WidgetConfig[] = [
 ];
 
 export const DashboardPage: React.FC = () => {
-    const { showToast } = useApp();
+    const { showToast, isDemoActive, simulateDemo, clearDemo } = useApp();
     const [isExporting, setIsExporting] = useState(false);
     const [isEditMode, setIsEditMode] = useState(false);
 
@@ -131,46 +132,69 @@ export const DashboardPage: React.FC = () => {
         }, 1500);
     };
 
-    return (
-        <div className="space-y-8 max-w-[1400px] mx-auto">
-            <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4">
-                <div>
-                    <h1 className="text-2xl font-semibold text-slate-900 tracking-tight">Enterprise Overview</h1>
-                    <p className="text-slate-500 text-sm mt-1">Monitoring real-time operational status and metrics.</p>
-                </div>
-                <div className="flex items-center gap-3">
-                    <Button
-                        variant={isEditMode ? 'primary' : 'outline'}
-                        size="sm"
-                        onClick={() => {
-                            setIsEditMode(!isEditMode);
-                            if (isEditMode) showToast('Dashboard configuration saved', 'success');
-                            else showToast('Layout unlocked.', 'info');
-                        }}
-                        leftIcon={isEditMode ? <Check size={14} /> : <LayoutIcon size={14} />}
-                    >
-                        {isEditMode ? 'Save Layout' : 'Customize Dashboard'}
-                    </Button>
-                    <Button
-                        size="sm"
-                        onClick={handleExport}
-                        isLoading={isExporting}
-                        leftIcon={<Download size={14} />}
-                    >
-                        Export CSV
-                    </Button>
-                </div>
-            </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+
+    const actions = (
+        <>
+            {isDemoActive ? (
+                <Button
+                    variant="outline"
+                    size="sm"
+                    className="border-rose-200 text-rose-600 hover:bg-rose-50"
+                    onClick={clearDemo}
+                    leftIcon={<RefreshCw size={14} />}
+                >
+                    Flush Demo
+                </Button>
+            ) : (
+                <Button
+                    variant="outline"
+                    size="sm"
+                    className="border-indigo-200 text-indigo-600 hover:bg-indigo-50"
+                    onClick={simulateDemo}
+                    leftIcon={<Activity size={14} />}
+                >
+                    Simulate Demo
+                </Button>
+            )}
+            <Button
+                variant={isEditMode ? 'primary' : 'outline'}
+                size="sm"
+                onClick={() => {
+                    setIsEditMode(!isEditMode);
+                    if (isEditMode) showToast('Dashboard configuration saved', 'success');
+                    else showToast('Layout unlocked.', 'info');
+                }}
+                leftIcon={isEditMode ? <Check size={14} /> : <LayoutIcon size={14} />}
+            >
+                {isEditMode ? 'Save Layout' : 'Customize Dashboard'}
+            </Button>
+            <Button
+                size="sm"
+                onClick={handleExport}
+                isLoading={isExporting}
+                leftIcon={<Download size={14} />}
+            >
+                Export CSV
+            </Button>
+        </>
+    );
+
+    return (
+        <PageLayout
+            title="Enterprise Overview"
+            description="Monitoring real-time operational status and metrics."
+            actions={actions}
+        >
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4" style={{ gap: 'var(--ui-gap)' }}>
                 {DASHBOARD_STATS.map((stat) => (
                     <StatCard key={stat.label} stat={stat} />
                 ))}
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 transition-all duration-300">
+            <div className="grid grid-cols-1 lg:grid-cols-3 transition-all duration-300" style={{ gap: 'var(--ui-gap)' }}>
                 {layout.map(config => renderWidget(config))}
             </div>
-        </div>
+        </PageLayout>
     );
 };

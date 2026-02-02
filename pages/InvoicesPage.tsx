@@ -7,6 +7,7 @@ import { Input } from '../components/ui/Input';
 import { Button } from '../components/ui/Button';
 import { FileText, MoreHorizontal, Search, Plus, Filter } from 'lucide-react';
 import { useApp } from '../App';
+import { PageLayout } from '../components/layout/PageLayout';
 
 interface Invoice {
   id: string;
@@ -28,7 +29,7 @@ export const InvoicesPage: React.FC = () => {
   const { showToast, globalSearch, setGlobalSearch } = useApp();
 
   const filteredInvoices = useMemo(() => {
-    return INVOICES.filter(inv => 
+    return INVOICES.filter(inv =>
       inv.id.toLowerCase().includes(globalSearch.toLowerCase()) ||
       inv.customer.toLowerCase().includes(globalSearch.toLowerCase()) ||
       inv.status.toLowerCase().includes(globalSearch.toLowerCase())
@@ -57,9 +58,9 @@ export const InvoicesPage: React.FC = () => {
       align: 'center',
       render: (inv) => (
         <Badge variant={
-          inv.status === 'Paid' ? 'success' : 
-          inv.status === 'Pending' ? 'warning' : 
-          inv.status === 'Overdue' ? 'error' : 'default'
+          inv.status === 'Paid' ? 'success' :
+            inv.status === 'Pending' ? 'warning' :
+              inv.status === 'Overdue' ? 'error' : 'default'
         } className="text-[10px] py-0">
           {inv.status}
         </Badge>
@@ -71,43 +72,48 @@ export const InvoicesPage: React.FC = () => {
       sortable: false,
       align: 'right',
       render: (inv) => (
-        <button onClick={() => showToast(`Previewing ${inv.id}`, 'info')} className="p-1 hover:bg-white border border-transparent hover:border-slate-200 rounded transition-all text-slate-400">
-          <MoreHorizontal size={18} />
-        </button>
+        <Button
+          variant="ghost"
+          size="xs"
+          onClick={() => showToast(`Previewing ${inv.id}`, 'info')}
+          className="text-slate-400 hover:text-indigo-600"
+          leftIcon={<MoreHorizontal size={14} />}
+        />
       )
     }
   ];
 
+  const actions = (
+    <Button
+      onClick={() => showToast('Invoice generator launched', 'info')}
+      leftIcon={<Plus size={16} />}
+      className="rounded-full"
+    >
+      New Invoice
+    </Button>
+  );
+
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Billing & Invoices</h1>
-          <p className="text-slate-500 text-xs">Issue and manage enterprise billing documents.</p>
-        </div>
-        <Button 
-          onClick={() => showToast('Invoice generator launched', 'info')}
-          leftIcon={<Plus size={16} />}
-          className="rounded-full"
-        >
-          New Invoice
-        </Button>
-      </div>
+    <PageLayout
+      title="Billing & Invoices"
+      description="Issue and manage enterprise billing documents."
+      actions={actions}
+    >
 
       <Card noPadding className="overflow-hidden border-slate-200/60 shadow-md">
         <div className="p-4 flex flex-wrap gap-4 items-center justify-between bg-white border-b border-slate-100">
-          <Input 
+          <Input
             variant="white"
             inputSize="sm"
             className="max-w-xs rounded-full shadow-sm"
-            placeholder="Search billing..." 
+            placeholder="Search billing..."
             value={globalSearch}
             onChange={(e) => setGlobalSearch(e.target.value)}
             icon={<Search size={14} className="text-slate-400" strokeWidth={2.5} />}
           />
           <div className="flex gap-2">
-             <Button 
-              variant="outline" 
+            <Button
+              variant="outline"
               size="sm"
               className="rounded-full"
               onClick={() => showToast('Filter menu applied', 'info')}
@@ -118,12 +124,12 @@ export const InvoicesPage: React.FC = () => {
           </div>
         </div>
 
-        <DataTable 
-          data={filteredInvoices} 
-          columns={columns} 
-          rowKey={(i) => i.id} 
+        <DataTable
+          data={filteredInvoices}
+          columns={columns}
+          rowKey={(i) => i.id}
         />
       </Card>
-    </div>
+    </PageLayout>
   );
 };

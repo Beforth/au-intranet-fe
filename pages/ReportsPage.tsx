@@ -4,7 +4,9 @@ import { Card } from '../components/ui/Card';
 import { DataTable, Column } from '../components/ui/DataTable';
 import { Input } from '../components/ui/Input';
 import { FileText, Download, Clock, ExternalLink, BarChart3, Search } from 'lucide-react';
+import { Button } from '../components/ui/Button';
 import { useApp } from '../App';
+import { PageLayout } from '../components/layout/PageLayout';
 
 interface ReportTemplate {
   name: string;
@@ -24,7 +26,7 @@ export const ReportsPage: React.FC = () => {
   const { showToast, globalSearch, setGlobalSearch } = useApp();
 
   const filteredTemplates = useMemo(() => {
-    return TEMPLATES.filter(t => 
+    return TEMPLATES.filter(t =>
       t.name.toLowerCase().includes(globalSearch.toLowerCase()) ||
       t.type.toLowerCase().includes(globalSearch.toLowerCase())
     );
@@ -59,24 +61,22 @@ export const ReportsPage: React.FC = () => {
       sortable: false,
       align: 'right',
       render: (item) => (
-        <button 
+        <Button
+          variant="ghost"
+          size="xs"
           onClick={(e) => { e.stopPropagation(); showToast(`Downloading ${item.name}`, 'success'); }}
-          className="p-1 text-slate-300 hover:text-[var(--primary)] transition-colors"
-        >
-          <Download size={14} />
-        </button>
+          className="text-slate-300 hover:text-indigo-600"
+          leftIcon={<Download size={14} />}
+        />
       )
     }
   ];
 
   return (
-    <div className="space-y-6 animate-in fade-in duration-500">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-black text-slate-900 tracking-tight">Enterprise Reports</h1>
-          <p className="text-slate-500 text-xs font-medium">Generate and manage comprehensive business insights.</p>
-        </div>
-      </div>
+    <PageLayout
+      title="Enterprise Reports"
+      description="Generate and manage comprehensive business insights."
+    >
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {[
@@ -85,8 +85,8 @@ export const ReportsPage: React.FC = () => {
           { title: 'User Activity', icon: Clock, count: 12, last: '1h ago' },
           { title: 'Tax Statements', icon: Download, count: 8, last: '3d ago' },
         ].map((item) => (
-          <Card 
-            key={item.title} 
+          <Card
+            key={item.title}
             onClick={() => showToast(`Opening ${item.title} directory`, 'info')}
             className="hover:border-[var(--primary)]/30 transition-all cursor-pointer group"
           >
@@ -107,7 +107,7 @@ export const ReportsPage: React.FC = () => {
 
       <Card noPadding title="Templates" description="Predefined auditing structures.">
         <div className="px-5 py-3 border-b border-slate-100 bg-white">
-          <Input 
+          <Input
             variant="white"
             inputSize="sm"
             className="max-w-xs rounded-full shadow-sm"
@@ -118,13 +118,13 @@ export const ReportsPage: React.FC = () => {
             icon={<Search size={14} className="text-slate-400" strokeWidth={2.5} />}
           />
         </div>
-        <DataTable 
+        <DataTable
           data={filteredTemplates}
           columns={columns}
           rowKey={(item) => item.name}
           className="border-none"
         />
       </Card>
-    </div>
+    </PageLayout>
   );
 };

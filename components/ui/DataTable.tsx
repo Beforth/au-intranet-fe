@@ -23,14 +23,14 @@ interface DataTableProps<T> {
   enableSorting?: boolean;
 }
 
-export function DataTable<T>({ 
-  data, 
-  columns, 
-  rowKey, 
-  onRowClick, 
-  className = '', 
+export function DataTable<T>({
+  data,
+  columns,
+  rowKey,
+  onRowClick,
+  className = '',
   hideHeader = false,
-  enableSorting = true 
+  enableSorting = true
 }: DataTableProps<T>) {
   const [sortConfig, setSortConfig] = useState<{ key: keyof T | string | null; direction: 'asc' | 'desc' | null }>({
     key: null,
@@ -72,7 +72,7 @@ export function DataTable<T>({
       const valB = parseValue(bValue);
 
       if (typeof valA === 'string' && typeof valB === 'string') {
-        return sortConfig.direction === 'asc' 
+        return sortConfig.direction === 'asc'
           ? valA.localeCompare(valB, undefined, { numeric: true, sensitivity: 'base' })
           : valB.localeCompare(valA, undefined, { numeric: true, sensitivity: 'base' });
       }
@@ -94,11 +94,12 @@ export function DataTable<T>({
                 return (
                   <th
                     key={String(col.key)}
-                    className={`px-6 py-4 border-b border-slate-200 transition-all select-none group/header ${sortable ? 'cursor-pointer hover:bg-slate-100' : ''} ${col.align === 'center' ? 'text-center' : col.align === 'right' ? 'text-right' : ''}`}
+                    className={`border-b border-slate-200 transition-all select-none group/header ${sortable ? 'cursor-pointer hover:bg-slate-100' : ''} ${col.align === 'center' ? 'text-center' : col.align === 'right' ? 'text-right' : ''}`}
+                    style={{ padding: 'calc(var(--ui-padding) * 0.75) var(--ui-padding)' }}
                     onClick={() => sortable && handleSort(col.key)}
                   >
                     <div className={`flex items-center gap-2 ${col.align === 'center' ? 'justify-center' : col.align === 'right' ? 'justify-end' : ''}`}>
-                      <span className={`text-[10px] uppercase font-bold tracking-widest ${sortConfig.key === col.key ? 'text-indigo-600' : 'text-slate-400 group-hover/header:text-slate-700'}`}>
+                      <span className={`text-[11px] uppercase font-black tracking-wider ${sortConfig.key === col.key ? 'text-indigo-600' : 'text-slate-500 group-hover/header:text-slate-900'}`}>
                         {col.label}
                       </span>
                     </div>
@@ -118,7 +119,8 @@ export function DataTable<T>({
               {columns.map((col) => (
                 <td
                   key={String(col.key)}
-                  className={`px-6 py-4 ${col.align === 'center' ? 'text-center' : col.align === 'right' ? 'text-right' : ''} ${col.cellClassName || ''}`}
+                  className={`${col.align === 'center' ? 'text-center' : col.align === 'right' ? 'text-right' : ''} ${col.cellClassName || ''}`}
+                  style={{ padding: 'calc(var(--ui-padding) * 0.75) var(--ui-padding)' }}
                 >
                   <div className="text-slate-600 group-hover:text-slate-900 transition-colors text-sm font-medium">
                     {col.render ? col.render(item) : (item as any)[col.key]}

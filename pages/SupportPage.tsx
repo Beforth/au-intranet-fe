@@ -3,7 +3,9 @@ import React, { useMemo } from 'react';
 import { Card } from '../components/ui/Card';
 import { HelpCircle, MessageSquare, Book, FileQuestion, ArrowRight, Search } from 'lucide-react';
 import { Input } from '../components/ui/Input';
+import { Button } from '../components/ui/Button';
 import { useApp } from '../App';
+import { PageLayout } from '../components/layout/PageLayout';
 
 const KNOWLEDGE_BASE = [
   'Security protocol for resetting root admin credentials',
@@ -15,32 +17,35 @@ const KNOWLEDGE_BASE = [
 ];
 
 export const SupportPage: React.FC = () => {
-  const { globalSearch, setGlobalSearch } = useApp();
+  const { globalSearch, setGlobalSearch, showToast } = useApp();
 
   const filteredQuestions = useMemo(() => {
-    return KNOWLEDGE_BASE.filter(q => 
+    return KNOWLEDGE_BASE.filter(q =>
       q.toLowerCase().includes(globalSearch.toLowerCase())
     );
   }, [globalSearch]);
 
+  const actions = (
+    <div className="w-full lg:max-w-md">
+      <Input
+        variant="white"
+        inputSize="sm"
+        className="rounded-xl shadow-sm"
+        placeholder="Search documentation..."
+        value={globalSearch}
+        onChange={(e) => setGlobalSearch(e.target.value)}
+        onClear={() => setGlobalSearch('')}
+        icon={<Search size={16} className="text-slate-400" strokeWidth={2.5} />}
+      />
+    </div>
+  );
+
   return (
-    <div className="space-y-12 animate-in fade-in duration-500">
-      <div className="text-center max-w-3xl mx-auto space-y-6 py-12">
-        <h1 className="text-4xl font-black text-slate-900 tracking-tighter leading-none">Global Help Center</h1>
-        <p className="text-slate-500 text-lg font-medium max-w-xl mx-auto">Search our knowledge base or connect with a dedicated ERP specialist.</p>
-        <div className="max-w-xl mx-auto">
-          <Input 
-            variant="white"
-            inputSize="lg"
-            className="rounded-2xl shadow-xl shadow-slate-200/50"
-            placeholder="Search documentation..."
-            value={globalSearch}
-            onChange={(e) => setGlobalSearch(e.target.value)}
-            onClear={() => setGlobalSearch('')}
-            icon={<Search size={22} className="text-slate-400" strokeWidth={2.5} />}
-          />
-        </div>
-      </div>
+    <PageLayout
+      title="Global Help Center"
+      description="Search our knowledge base or connect with a dedicated ERP specialist."
+      actions={actions}
+    >
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {[
@@ -54,9 +59,15 @@ export const SupportPage: React.FC = () => {
             </div>
             <h3 className="font-black text-slate-900 text-sm uppercase tracking-widest mb-3 leading-none">{item.title}</h3>
             <p className="text-xs text-slate-500 mb-8 font-medium leading-relaxed">{item.desc}</p>
-            <button className="text-[10px] font-black text-[var(--primary)] uppercase tracking-widest flex items-center gap-2 mx-auto hover:gap-3 transition-all">
-              Launch Module <ArrowRight size={14} strokeWidth={3} />
-            </button>
+            <Button
+              variant="outline"
+              size="sm"
+              rightIcon={<ArrowRight size={14} strokeWidth={3} />}
+              className="mx-auto"
+              onClick={() => showToast(`Launching ${item.title} module`, 'info')}
+            >
+              Launch Module
+            </Button>
           </Card>
         ))}
       </div>
@@ -83,6 +94,6 @@ export const SupportPage: React.FC = () => {
           )}
         </div>
       </Card>
-    </div>
+    </PageLayout>
   );
 };

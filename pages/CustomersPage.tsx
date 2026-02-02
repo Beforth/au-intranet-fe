@@ -4,8 +4,9 @@ import { Card } from '../components/ui/Card';
 import { Badge } from '../components/ui/Badge';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
-import { Search, UserPlus, Building2, ShieldCheck, ArrowUpRight, MoreHorizontal } from 'lucide-react';
+import { Search, UserPlus, Building2, ShieldCheck, ArrowUpRight, MoreHorizontal, Filter } from 'lucide-react';
 import { useApp } from '../App';
+import { PageLayout } from '../components/layout/PageLayout';
 
 const CUSTOMERS = [
   { id: 'CUST-001', name: 'Alice Thompson', role: 'Enterprise Admin', company: 'TechFlow Inc.', email: 'alice@techflow.com', status: 'Active', avatar: 'https://i.pravatar.cc/150?u=alice' },
@@ -17,15 +18,18 @@ const CUSTOMERS = [
 ];
 
 export const CustomersPage: React.FC = () => {
-  const { showToast, globalSearch, setGlobalSearch } = useApp();
+  const { showToast, globalSearch, setGlobalSearch, customers: demoCustomers } = useApp();
 
   const filteredCustomers = useMemo(() => {
-    return CUSTOMERS.filter(c => 
+    // Merge local and demo data
+    const combined = [...CUSTOMERS, ...demoCustomers];
+    // Filter by search
+    return combined.filter(c =>
       c.name.toLowerCase().includes(globalSearch.toLowerCase()) ||
       c.email.toLowerCase().includes(globalSearch.toLowerCase()) ||
       c.company.toLowerCase().includes(globalSearch.toLowerCase())
     );
-  }, [globalSearch]);
+  }, [globalSearch, demoCustomers]);
 
   const getStatusConfig = (status: string) => {
     switch (status) {
@@ -38,33 +42,35 @@ export const CustomersPage: React.FC = () => {
     }
   };
 
+  const actions = (
+    <Button
+      size="sm"
+      onClick={() => showToast('Initializing account setup...', 'info')}
+      leftIcon={<UserPlus size={14} strokeWidth={3} />}
+    >
+      New Client Account
+    </Button>
+  );
+
   return (
-    <div className="space-y-8">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-black text-slate-900 tracking-tighter">Customer Registry</h1>
-          <p className="text-slate-500 text-sm font-medium mt-1">Manage enterprise-level client relationships.</p>
-        </div>
-        <Button 
-          onClick={() => showToast('Initializing account setup...', 'info')}
-          leftIcon={<UserPlus size={16} strokeWidth={3} />}
-        >
-          New Client Account
-        </Button>
-      </div>
+    <PageLayout
+      title="Customer Registry"
+      description="Manage enterprise-level client relationships."
+      actions={actions}
+    >
 
       <div className="flex items-center gap-3">
-        <Input 
+        <Input
           variant="white"
           inputSize="sm"
           className="rounded-full shadow-sm"
           icon={<Search size={14} strokeWidth={2.5} />}
-          placeholder="Filter customer records..." 
+          placeholder="Filter customer records..."
           value={globalSearch}
           onChange={(e) => setGlobalSearch(e.target.value)}
           containerClassName="max-w-md"
         />
-        <Button variant="outline" size="sm" className="rounded-full">Filter Status</Button>
+        <Button variant="outline" size="sm" className="rounded-full" leftIcon={<Filter size={14} />}>Filter Status</Button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -83,11 +89,14 @@ export const CustomersPage: React.FC = () => {
                     <span className="text-[10px] text-slate-400 font-black uppercase tracking-widest mt-2 inline-block leading-none">{customer.id}</span>
                   </div>
                 </div>
-                <button className="p-1.5 text-slate-300 hover:text-slate-600 rounded-lg transition-all">
-                  <MoreHorizontal size={16} />
-                </button>
+                <Button
+                  variant="ghost"
+                  size="xs"
+                  className="text-slate-300 hover:text-slate-600"
+                  leftIcon={<MoreHorizontal size={14} />}
+                />
               </div>
-              
+
               <div className="p-6 space-y-5">
                 <div className="grid grid-cols-2 gap-6">
                   <div className="space-y-1.5">
@@ -108,22 +117,22 @@ export const CustomersPage: React.FC = () => {
               </div>
 
               <div className="px-6 py-4 bg-slate-50/50 border-t border-slate-100 flex items-center justify-between">
-                 <div className="flex items-center gap-2">
-                    <ShieldCheck size={12} className="text-emerald-500" />
-                    <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Secure Client</span>
-                 </div>
-                 <Button variant="link" size="xs" rightIcon={<ArrowUpRight size={12} strokeWidth={3} />}>
-                   View Portfolio
-                 </Button>
+                <div className="flex items-center gap-2">
+                  <ShieldCheck size={12} className="text-emerald-500" />
+                  <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Secure Client</span>
+                </div>
+                <Button variant="link" size="xs" rightIcon={<ArrowUpRight size={12} strokeWidth={3} />}>
+                  View Portfolio
+                </Button>
               </div>
             </Card>
           );
         }) : (
           <div className="col-span-full py-24 text-center">
-             <p className="text-slate-900 font-black text-sm uppercase tracking-widest">No matching indices</p>
+            <p className="text-slate-900 font-black text-sm uppercase tracking-widest">No matching indices</p>
           </div>
         )}
       </div>
-    </div>
+    </PageLayout>
   );
 };

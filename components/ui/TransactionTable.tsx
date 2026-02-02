@@ -3,6 +3,7 @@ import React, { useMemo } from 'react';
 import { RECENT_TRANSACTIONS } from '../../constants';
 import { Badge } from './Badge';
 import { DataTable, Column } from './DataTable';
+import { Button } from './Button';
 import { MoreHorizontal } from 'lucide-react';
 import { Transaction } from '../../types';
 import { useApp } from '../../App';
@@ -68,9 +69,12 @@ export const TransactionTable: React.FC = () => {
       sortable: false,
       align: 'right',
       render: () => (
-        <button className="p-1 hover:bg-slate-50 border border-transparent hover:border-slate-100 rounded-lg transition-all opacity-0 group-hover:opacity-100 text-slate-300 hover:text-slate-600">
-          <MoreHorizontal size={14} />
-        </button>
+        <Button
+          variant="ghost"
+          size="xs"
+          className="opacity-0 group-hover:opacity-100 text-slate-300 hover:text-indigo-600"
+          leftIcon={<MoreHorizontal size={14} />}
+        />
       )
     }
   ];

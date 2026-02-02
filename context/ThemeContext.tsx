@@ -39,16 +39,25 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   useEffect(() => {
     const root = document.documentElement;
     const theme = THEMES[color];
-    
+
     // Theme Colors
     root.style.setProperty('--primary', theme.primary);
     root.style.setProperty('--primary-hover', theme.hover);
     root.style.setProperty('--primary-muted', theme.muted);
     root.style.setProperty('--primary-foreground', theme.foreground);
-    
+
     // Density Spacing
-    const paddingMap = { compact: '0.625rem', default: '1rem', relaxed: '1.5rem' };
-    root.style.setProperty('--ui-padding', paddingMap[density]);
+    const configMap = {
+      compact: { padding: '0.625rem', gap: '0.5rem', radius: '0.5rem', fontSize: '0.95' },
+      default: { padding: '1.25rem', gap: '1rem', radius: '0.75rem', fontSize: '1' },
+      relaxed: { padding: '2rem', gap: '1.5rem', radius: '1rem', fontSize: '1.05' }
+    };
+
+    const config = configMap[density];
+    root.style.setProperty('--ui-padding', config.padding);
+    root.style.setProperty('--ui-gap', config.gap);
+    root.style.setProperty('--ui-radius', config.radius);
+    root.style.setProperty('--ui-scale', config.fontSize);
 
     root.classList.remove('dark');
     localStorage.setItem('ui-color', color);

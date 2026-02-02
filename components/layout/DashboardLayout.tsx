@@ -16,7 +16,10 @@ export const DashboardLayout: React.FC = () => {
       <main className="flex-1 flex flex-col min-h-screen">
         <Navbar />
 
-        <div className="px-8 py-8 ml-64 max-w-[1600px] flex-1">
+        <div
+          className="ml-64 max-w-[1600px] flex-1 transition-all duration-300"
+          style={{ padding: 'var(--ui-padding)' }}
+        >
           <Outlet />
         </div>
       </main>

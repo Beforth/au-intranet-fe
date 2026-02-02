@@ -3,19 +3,21 @@ import React, { useState, useMemo } from 'react';
 import { Card } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
-import { 
-  Plus, 
-  Trash2, 
-  Save, 
-  Send, 
-  FileText, 
-  User, 
+import {
+  Plus,
+  Trash2,
+  Save,
+  Send,
+  FileText,
+  User,
   Calendar,
   AlertCircle,
   Hash,
-  ChevronRight
+  ChevronRight,
+  Eye
 } from 'lucide-react';
 import { useApp } from '../App';
+import { PageLayout } from '../components/layout/PageLayout';
 
 interface QuotationItem {
   id: string;
@@ -26,12 +28,12 @@ interface QuotationItem {
 
 export const QuotationsPage: React.FC = () => {
   const { showToast } = useApp();
-  
+
   const [clientName, setClientName] = useState('');
   const [clientEmail, setClientEmail] = useState('');
   const [expiryDate, setExpiryDate] = useState('');
   const [quotationNumber, setQuotationNumber] = useState(`QTN-${Math.floor(Math.random() * 90000) + 10000}`);
-  
+
   const [items, setItems] = useState<QuotationItem[]>([
     { id: '1', description: 'Enterprise ERP License (Yearly)', quantity: 1, unitPrice: 1200 }
   ]);
@@ -55,26 +57,19 @@ export const QuotationsPage: React.FC = () => {
     setItems(items.map(item => item.id === id ? { ...item, [field]: value } : item));
   };
 
+  const actions = (
+    <div className="flex items-center gap-2">
+      <Button variant="outline" size="sm" leftIcon={<Eye size={14} />}>Preview</Button>
+      <Button size="sm" onClick={() => showToast('Draft saved.')} leftIcon={<Save size={14} />}>Save Draft</Button>
+    </div>
+  );
+
   return (
-    <div className="max-w-6xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-500">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <div className="w-11 h-11 bg-[var(--primary-muted)] rounded-xl flex items-center justify-center text-[var(--primary)] shadow-sm">
-            <FileText size={20} strokeWidth={2} />
-          </div>
-          <div>
-            <h1 className="text-xl font-semibold text-slate-900 tracking-tight leading-none">Draft New Quotation</h1>
-            <div className="flex items-center gap-2 mt-1.5">
-              <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-widest">ID:</span>
-              <span className="text-[10px] font-bold text-[var(--primary)]">{quotationNumber}</span>
-            </div>
-          </div>
-        </div>
-        <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm">Preview</Button>
-          <Button size="sm" onClick={() => showToast('Draft saved.')} leftIcon={<Save size={14} />}>Save Draft</Button>
-        </div>
-      </div>
+    <PageLayout
+      title="Draft New Quotation"
+      description={`ID: ${quotationNumber}`}
+      actions={actions}
+    >
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
@@ -87,8 +82,8 @@ export const QuotationsPage: React.FC = () => {
             </div>
           </Card>
 
-          <Card 
-            title="Service Line Items" 
+          <Card
+            title="Service Line Items"
             description="Detailed breakdown of costs."
             headerAction={
               <Button variant="ghost" size="xs" className="text-[var(--primary)] font-semibold" leftIcon={<Plus size={12} />} onClick={addItem}>Add Row</Button>
@@ -135,13 +130,13 @@ export const QuotationsPage: React.FC = () => {
           </Card>
 
           <div className="p-4 bg-[var(--primary-muted)] border border-[var(--primary)]/10 rounded-xl flex gap-3 shadow-sm">
-             <AlertCircle size={18} className="text-[var(--primary)] shrink-0" />
-             <p className="text-[11px] text-[var(--primary)] font-medium leading-relaxed">
-               Quotes are generated as encrypted PDFs. All revisions are tracked in the system audit logs.
-             </p>
+            <AlertCircle size={18} className="text-[var(--primary)] shrink-0" />
+            <p className="text-[11px] text-[var(--primary)] font-medium leading-relaxed">
+              Quotes are generated as encrypted PDFs. All revisions are tracked in the system audit logs.
+            </p>
           </div>
         </div>
       </div>
-    </div>
+    </PageLayout>
   );
 };

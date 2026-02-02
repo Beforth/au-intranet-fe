@@ -4,8 +4,10 @@ import { Card } from '../components/ui/Card';
 import { Badge } from '../components/ui/Badge';
 import { DataTable, Column } from '../components/ui/DataTable';
 import { Input } from '../components/ui/Input';
-import { CreditCard, DollarSign, ArrowUpRight, ArrowDownRight, Briefcase, TrendingUp, Search } from 'lucide-react';
+import { Button } from '../components/ui/Button';
+import { CreditCard, DollarSign, ArrowUpRight, ArrowDownRight, Briefcase, TrendingUp, Search, Download } from 'lucide-react';
 import { useApp } from '../App';
+import { PageLayout } from '../components/layout/PageLayout';
 
 interface LedgerEntry {
   label: string;
@@ -31,7 +33,7 @@ export const FinancialsPage: React.FC = () => {
   };
 
   const filteredLedger = useMemo(() => {
-    return LEDGER_DATA.filter(item => 
+    return LEDGER_DATA.filter(item =>
       item.label.toLowerCase().includes(globalSearch.toLowerCase()) ||
       item.status.toLowerCase().includes(globalSearch.toLowerCase())
     );
@@ -70,20 +72,22 @@ export const FinancialsPage: React.FC = () => {
     }
   ];
 
+  const actions = (
+    <Button
+      onClick={handleDownload}
+      size="sm"
+      leftIcon={<Download size={14} strokeWidth={3} />}
+    >
+      Download Report
+    </Button>
+  );
+
   return (
-    <div className="space-y-6 animate-in fade-in duration-700">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-black text-slate-900 tracking-tight">Financial Reporting</h1>
-          <p className="text-slate-500 text-xs font-medium">Real-time fiscal monitoring and revenue forecasting modules.</p>
-        </div>
-        <button 
-          onClick={handleDownload}
-          className="bg-[var(--primary)] text-white px-4 py-2 rounded-lg text-xs font-black uppercase tracking-widest hover:brightness-105 active:scale-95 transition-all shadow-md shadow-[var(--primary)]/10"
-        >
-          Download Report
-        </button>
-      </div>
+    <PageLayout
+      title="Financial Reporting"
+      description="Real-time fiscal monitoring and revenue forecasting modules."
+      actions={actions}
+    >
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card onClick={() => showToast('Detailing Net Profit...', 'info')}>
@@ -127,29 +131,58 @@ export const FinancialsPage: React.FC = () => {
           <h3 className="text-xl font-black text-slate-900 tabular-nums">$12,000.45</h3>
           <div className="mt-4">
             <div className="w-full bg-slate-50 rounded-full h-1 overflow-hidden">
-               <div className="bg-amber-400 h-full transition-all duration-1000" style={{ width: '45%' }}></div>
+              <div className="bg-amber-400 h-full transition-all duration-1000" style={{ width: '45%' }}></div>
             </div>
           </div>
         </Card>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <Card title="Revenue Stream" description="Q4 Predictive analysis results.">
-          <div className="h-[140px] flex items-end gap-1.5 px-0.5 pt-4">
-            {[65, 45, 95, 75, 55, 85, 100].map((h, i) => (
-              <div key={i} className="flex-1 flex flex-col items-center gap-1.5 group">
-                <div 
-                  className="w-full bg-[var(--primary)]/30 group-hover:bg-[var(--primary)] rounded-sm transition-all duration-300 cursor-pointer" 
-                  style={{ height: `${h}%` }}
+        <Card title="Revenue Stream" description="Q4 Predictive analysis vs Actual performance.">
+          <div className="flex gap-4 mb-4">
+            <div className="flex items-center gap-1.5">
+              <div className="w-2 h-2 rounded-full bg-[var(--primary)]"></div>
+              <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Actual</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <div className="w-2 h-2 rounded-full border-2 border-[var(--primary)] border-dashed bg-transparent"></div>
+              <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Predicted</span>
+            </div>
+          </div>
+          <div className="h-[140px] flex items-end gap-1.5 px-0.5 relative group">
+            <div className="absolute inset-0 top-4 bottom-8 flex flex-col justify-between pointer-events-none opacity-20">
+              <div className="border-t border-slate-200 w-full h-px"></div>
+              <div className="border-t border-slate-200 w-full h-px"></div>
+              <div className="border-t border-slate-200 w-full h-px"></div>
+            </div>
+            {[
+              { a: 65, p: 70 },
+              { a: 45, p: 50 },
+              { a: 95, p: 90 },
+              { a: 75, p: 80 },
+              { a: 55, p: 65 },
+              { a: 85, p: 85 },
+              { a: 0, p: 100 }
+            ].map((d, i) => (
+              <div key={i} className="flex-1 flex flex-col items-center gap-1 relative group/bar">
+                {d.p > 0 && (
+                  <div
+                    className="absolute bottom-6 w-full border-t-2 border-indigo-200 border-dashed z-0 opacity-40 group-hover/bar:opacity-100 transition-opacity"
+                    style={{ bottom: `calc(${d.p}% + 24px)` }}
+                  />
+                )}
+                <div
+                  className={`w-full ${d.a === 0 ? 'bg-slate-100' : 'bg-[var(--primary)]/30 group-hover/bar:bg-[var(--primary)]'} rounded-sm transition-all duration-300 cursor-pointer z-10`}
+                  style={{ height: d.a > 0 ? `${d.a}%` : '4px' }}
                 ></div>
-                <span className="text-[7px] font-black text-slate-300 uppercase tracking-tighter">W{i+1}</span>
+                <span className="text-[7px] font-black text-slate-300 uppercase tracking-tighter mt-1">W{i + 1}</span>
               </div>
             ))}
           </div>
         </Card>
         <Card noPadding title="Ledger Highlights" description="Latest verified system entries.">
           <div className="px-5 py-3 border-b border-slate-100 bg-white">
-            <Input 
+            <Input
               variant="white"
               inputSize="sm"
               className="max-w-xs rounded-full shadow-sm"
@@ -160,7 +193,7 @@ export const FinancialsPage: React.FC = () => {
               icon={<Search size={14} className="text-slate-400" strokeWidth={2.5} />}
             />
           </div>
-          <DataTable 
+          <DataTable
             data={filteredLedger}
             columns={columns}
             rowKey={(item) => item.label + item.date}
@@ -168,6 +201,6 @@ export const FinancialsPage: React.FC = () => {
           />
         </Card>
       </div>
-    </div>
+    </PageLayout>
   );
 };

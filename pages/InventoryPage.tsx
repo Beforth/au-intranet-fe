@@ -7,6 +7,7 @@ import { Input } from '../components/ui/Input';
 import { Button } from '../components/ui/Button';
 import { Package, AlertTriangle, ArrowRight, Box, Search, RefreshCw, MoreVertical, TrendingDown } from 'lucide-react';
 import { useApp } from '../App';
+import { PageLayout } from '../components/layout/PageLayout';
 
 interface StockItem {
   sku: string;
@@ -28,7 +29,7 @@ export const InventoryPage: React.FC = () => {
   const { showToast, globalSearch, setGlobalSearch } = useApp();
 
   const filteredStock = useMemo(() => {
-    return STOCK_DATA.filter(item => 
+    return STOCK_DATA.filter(item =>
       item.name.toLowerCase().includes(globalSearch.toLowerCase()) ||
       item.sku.toLowerCase().includes(globalSearch.toLowerCase()) ||
       item.category.toLowerCase().includes(globalSearch.toLowerCase())
@@ -66,8 +67,8 @@ export const InventoryPage: React.FC = () => {
       label: 'Status',
       render: (item) => (
         <Badge variant={
-          item.status === 'In Stock' ? 'success' : 
-          item.status === 'Low Stock' ? 'warning' : 'error'
+          item.status === 'In Stock' ? 'success' :
+            item.status === 'Low Stock' ? 'warning' : 'error'
         } className="text-[9px] py-0 h-5 flex items-center justify-center w-fit">
           {item.status}
         </Badge>
@@ -79,77 +80,73 @@ export const InventoryPage: React.FC = () => {
       sortable: false,
       align: 'right',
       render: (item) => (
-        <button onClick={(e) => { e.stopPropagation(); showToast(`Record: ${item.name}`, 'info'); }} className="p-1 text-slate-300 hover:text-slate-600 rounded-lg transition-all opacity-0 group-hover:opacity-100">
-          <MoreVertical size={16} />
-        </button>
+        <Button
+          variant="ghost"
+          size="xs"
+          onClick={(e) => { e.stopPropagation(); showToast(`Record: ${item.name}`, 'info'); }}
+          className="opacity-0 group-hover:opacity-100 text-slate-300 hover:text-slate-600"
+          leftIcon={<MoreVertical size={14} />}
+        />
       )
     }
   ];
 
+  const actions = (
+    <div className="flex gap-2">
+      <Button
+        variant="outline"
+        size="sm"
+        className="rounded-full"
+        onClick={() => showToast('Generating report...', 'info')}
+        leftIcon={<RefreshCw size={14} />}
+      >
+        Report
+      </Button>
+      <Button
+        size="sm"
+        className="rounded-full"
+        onClick={() => showToast('Opening bulk editor', 'info')}
+        leftIcon={<Package size={14} />}
+      >
+        Update
+      </Button>
+    </div>
+  );
+
   return (
-    <div className="space-y-6 animate-in fade-in duration-500">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-black text-slate-900 tracking-tight">Inventory Management</h1>
-          <p className="text-slate-500 text-xs font-medium">Real-time tracking of enterprise assets and resources.</p>
-        </div>
-        <div className="flex gap-2">
-          <Button 
-            variant="outline" 
-            size="sm"
-            className="rounded-full"
-            onClick={() => showToast('Generating report...', 'info')}
-            leftIcon={<RefreshCw size={14} />}
-          >
-            Report
-          </Button>
-          <Button 
-            size="sm"
-            className="rounded-full"
-            onClick={() => showToast('Opening bulk editor', 'info')}
-          >
-            Update
-          </Button>
-        </div>
-      </div>
+    <PageLayout
+      title="Inventory Management"
+      description="Real-time tracking of enterprise assets and resources."
+      actions={actions}
+    >
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
         <div className="lg:col-span-3">
           <Card noPadding className="border-slate-200/60 shadow-sm">
-             <div className="px-5 py-3 bg-white border-b border-slate-100 flex flex-wrap gap-4 items-center justify-between">
-               <Input 
-                 variant="white"
-                 inputSize="sm"
-                 className="max-w-xs rounded-full shadow-sm"
-                 placeholder="Search SKU indices..." 
-                 value={globalSearch}
-                 onChange={(e) => setGlobalSearch(e.target.value)}
-                 icon={<Search size={14} className="text-slate-400" strokeWidth={2.5} />}
-               />
-               <div className="flex gap-4">
-                  <div className="flex items-center gap-1.5">
-                    <div className="w-1.5 h-1.5 rounded-full bg-emerald-500"></div>
-                    <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Stable</span>
-                  </div>
-                  <div className="flex items-center gap-1.5">
-                    <div className="w-1.5 h-1.5 rounded-full bg-amber-500"></div>
-                    <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Review</span>
-                  </div>
-               </div>
-             </div>
-             
-             <DataTable 
-               data={filteredStock} 
-               columns={columns} 
-               rowKey={(i) => i.sku} 
-             />
+            <div className="px-5 py-3 bg-white border-b border-slate-100 flex flex-wrap gap-4 items-center justify-between">
+              <Input
+                variant="white"
+                inputSize="sm"
+                className="max-w-xs rounded-full shadow-sm"
+                placeholder="Search SKU indices..."
+                value={globalSearch}
+                onChange={(e) => setGlobalSearch(e.target.value)}
+                icon={<Search size={14} className="text-slate-400" strokeWidth={2.5} />}
+              />
+            </div>
+
+            <DataTable
+              data={filteredStock}
+              columns={columns}
+              rowKey={(i) => i.sku}
+            />
           </Card>
         </div>
 
         <div className="space-y-4">
-          <Card 
-            className="border-amber-200 bg-amber-50/20 shadow-amber-900/5 shadow-xl" 
-            title="Operational Alert" 
+          <Card
+            className="border-amber-200 bg-amber-50/20 shadow-amber-900/5 shadow-xl"
+            title="Operational Alert"
             description="Procurement threshold detected."
           >
             <div className="space-y-4 py-1">
@@ -175,7 +172,7 @@ export const InventoryPage: React.FC = () => {
                 </div>
               </div>
 
-              <Button 
+              <Button
                 variant="secondary"
                 className="w-full rounded-full"
                 onClick={() => showToast('Procurement workflow initiated', 'success')}
@@ -187,6 +184,6 @@ export const InventoryPage: React.FC = () => {
           </Card>
         </div>
       </div>
-    </div>
+    </PageLayout>
   );
 };

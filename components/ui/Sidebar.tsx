@@ -8,7 +8,7 @@ export const Sidebar: React.FC = () => {
   return (
     <aside className="w-64 h-screen bg-white border-r border-slate-200 flex flex-col fixed left-0 top-0 z-30">
       <div className="p-6">
-        <Link 
+        <Link
           to="/"
           className="flex items-center gap-2.5 mb-8 hover:opacity-80 transition-all"
         >
@@ -34,7 +34,7 @@ export const Sidebar: React.FC = () => {
             <SidebarItem key={item.title} item={item} />
           ))}
         </nav>
-        
+
         <div className="mt-4 flex items-center gap-3 p-3 rounded-xl border border-slate-100 bg-slate-50/50">
           <div className="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center overflow-hidden shrink-0">
             <img src="https://i.pravatar.cc/100?u=alex" alt="Avatar" />
@@ -54,19 +54,25 @@ const SidebarItem: React.FC<{ item: NavItem }> = ({ item }) => {
     <NavLink
       to={item.href}
       className={({ isActive }) => `
-        group flex items-center justify-between w-full px-3 py-2 rounded-lg text-[13px] transition-all duration-200 font-medium
-        ${isActive 
-          ? 'bg-indigo-50 text-indigo-700 font-semibold' 
+        group flex items-center justify-between w-full rounded-lg text-[13px] transition-all duration-200 font-medium
+        ${isActive
+          ? 'bg-indigo-50 text-indigo-700 font-semibold'
           : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900'}
       `}
+      style={{
+        paddingLeft: 'calc(var(--ui-padding) * 0.75)',
+        paddingRight: 'calc(var(--ui-padding) * 0.75)',
+        paddingTop: 'calc(var(--ui-padding) * 0.5)',
+        paddingBottom: 'calc(var(--ui-padding) * 0.5)'
+      }}
     >
       {({ isActive }) => (
         <>
           <div className="flex items-center gap-3">
-            <item.icon 
-              size={18} 
-              strokeWidth={isActive ? 2.5 : 2} 
-              className={isActive ? 'text-indigo-600' : 'text-slate-400 group-hover:text-slate-600'} 
+            <item.icon
+              size={18}
+              strokeWidth={isActive ? 2.5 : 2}
+              className={isActive ? 'text-indigo-600' : 'text-slate-400 group-hover:text-slate-600'}
             />
             <span>{item.title}</span>
           </div>

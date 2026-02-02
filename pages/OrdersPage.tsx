@@ -5,16 +5,17 @@ import { Badge } from '../components/ui/Badge';
 import { DataTable, Column } from '../components/ui/DataTable';
 import { Input } from '../components/ui/Input';
 import { Button } from '../components/ui/Button';
-import { 
-  Search, 
-  Filter, 
-  Download, 
-  Plus, 
-  MoreHorizontal, 
+import {
+  Search,
+  Filter,
+  Download,
+  Plus,
+  MoreHorizontal,
   Loader2
 } from 'lucide-react';
 import { useApp } from '../App';
 import { Modal } from '../components/ui/Modal';
+import { PageLayout } from '../components/layout/PageLayout';
 
 interface Order {
   id: string;
@@ -35,17 +36,19 @@ const INITIAL_ORDERS: Order[] = [
 ];
 
 export const OrdersPage: React.FC = () => {
-  const { showToast, globalSearch, setGlobalSearch } = useApp();
+  const { showToast, globalSearch, setGlobalSearch, orders: demoOrders } = useApp();
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
 
+  const allOrders = useMemo(() => [...INITIAL_ORDERS, ...demoOrders], [demoOrders]);
+
   const filteredOrders = useMemo(() => {
-    return INITIAL_ORDERS.filter(order => 
+    return allOrders.filter(order =>
       order.customer.toLowerCase().includes(globalSearch.toLowerCase()) ||
       order.id.toLowerCase().includes(globalSearch.toLowerCase()) ||
       order.product.toLowerCase().includes(globalSearch.toLowerCase())
     );
-  }, [globalSearch]);
+  }, [globalSearch, allOrders]);
 
   const handleDownload = () => {
     setIsDownloading(true);
@@ -66,41 +69,41 @@ export const OrdersPage: React.FC = () => {
   };
 
   const columns: Column<Order>[] = [
-    { 
-      key: 'id', 
-      label: 'Order Reference', 
-      cellClassName: 'text-[13px] font-black text-[var(--primary)] tracking-tight' 
+    {
+      key: 'id',
+      label: 'Order Reference',
+      cellClassName: 'text-[13px] font-bold text-[var(--primary)] tracking-tight'
     },
-    { 
-      key: 'customer', 
-      label: 'Client Name', 
-      cellClassName: 'text-sm font-bold text-slate-900' 
+    {
+      key: 'customer',
+      label: 'Client Name',
+      cellClassName: 'text-sm font-bold text-slate-900'
     },
-    { 
-      key: 'product', 
-      label: 'Product Module', 
-      cellClassName: 'text-[12px] font-bold text-slate-500' 
+    {
+      key: 'product',
+      label: 'Product Module',
+      cellClassName: 'text-[12px] font-bold text-slate-500'
     },
-    { 
-      key: 'date', 
-      label: 'Transaction Date', 
-      cellClassName: 'text-[11px] font-bold text-slate-400' 
+    {
+      key: 'date',
+      label: 'Transaction Date',
+      cellClassName: 'text-[11px] font-bold text-slate-400'
     },
-    { 
-      key: 'amount', 
-      label: 'Gross Value', 
-      align: 'right', 
-      cellClassName: 'text-sm font-black text-slate-900 tabular-nums' 
+    {
+      key: 'amount',
+      label: 'Gross Value',
+      align: 'right',
+      cellClassName: 'text-sm font-black text-slate-900 tabular-nums'
     },
-    { 
-      key: 'status', 
-      label: 'Fulfillment', 
+    {
+      key: 'status',
+      label: 'Fulfillment',
       align: 'center',
       render: (order) => (
         <Badge variant={
-          order.status === 'Delivered' ? 'success' : 
-          order.status === 'Processing' ? 'warning' : 
-          order.status === 'Shipped' ? 'default' : 'error'
+          order.status === 'Delivered' ? 'success' :
+            order.status === 'Processing' ? 'warning' :
+              order.status === 'Shipped' ? 'default' : 'error'
         } className="text-[10px] font-black tracking-widest uppercase h-6 px-3 flex items-center justify-center w-fit mx-auto">
           {order.status}
         </Badge>
@@ -119,45 +122,46 @@ export const OrdersPage: React.FC = () => {
     }
   ];
 
+  const actions = (
+    <>
+      <Button
+        variant="outline"
+        onClick={handleDownload}
+        isLoading={isDownloading}
+        leftIcon={!isDownloading && <Download size={18} />}
+        title="Download CSV"
+      />
+      <Button
+        size="sm"
+        onClick={() => setIsCreateOpen(true)}
+        leftIcon={<Plus size={14} strokeWidth={3} />}
+      >
+        Generate New Order
+      </Button>
+    </>
+  );
+
   return (
-    <div className="space-y-6 animate-in fade-in duration-500">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-black text-slate-900 tracking-tight">Order Management</h1>
-          <p className="text-slate-500 text-sm font-medium">Track and fulfill your enterprise orders with real-time accuracy.</p>
-        </div>
-        <div className="flex items-center gap-2">
-           <button 
-             onClick={handleDownload}
-             disabled={isDownloading}
-             className="p-2.5 border border-slate-200 rounded-xl hover:bg-slate-50 transition-all active:scale-95 disabled:opacity-50 shadow-sm"
-             title="Download CSV"
-           >
-            {isDownloading ? <Loader2 size={18} className="animate-spin text-slate-400" /> : <Download size={18} className="text-slate-600" />}
-          </button>
-          <Button 
-            onClick={() => setIsCreateOpen(true)}
-            leftIcon={<Plus size={18} strokeWidth={3} />}
-          >
-            Generate New Order
-          </Button>
-        </div>
-      </div>
+    <PageLayout
+      title="Order Management"
+      description="Track and fulfill your enterprise orders with real-time accuracy."
+      actions={actions}
+    >
 
       <Card noPadding className="overflow-hidden border-slate-200/60 shadow-md">
         <div className="p-5 border-b border-slate-100 flex flex-wrap gap-4 items-center justify-between bg-white">
-          <Input 
+          <Input
             variant="white"
             inputSize="sm"
             className="max-w-md rounded-full shadow-sm"
-            placeholder="Search orders..." 
+            placeholder="Search orders..."
             value={globalSearch}
             onChange={(e) => setGlobalSearch(e.target.value)}
             icon={<Search size={14} className="text-slate-400" strokeWidth={2.5} />}
           />
           <div className="flex items-center gap-2">
-            <Button 
-              variant="outline" 
+            <Button
+              variant="outline"
               size="sm"
               className="rounded-full"
               onClick={() => showToast('Advanced filtering options enabled', 'info')}
@@ -168,9 +172,9 @@ export const OrdersPage: React.FC = () => {
           </div>
         </div>
 
-        <DataTable 
-          data={filteredOrders} 
-          columns={columns} 
+        <DataTable
+          data={filteredOrders}
+          columns={columns}
           rowKey={(o) => o.id}
           onRowClick={(o) => showToast(`Opening record ${o.id}`, 'info')}
         />
@@ -184,16 +188,16 @@ export const OrdersPage: React.FC = () => {
         </div>
       </Card>
 
-      <Modal 
-        isOpen={isCreateOpen} 
-        onClose={() => setIsCreateOpen(false)} 
+      <Modal
+        isOpen={isCreateOpen}
+        onClose={() => setIsCreateOpen(false)}
         title="Initialize New Transaction"
       >
         <form className="space-y-5" onSubmit={handleCreateOrder}>
-           <Input 
+          <Input
             label="Client Identity"
-            required 
-            placeholder="Legal business name" 
+            required
+            placeholder="Legal business name"
           />
           <div className="space-y-2">
             <label className="text-[11px] font-black text-slate-500 uppercase tracking-widest">Asset Allocation</label>
@@ -205,11 +209,11 @@ export const OrdersPage: React.FC = () => {
             </select>
           </div>
           <div className="pt-6 flex justify-end gap-3">
-             <Button variant="ghost" type="button" onClick={() => setIsCreateOpen(false)}>Cancel</Button>
-             <Button type="submit">Create Record</Button>
+            <Button variant="ghost" size="sm" type="button" onClick={() => setIsCreateOpen(false)}>Cancel</Button>
+            <Button size="sm" type="submit">Create Record</Button>
           </div>
         </form>
       </Modal>
-    </div>
+    </PageLayout>
   );
 };
