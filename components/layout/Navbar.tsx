@@ -6,12 +6,12 @@ import { useApp } from '../../App';
 
 export const Navbar: React.FC = () => {
   const navigate = useNavigate();
-  const { 
-    globalSearch, 
-    setGlobalSearch, 
-    unreadCount 
+  const {
+    globalSearch,
+    setGlobalSearch,
+    unreadCount
   } = useApp();
-  
+
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
@@ -39,18 +39,19 @@ export const Navbar: React.FC = () => {
   const searchResults = useMemo(() => {
     const term = globalSearch.trim().toLowerCase();
     if (!term) return [];
-    return SEARCHABLE_ITEMS.filter(item => 
-      item.title.toLowerCase().includes(term) || 
+    return SEARCHABLE_ITEMS.filter(item =>
+      item.title.toLowerCase().includes(term) ||
       item.category.toLowerCase().includes(term)
     );
   }, [globalSearch, SEARCHABLE_ITEMS]);
 
   return (
-    <header className="h-16 sticky top-0 bg-white/80 backdrop-blur-md z-40 ml-64 flex items-center px-8 justify-between border-b border-slate-200">
+    <header className="h-16 sticky top-0 bg-white/5 backdrop-blur-md z-40 ml-64 flex items-center px-8 justify-between relative">
+      <div className="absolute bottom-0 left-8 right-8 h-px bg-slate-200/50" />
       <div className="flex-1 max-w-lg relative">
         <div className="relative group">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-indigo-600 transition-colors" size={14} />
-          <input 
+          <input
             ref={searchInputRef}
             type="text"
             className="w-full bg-slate-50 border border-slate-200 rounded-lg h-9 pl-10 pr-12 text-xs font-medium text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-4 focus:ring-indigo-500/5 focus:border-indigo-500/30 transition-all"
