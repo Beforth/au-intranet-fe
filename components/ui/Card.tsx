@@ -46,7 +46,7 @@ export const Card: React.FC<CardProps> = ({
       onDrop={onDrop}
       className={cn(
         'bg-white border border-slate-200/60 transition-all duration-300 relative group/card flex flex-col min-h-[140px] shadow-[0_2px_4px_rgba(0,0,0,0.02),0_1px_0_rgba(0,0,0,0.02)]',
-        onClick && 'cursor-pointer hover:shadow-xl hover:shadow-indigo-500/5 hover:border-indigo-200/50',
+        onClick && 'cursor-pointer hover:shadow-xl hover:shadow-blue-500/5 hover:border-blue-200/50',
         isDraggable && 'cursor-move active:scale-[0.99]',
         className
       )}

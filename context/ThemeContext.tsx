@@ -1,25 +1,25 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
-export type ThemeColor = 'blue' | 'sky' | 'indigo' | 'emerald' | 'rose' | 'violet' | 'slate';
+export type ThemeColor = 'blue' | 'sky' | 'emerald' | 'rose' | 'violet' | 'slate';
 export type Density = 'compact' | 'default' | 'relaxed';
 
 interface Theme {
   name: string;
   primary: string;
   hover: string;
+  accent: string;
   muted: string;
   foreground: string;
 }
 
 export const THEMES: Record<ThemeColor, Theme> = {
-  blue: { name: 'Royal Blue', primary: '#2563eb', hover: '#1d4ed8', muted: '#eff6ff', foreground: '#ffffff' },
-  sky: { name: 'Sky Blue', primary: '#0ea5e9', hover: '#0284c7', muted: '#f0f9ff', foreground: '#ffffff' },
-  indigo: { name: 'Indigo', primary: '#6366f1', hover: '#4f46e5', muted: '#f5f3ff', foreground: '#ffffff' },
-  emerald: { name: 'Emerald', primary: '#10b981', hover: '#059669', muted: '#f0fdf4', foreground: '#ffffff' },
-  rose: { name: 'Rose', primary: '#f43f5e', hover: '#e11d48', muted: '#fff1f2', foreground: '#ffffff' },
-  violet: { name: 'Violet', primary: '#8b5cf6', hover: '#7c3aed', muted: '#f5f3ff', foreground: '#ffffff' },
-  slate: { name: 'Zinc', primary: '#18181b', hover: '#27272a', muted: '#f4f4f5', foreground: '#ffffff' },
+  blue: { name: 'Royal Blue', primary: '#2563eb', hover: '#1d4ed8', accent: '#3b82f6', muted: '#eff6ff', foreground: '#ffffff' },
+  sky: { name: 'Sky Blue', primary: '#0ea5e9', hover: '#0284c7', accent: '#38bdf8', muted: '#f0f9ff', foreground: '#ffffff' },
+  emerald: { name: 'Emerald', primary: '#10b981', hover: '#059669', accent: '#34d399', muted: '#f0fdf4', foreground: '#ffffff' },
+  rose: { name: 'Rose', primary: '#f43f5e', hover: '#e11d48', accent: '#fb7185', muted: '#fff1f2', foreground: '#ffffff' },
+  violet: { name: 'Violet', primary: '#8b5cf6', hover: '#7c3aed', accent: '#a78bfa', muted: '#f5f3ff', foreground: '#ffffff' },
+  slate: { name: 'Zinc', primary: '#18181b', hover: '#27272a', accent: '#52525b', muted: '#f4f4f5', foreground: '#ffffff' },
 };
 
 interface ThemeContextType {
@@ -43,6 +43,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     // Theme Colors
     root.style.setProperty('--primary', theme.primary);
     root.style.setProperty('--primary-hover', theme.hover);
+    root.style.setProperty('--primary-accent', theme.accent);
     root.style.setProperty('--primary-muted', theme.muted);
     root.style.setProperty('--primary-foreground', theme.foreground);
 

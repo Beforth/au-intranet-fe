@@ -99,7 +99,7 @@ export function DataTable<T>({
                     onClick={() => sortable && handleSort(col.key)}
                   >
                     <div className={`flex items-center gap-2 ${col.align === 'center' ? 'justify-center' : col.align === 'right' ? 'justify-end' : ''}`}>
-                      <span className={`text-[11px] uppercase font-black tracking-wider ${sortConfig.key === col.key ? 'text-indigo-600' : 'text-slate-500 group-hover/header:text-slate-900'}`}>
+                      <span className={`text-[11px] uppercase font-black tracking-wider ${sortConfig.key === col.key ? 'text-blue-600' : 'text-slate-500 group-hover/header:text-slate-900'}`}>
                         {col.label}
                       </span>
                     </div>

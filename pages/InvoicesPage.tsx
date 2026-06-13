@@ -81,7 +81,7 @@ export const InvoicesPage: React.FC = () => {
           variant="ghost"
           size="xs"
           onClick={() => showToast(`Previewing ${inv.id}`, 'info')}
-          className="text-slate-400 hover:text-indigo-600"
+          className="text-slate-400 hover:text-blue-600"
           leftIcon={<MoreHorizontal size={14} />}
         />
       )

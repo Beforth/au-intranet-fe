@@ -57,7 +57,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(({
           ref={ref}
           value={value}
           className={cn(
-            'w-full border rounded-lg outline-none transition-all placeholder:text-slate-400 focus:ring-2 focus:ring-[var(--primary)]/10 focus:border-[var(--primary)]',
+            'w-full border rounded-lg outline-none transition-all placeholder:text-slate-400 focus:ring-2 focus:ring-[var(--primary-accent)]/10 focus:border-[var(--primary-accent)]',
             variants[variant],
             sizes[inputSize],
             icon && 'pl-10',

@@ -13,7 +13,7 @@ export const Sidebar: React.FC = () => {
           to="/"
           className="flex items-center gap-2.5 mb-7 px-2 hover:opacity-80 transition-all"
         >
-          <div className="w-7 h-7 bg-indigo-600 rounded flex items-center justify-center shadow-sm">
+          <div className="w-7 h-7 bg-blue-600 rounded flex items-center justify-center shadow-sm">
             <span className="text-white font-bold text-sm">A</span>
           </div>
           <span className="text-lg font-bold tracking-tight text-slate-900">
@@ -36,7 +36,7 @@ export const Sidebar: React.FC = () => {
           </nav>
 
           <div className="mt-4 flex items-center gap-2.5 p-2.5 rounded-xl border border-slate-100/80 bg-slate-50/50 hover:bg-slate-50 transition-colors cursor-pointer">
-            <div className="w-8 h-8 rounded-lg bg-indigo-100 flex items-center justify-center overflow-hidden shrink-0 border border-indigo-200/50">
+            <div className="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center overflow-hidden shrink-0 border border-blue-200/50">
               <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Alex" alt="Avatar" />
             </div>
             <div className="flex-1 min-w-0">
@@ -57,7 +57,7 @@ const SidebarItem: React.FC<{ item: NavItem }> = ({ item }) => {
       className={({ isActive }) => `
         group flex items-center justify-between w-full rounded-lg text-[13px] transition-all duration-200 font-medium px-3 py-2
         ${isActive
-          ? 'bg-indigo-50 text-indigo-700'
+          ? 'bg-blue-50 text-blue-700'
           : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'}
       `}
     >
@@ -67,12 +67,12 @@ const SidebarItem: React.FC<{ item: NavItem }> = ({ item }) => {
             <item.icon
               size={18}
               strokeWidth={isActive ? 2.2 : 1.8}
-              className={isActive ? 'text-indigo-600' : 'text-slate-400 group-hover:text-slate-600'}
+              className={isActive ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600'}
             />
             <span className={isActive ? 'font-semibold' : ''}>{item.title}</span>
           </div>
           {item.badge && (
-            <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold ${isActive ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-500'}`}>
+            <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold ${isActive ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-500'}`}>
               {item.badge}
             </span>
           )}

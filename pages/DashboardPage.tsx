@@ -150,7 +150,7 @@ export const DashboardPage: React.FC = () => {
                 <Button
                     variant="outline"
                     size="sm"
-                    className="border-indigo-200 text-indigo-600 hover:bg-indigo-50"
+                    className="border-blue-200 text-blue-600 hover:bg-blue-50"
                     onClick={simulateDemo}
                     leftIcon={<Activity size={14} />}
                 >

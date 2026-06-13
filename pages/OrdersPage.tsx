@@ -205,7 +205,7 @@ export const OrdersPage: React.FC = () => {
           />
           <div className="space-y-2">
             <label className="text-[11px] font-black text-slate-500 uppercase tracking-widest">Asset Allocation</label>
-            <select className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold focus:ring-4 focus:ring-[var(--primary)]/10 focus:border-[var(--primary)] outline-none transition-all">
+            <select className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold focus:ring-4 focus:ring-[var(--primary-accent)]/10 focus:border-[var(--primary-accent)] outline-none transition-all">
               <option value="">Select a product...</option>
               <option value="erp">Premium ERP Suite</option>
               <option value="cloud">Cloud Storage 1TB</option>

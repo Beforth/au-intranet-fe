@@ -65,7 +65,7 @@ export const ReportsPage: React.FC = () => {
           variant="ghost"
           size="xs"
           onClick={(e) => { e.stopPropagation(); showToast(`Downloading ${item.name}`, 'success'); }}
-          className="text-slate-300 hover:text-indigo-600"
+          className="text-slate-300 hover:text-blue-600"
           leftIcon={<Download size={14} />}
         />
       )

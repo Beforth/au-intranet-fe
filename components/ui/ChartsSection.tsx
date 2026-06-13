@@ -40,8 +40,8 @@ export const RevenueChart: React.FC = () => {
         <AreaChart data={CHART_DATA} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
           <defs>
             <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#4f46e5" stopOpacity={0.15} />
-              <stop offset="95%" stopColor="#4f46e5" stopOpacity={0} />
+              <stop offset="5%" stopColor="#2563eb" stopOpacity={0.15} />
+              <stop offset="95%" stopColor="#2563eb" stopOpacity={0} />
             </linearGradient>
           </defs>
           <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
@@ -61,7 +61,7 @@ export const RevenueChart: React.FC = () => {
           <Area
             type="monotone"
             dataKey="revenue"
-            stroke="#4f46e5"
+            stroke="#2563eb"
             strokeWidth={2.5}
             fillOpacity={1}
             fill="url(#colorRevenue)"
@@ -93,7 +93,7 @@ export const SalesTargetChart: React.FC = () => {
           />
           <Tooltip content={<CustomTooltip />} cursor={{ fill: '#f8fafc' }} />
           <Bar dataKey="target" fill="#e2e8f0" radius={[4, 4, 0, 0]} barSize={12} />
-          <Bar dataKey="revenue" fill="#4f46e5" radius={[4, 4, 0, 0]} barSize={12} animationDuration={2000} />
+          <Bar dataKey="revenue" fill="#2563eb" radius={[4, 4, 0, 0]} barSize={12} animationDuration={2000} />
         </BarChart>
       </ResponsiveContainer>
     </div>

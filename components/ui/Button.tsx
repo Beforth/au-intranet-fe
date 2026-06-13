@@ -23,12 +23,12 @@ export const Button: React.FC<ButtonProps> = ({
   ...props
 }) => {
   const variants = {
-    primary: 'bg-indigo-600 text-white shadow-sm hover:bg-indigo-700 hover:shadow-indigo-500/20 transition-all duration-200',
+    primary: 'bg-blue-600 text-white shadow-sm hover:bg-blue-700 hover:shadow-blue-500/20 transition-all duration-200',
     secondary: 'bg-slate-900 text-white hover:bg-slate-800 shadow-sm transition-all duration-200',
     outline: 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50 hover:border-slate-300 transition-all shadow-xs',
     ghost: 'text-slate-500 hover:bg-slate-100 hover:text-slate-900 transition-colors',
     danger: 'bg-rose-600 text-white hover:bg-rose-700 transition-all shadow-sm',
-    link: 'text-indigo-600 hover:underline font-semibold p-0 h-auto transition-colors',
+    link: 'text-blue-600 hover:underline font-semibold p-0 h-auto transition-colors',
   };
 
   const sizes = {

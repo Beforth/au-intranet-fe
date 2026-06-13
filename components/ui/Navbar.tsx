@@ -78,11 +78,11 @@ export const Navbar: React.FC = () => {
       <div className="absolute bottom-0 left-8 right-8 h-px bg-slate-200/50" />
       <div className="flex-1 max-w-lg relative">
         <div className="relative group">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-indigo-600 transition-colors" size={14} />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-600 transition-colors" size={14} />
           <input
             ref={searchInputRef}
             type="text"
-            className="w-full bg-slate-50 border border-slate-200 rounded-lg h-9 pl-10 pr-12 text-xs font-medium text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-4 focus:ring-indigo-500/5 focus:border-indigo-500/30 transition-all"
+            className="w-full bg-slate-50 border border-slate-200 rounded-lg h-9 pl-10 pr-12 text-xs font-medium text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-4 focus:ring-[var(--primary-accent)]/5 focus:border-[var(--primary-accent)]/30 transition-all"
             placeholder="Quick search... (⌘K)"
             value={globalSearch}
             onChange={(e) => setGlobalSearch(e.target.value)}
@@ -106,7 +106,7 @@ export const Navbar: React.FC = () => {
                       onClick={() => { navigate(item.href); setGlobalSearch(''); }}
                       className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left hover:bg-slate-50 transition-colors group"
                     >
-                      <item.icon size={14} className="text-slate-400 group-hover:text-indigo-600" />
+                      <item.icon size={14} className="text-slate-400 group-hover:text-blue-600" />
                       <span className="text-xs font-medium text-slate-700">{item.title}</span>
                       <ArrowRight size={12} className="ml-auto text-slate-300 opacity-0 group-hover:opacity-100" />
                     </button>
@@ -124,11 +124,11 @@ export const Navbar: React.FC = () => {
         <div className="relative" ref={notificationRef}>
           <button
             onClick={() => setShowNotifications(!showNotifications)}
-            className={`flex items-center gap-2 px-3 py-1.5 rounded-full border transition-all active:scale-95 ${showNotifications ? 'bg-indigo-600 border-indigo-600 text-white shadow-lg shadow-indigo-100' : 'bg-indigo-50/50 border-indigo-100 text-indigo-600 hover:bg-indigo-50'}`}
+            className={`flex items-center gap-2 px-3 py-1.5 rounded-full border transition-all active:scale-95 ${showNotifications ? 'bg-blue-600 border-blue-600 text-white shadow-lg shadow-blue-100' : 'bg-blue-50/50 border-blue-100 text-blue-600 hover:bg-blue-50'}`}
           >
             <Bell size={16} strokeWidth={2} />
             {unreadCount > 0 && (
-              <span className={`text-[11px] font-black tracking-tight ${showNotifications ? 'text-indigo-50' : 'text-indigo-600'}`}>
+              <span className={`text-[11px] font-black tracking-tight ${showNotifications ? 'text-blue-50' : 'text-blue-600'}`}>
                 {unreadCount}
               </span>
             )}
@@ -140,7 +140,7 @@ export const Navbar: React.FC = () => {
                 <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.15em]">Notifications</span>
                 <button
                   onClick={markAllAsRead}
-                  className="text-[10px] font-bold text-indigo-600 hover:text-indigo-700 transition-colors uppercase tracking-tight"
+                  className="text-[10px] font-bold text-blue-600 hover:text-blue-700 transition-colors uppercase tracking-tight"
                 >
                   Clear all
                 </button>
@@ -161,7 +161,7 @@ export const Navbar: React.FC = () => {
                           <p className={`text-[11px] truncate tracking-tight ${notif.read ? 'text-slate-500' : 'text-slate-900 font-bold'}`}>
                             {notif.title}
                           </p>
-                          {!notif.read && <div className="w-1 h-1 rounded-full bg-indigo-600 shrink-0 shadow-[0_0_8px_rgba(79,70,229,0.4)]" />}
+                          {!notif.read && <div className="w-1 h-1 rounded-full bg-blue-600 shrink-0 shadow-[0_0_8px_rgba(37,99,235,0.4)]" />}
                         </div>
                         <p className="text-[10px] text-slate-400 line-clamp-1 mt-0.5 leading-snug">
                           {notif.message}
@@ -191,7 +191,7 @@ export const Navbar: React.FC = () => {
         </button>
         <div
           onClick={() => navigate('/settings')}
-          className="w-8 h-8 rounded-full border border-slate-200 overflow-hidden ml-1 cursor-pointer hover:border-indigo-400 transition-all shadow-sm"
+          className="w-8 h-8 rounded-full border border-slate-200 overflow-hidden ml-1 cursor-pointer hover:border-blue-400 transition-all shadow-sm"
         >
           <img src="https://i.pravatar.cc/100?u=alex" alt="User" className="w-full h-full object-cover" />
         </div>

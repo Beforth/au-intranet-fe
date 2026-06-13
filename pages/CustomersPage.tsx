@@ -80,7 +80,7 @@ export const CustomersPage: React.FC = () => {
         {filteredCustomers.length > 0 ? filteredCustomers.map((customer) => {
           const statusStyle = getStatusConfig(customer.status);
           return (
-            <Card key={customer.id} noPadding className="group hover:border-indigo-200/50 overflow-hidden">
+            <Card key={customer.id} noPadding className="group hover:border-blue-200/50 overflow-hidden">
               <div className="p-5 border-b border-slate-50 flex items-start justify-between bg-slate-50/30">
                 <div className="flex items-center gap-4">
                   <div className="relative">
@@ -124,7 +124,7 @@ export const CustomersPage: React.FC = () => {
                   <ShieldCheck size={12} className="text-emerald-500/80" />
                   <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Secure Client</span>
                 </div>
-                <Button variant="link" size="xs" className="text-indigo-600 hover:text-indigo-700 font-bold" rightIcon={<ArrowUpRight size={12} strokeWidth={3} />}>
+                <Button variant="link" size="xs" className="text-blue-600 hover:text-blue-700 font-bold" rightIcon={<ArrowUpRight size={12} strokeWidth={3} />}>
                   View Portfolio
                 </Button>
               </div>

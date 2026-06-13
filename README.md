@@ -18,8 +18,10 @@ The Aether design system is centered around **Subtle Premiumism**. It prioritize
 ## 🛠️ Visual Specification (Tokens)
 
 ### 1. Color Palette
-- **Primary**: `#4f46e5` (Indigo 600) - Used for primary actions, active states, and highlights.
-- **Primary Muted**: `rgba(79, 70, 229, 0.05)` - Soft Indigo tint for secondary backgrounds and icons.
+- **Primary**: `#2563eb` (Blue 600) - Buttons, checkboxes, switches, main actions, active states.
+- **Primary Accent**: `#3b82f6` (Blue 500) - Focus rings, input borders on focus, accent highlights.
+- **Primary Hover**: `#1d4ed8` (Blue 700) - Hover states for primary actions.
+- **Primary Muted**: `rgba(37, 99, 235, 0.08)` - Soft Blue tint for secondary backgrounds and icons.
 - **Backgrounds**:
   - Main Body: `#f8fafc` (Slate 50)
   - Component Surface: `#ffffff` (Pure White)
@@ -44,7 +46,7 @@ The Aether design system is centered around **Subtle Premiumism**. It prioritize
 ### 3. Shadows & Depth (The "Pro" Layer)
 - **Soft Border**: `border border-slate-200/60`
 - **Elevation 1 (Cards)**: `shadow-[0_2px_4px_rgba(0,0,0,0.02),0_1px_0_rgba(0,0,0,0.02)]`
-- **Elevation 2 (Hover)**: `shadow-xl shadow-indigo-500/5 hover:border-indigo-200/50`
+- **Elevation 2 (Hover)**: `shadow-xl shadow-blue-500/5 hover:border-blue-200/50`
 - **Corner Radius**: 
   - Main Cards: `1rem` (16px) 
   - Buttons/Inputs: `0.75rem` (12px)
@@ -88,7 +90,7 @@ The standard for presenting structured data.
 - **Dimensions**: `w-60` (240px). Reduced from standard bulk to felt more agile.
 - **Icons**: Lucide icons at `size={18}` with `strokeWidth={2}`.
 - **Spacing**: Internal item padding `px-3 py-2.5`, margin between items `my-0.5`.
-- **Active State**: Soft `indigo-50` background with `indigo-600` text and `font-semibold`.
+- **Active State**: Soft `blue-50` background with `blue-600` text and `font-semibold`.
 
 ### 2. Page Structure
 - **Global Gap**: `gap-8` for major grids (Cards).
