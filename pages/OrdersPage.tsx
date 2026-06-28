@@ -76,7 +76,7 @@ export const OrdersPage: React.FC = () => {
     {
       key: 'id',
       label: 'Order Reference',
-      cellClassName: 'text-[13px] font-bold text-[var(--primary)] tracking-tight'
+      cellClassName: 'text-sm font-bold text-blue-600 tracking-tight'
     },
     {
       key: 'customer',
@@ -86,18 +86,18 @@ export const OrdersPage: React.FC = () => {
     {
       key: 'product',
       label: 'Product Module',
-      cellClassName: 'text-[12px] font-bold text-slate-500'
+      cellClassName: 'text-sm font-semibold text-slate-500'
     },
     {
       key: 'date',
       label: 'Transaction Date',
-      cellClassName: 'text-[11px] font-bold text-slate-400'
+      cellClassName: 'text-xs font-semibold text-slate-400'
     },
     {
       key: 'amount',
       label: 'Gross Value',
       align: 'right',
-      cellClassName: 'text-sm font-black text-slate-900 tabular-nums'
+      cellClassName: 'text-sm font-semibold text-slate-900 tabular-nums'
     },
     {
       key: 'status',
@@ -108,7 +108,7 @@ export const OrdersPage: React.FC = () => {
           order.status === 'Delivered' ? 'success' :
             order.status === 'Processing' ? 'warning' :
               order.status === 'Shipped' ? 'default' : 'error'
-        } className="text-[10px] font-black tracking-widest uppercase h-6 px-3 flex items-center justify-center w-fit mx-auto">
+        } className="text-xs font-semibold h-6 px-3 flex items-center justify-center w-fit mx-auto">
           {order.status}
         </Badge>
       )
@@ -183,7 +183,7 @@ export const OrdersPage: React.FC = () => {
           onRowClick={(o) => showToast(`Opening record ${o.id}`, 'info')}
         />
 
-        <div className="p-5 border-t border-slate-100 flex items-center justify-between text-[11px] font-black text-slate-400 uppercase tracking-widest bg-slate-50/30">
+        <div className="p-5 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-slate-400 bg-slate-50/30">
           <p>Displaying {filteredOrders.length} active records</p>
           <div className="flex gap-2">
             <Button variant="outline" size="xs" disabled>Prev</Button>
@@ -204,8 +204,8 @@ export const OrdersPage: React.FC = () => {
             placeholder="Legal business name"
           />
           <div className="space-y-2">
-            <label className="text-[11px] font-black text-slate-500 uppercase tracking-widest">Asset Allocation</label>
-            <select className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold focus:ring-4 focus:ring-[var(--primary-accent)]/10 focus:border-[var(--primary-accent)] outline-none transition-all">
+            <label className="text-sm font-medium text-slate-500">Asset Allocation</label>
+            <select className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all">
               <option value="">Select a product...</option>
               <option value="erp">Premium ERP Suite</option>
               <option value="cloud">Cloud Storage 1TB</option>

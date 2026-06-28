@@ -2,7 +2,7 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import { Sidebar } from '../ui/Sidebar';
-import { Navbar } from '../ui/Navbar';
+import Navbar from '../ui/Navbar';
 import { useApp } from '../../App';
 import { Toast } from '../ui/Toast';
 
@@ -10,16 +10,15 @@ export const DashboardLayout: React.FC = () => {
   const { toast, onCloseToast } = useApp();
 
   return (
-    <div className="min-h-screen flex bg-[#f8fafc]">
+    <div className="min-h-screen flex bg-slate-50 font-sans selection:bg-blue-600 selection:text-white">
       <Sidebar />
 
-      <main className="flex-1 flex flex-col min-h-screen">
+      <main className="flex-1 flex flex-col min-h-screen min-w-0 bg-[#f8fafc]">
         <Navbar />
 
-        <div
-          className="ml-60 max-w-[1600px] flex-1 transition-all duration-300"
-          style={{ padding: 'calc(var(--ui-padding) * 2) var(--ui-padding) var(--ui-padding)' }}
-        >
+        <div className="ml-60 flex-1 min-w-0 overflow-x-auto px-16 pt-[1.5625rem] pb-[0.625rem] transition-all duration-500 relative">
+          <div className="absolute inset-0 bg-[radial-gradient(#e2e8f0_1px,transparent_1px)] [background-size:24px_24px] opacity-30 pointer-events-none -z-10" />
+          
           <Outlet />
         </div>
       </main>

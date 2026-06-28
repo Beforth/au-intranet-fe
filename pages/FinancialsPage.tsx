@@ -48,18 +48,18 @@ export const FinancialsPage: React.FC = () => {
     {
       key: 'label',
       label: 'Description',
-      cellClassName: 'text-[11px] font-black text-slate-800 tracking-tight'
+      cellClassName: 'text-sm font-medium text-slate-800'
     },
     {
       key: 'date',
       label: 'Date',
-      cellClassName: 'text-[9px] text-slate-400 font-bold uppercase tracking-widest'
+      cellClassName: 'text-xs text-slate-400 font-medium'
     },
     {
       key: 'status',
       label: 'Status',
       render: (item) => (
-        <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">{item.status}</span>
+        <span className="text-xs font-medium text-slate-400">{item.status}</span>
       )
     },
     {
@@ -69,7 +69,7 @@ export const FinancialsPage: React.FC = () => {
       render: (item) => {
         const isPositive = item.amount.startsWith('+');
         return (
-          <span className={`text-[11px] font-black tabular-nums ${isPositive ? 'text-emerald-600' : 'text-slate-900'}`}>
+          <span className={`text-sm font-semibold tabular-nums ${isPositive ? 'text-emerald-600' : 'text-slate-900'}`}>
             {item.amount}
           </span>
         );
@@ -100,11 +100,11 @@ export const FinancialsPage: React.FC = () => {
             <div className="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center">
               <DollarSign size={16} className="text-blue-600" />
             </div>
-            <Badge variant="outline" className="text-slate-400 font-black uppercase tracking-widest text-[8px] py-0 border-slate-100">OCT 2023</Badge>
+            <Badge variant="outline" className="text-xs text-slate-400 font-medium py-0 border-slate-100">OCT 2023</Badge>
           </div>
-          <p className="text-slate-400 text-[9px] font-black uppercase tracking-wider leading-none mb-1">Net Profit</p>
-          <h3 className="text-xl font-black text-slate-900 tabular-nums">$142,402.00</h3>
-          <div className="flex items-center gap-1 mt-3 text-emerald-600 text-[9px] font-black uppercase">
+          <p className="text-slate-400 text-xs font-medium leading-none mb-1">Net Profit</p>
+          <h3 className="text-xl font-bold text-slate-900 tabular-nums">$142,402.00</h3>
+          <div className="flex items-center gap-1 mt-3 text-emerald-600 text-xs font-semibold">
             <ArrowUpRight size={12} strokeWidth={3} />
             <span>+12.5% vs LW</span>
           </div>
@@ -115,11 +115,11 @@ export const FinancialsPage: React.FC = () => {
             <div className="w-8 h-8 bg-rose-50 rounded-lg flex items-center justify-center">
               <Briefcase size={16} className="text-rose-600" />
             </div>
-            <Badge variant="success" className="font-black text-[8px] px-1 py-0 uppercase border-emerald-100 bg-emerald-50">Target Met</Badge>
+            <Badge variant="success" className="text-xs font-semibold px-1 py-0 border-emerald-100 bg-emerald-50">Target Met</Badge>
           </div>
-          <p className="text-slate-400 text-[9px] font-black uppercase tracking-wider leading-none mb-1">Op. Expenses</p>
-          <h3 className="text-xl font-black text-slate-900 tabular-nums">$45,210.00</h3>
-          <div className="flex items-center gap-1 mt-3 text-rose-500 text-[9px] font-black uppercase">
+          <p className="text-slate-400 text-xs font-medium leading-none mb-1">Op. Expenses</p>
+          <h3 className="text-xl font-bold text-slate-900 tabular-nums">$45,210.00</h3>
+          <div className="flex items-center gap-1 mt-3 text-rose-500 text-xs font-semibold">
             <ArrowDownRight size={12} strokeWidth={3} />
             <span>-2.1% efficiency</span>
           </div>
@@ -132,8 +132,8 @@ export const FinancialsPage: React.FC = () => {
             </div>
             <TrendingUp size={14} className="text-slate-300" />
           </div>
-          <p className="text-slate-400 text-[9px] font-black uppercase tracking-wider leading-none mb-1">Credit Risk</p>
-          <h3 className="text-xl font-black text-slate-900 tabular-nums">$12,000.45</h3>
+          <p className="text-slate-400 text-xs font-medium leading-none mb-1">Credit Risk</p>
+          <h3 className="text-xl font-bold text-slate-900 tabular-nums">$12,000.45</h3>
           <div className="mt-4">
             <div className="w-full bg-slate-50 rounded-full h-1 overflow-hidden">
               <div className="bg-amber-400 h-full transition-all duration-1000" style={{ width: '45%' }}></div>
@@ -146,12 +146,12 @@ export const FinancialsPage: React.FC = () => {
         <Card title="Revenue Stream" description="Q4 Predictive analysis vs Actual performance.">
           <div className="flex gap-4 mb-4">
             <div className="flex items-center gap-1.5">
-              <div className="w-2 h-2 rounded-full bg-[var(--primary)]"></div>
-              <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Actual</span>
+              <div className="w-2 h-2 rounded-full bg-blue-600"></div>
+              <span className="text-xs font-medium text-slate-400">Actual</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <div className="w-2 h-2 rounded-full border-2 border-[var(--primary)] border-dashed bg-transparent"></div>
-              <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Predicted</span>
+              <div className="w-2 h-2 rounded-full border-2 border-blue-600 border-dashed bg-transparent"></div>
+              <span className="text-xs font-medium text-slate-400">Predicted</span>
             </div>
           </div>
           <div className="h-[140px] flex items-end gap-1.5 px-2 relative group">
@@ -177,10 +177,10 @@ export const FinancialsPage: React.FC = () => {
                   />
                 )}
                 <div
-                  className={`w-full ${d.a === 0 ? 'bg-slate-100' : 'bg-[var(--primary)]/30 group-hover/bar:bg-[var(--primary)]'} rounded-sm transition-all duration-300 cursor-pointer z-10`}
+                  className={`w-full ${d.a === 0 ? 'bg-slate-100' : 'bg-blue-600/30 group-hover/bar:bg-blue-600'} rounded-sm transition-all duration-300 cursor-pointer z-10`}
                   style={{ height: d.a > 0 ? `${d.a}%` : '4px' }}
                 ></div>
-                <span className="text-[7px] font-black text-slate-300 uppercase tracking-tighter mt-1">W{i + 1}</span>
+                <span className="text-xs font-semibold text-slate-300 mt-1">W{i + 1}</span>
               </div>
             ))}
           </div>

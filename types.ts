@@ -1,5 +1,3 @@
-
-// Fixed: Added React import to resolve 'Cannot find namespace React' errors
 import React from 'react';
 
 export interface NavItem {
@@ -7,6 +5,7 @@ export interface NavItem {
   icon: React.ElementType;
   href: string;
   badge?: string;
+  permission?: string;
 }
 
 export interface StatItem {
@@ -27,12 +26,14 @@ export interface Transaction {
 }
 
 export interface AppNotification {
-  id: string;
+  id: string | number;
   title: string;
   message: string;
-  time: string;
-  type: 'order' | 'system' | 'inventory' | 'customer';
+  time?: string;
+  type: 'order' | 'system' | 'inventory' | 'customer' | 'follow_up' | 'new_inquiry';
   read: boolean;
+  link?: string;
+  lead_id?: number | null;
 }
 
 export type WidgetId = 'revenue-chart' | 'goal-chart' | 'activity-table' | 'global-reach';

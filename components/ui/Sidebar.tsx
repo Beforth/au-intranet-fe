@@ -1,11 +1,12 @@
-
-import React from 'react';
+import React, { useState } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import { SIDEBAR_LINKS, SECONDARY_LINKS } from '../../constants';
 import { NavItem } from '../../types';
-
+import { VersionsModal } from '../VersionsModal';
 
 export const Sidebar: React.FC = () => {
+  const [showChangelog, setShowChangelog] = useState(false);
+
   return (
     <aside className="w-60 h-screen bg-white border-r border-slate-200/60 flex flex-col fixed left-0 top-0 z-30">
       <div className="p-5 flex flex-col h-full">
@@ -21,6 +22,20 @@ export const Sidebar: React.FC = () => {
           </span>
         </Link>
 
+        <div className="px-2 -mt-5 mb-5 flex items-center justify-between gap-2">
+          <p className="text-[11px] font-medium text-slate-500">
+            Powered by <span className="font-semibold text-slate-700">BeForth</span>
+          </p>
+          <button
+            type="button"
+            onClick={() => setShowChangelog(true)}
+            className="text-[11px] font-semibold text-blue-700 bg-blue-50 border border-blue-200 rounded px-2 py-0.5 hover:bg-blue-100 transition-colors"
+            title="View changelog"
+          >
+            v1.1.1
+          </button>
+        </div>
+
         <nav className="space-y-0.5">
           <p className="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 mt-2">Main Menu</p>
           {SIDEBAR_LINKS.map((item) => (
@@ -28,24 +43,29 @@ export const Sidebar: React.FC = () => {
           ))}
         </nav>
 
-        <div className="mt-auto pt-6 border-t border-slate-100">
-          <nav className="space-y-0.5">
+        <div className="mt-auto pt-4 space-y-0">
+          <div className="border-t border-slate-100 pt-3 space-y-0.5">
             {SECONDARY_LINKS.map((item) => (
               <SidebarItem key={item.title} item={item} />
             ))}
-          </nav>
+          </div>
 
           <div className="mt-4 flex items-center gap-2.5 p-2.5 rounded-xl border border-slate-100/80 bg-slate-50/50 hover:bg-slate-50 transition-colors cursor-pointer">
-            <div className="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center overflow-hidden shrink-0 border border-blue-200/50">
-              <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Alex" alt="Avatar" />
+            <div className="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center shrink-0 border border-blue-200/50">
+              <span className="text-blue-600 font-bold text-xs">AR</span>
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-[12px] font-semibold text-slate-900 truncate">Alex Rivera</p>
-              <p className="text-[10px] text-slate-500 font-medium">Administrator</p>
+              <p className="text-[10px] text-slate-500 font-medium truncate">Administrator</p>
             </div>
           </div>
         </div>
       </div>
+
+      <VersionsModal
+        isOpen={showChangelog}
+        onClose={() => setShowChangelog(false)}
+      />
     </aside>
   );
 };
@@ -81,4 +101,3 @@ const SidebarItem: React.FC<{ item: NavItem }> = ({ item }) => {
     </NavLink>
   );
 };
-

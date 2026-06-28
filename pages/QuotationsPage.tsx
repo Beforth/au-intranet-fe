@@ -86,11 +86,11 @@ export const QuotationsPage: React.FC = () => {
             title="Service Line Items"
             description="Detailed breakdown of costs."
             headerAction={
-              <Button variant="ghost" size="xs" className="text-[var(--primary)] font-semibold" leftIcon={<Plus size={12} />} onClick={addItem}>Add Row</Button>
+              <Button variant="ghost" size="xs" className="text-blue-600 font-semibold" leftIcon={<Plus size={12} />} onClick={addItem}>Add Row</Button>
             }
           >
             <div className="space-y-2">
-              <div className="grid grid-cols-[1fr_80px_100px_40px] gap-4 px-2 text-[10px] font-semibold text-slate-400 uppercase tracking-widest">
+              <div className="grid grid-cols-[1fr_80px_100px_40px] gap-4 px-2 text-xs font-medium text-slate-400">
                 <span>Description</span>
                 <span className="text-center">Qty</span>
                 <span className="text-right">Price</span>
@@ -129,9 +129,9 @@ export const QuotationsPage: React.FC = () => {
             <Button className="w-full mt-6 rounded-lg h-11 shadow-md shadow-blue-100" rightIcon={<ChevronRight size={14} />}>Issue Document</Button>
           </Card>
 
-          <div className="p-4 bg-[var(--primary-muted)] border border-[var(--primary)]/10 rounded-xl flex gap-3 shadow-sm">
-            <AlertCircle size={18} className="text-[var(--primary)] shrink-0" />
-            <p className="text-[11px] text-[var(--primary)] font-medium leading-relaxed">
+          <div className="p-4 bg-blue-50 border border-blue-600/10 rounded-xl flex gap-3 shadow-sm">
+            <AlertCircle size={18} className="text-blue-600 shrink-0" />
+            <p className="text-sm text-blue-600 font-medium leading-relaxed">
               Quotes are generated as encrypted PDFs. All revisions are tracked in the system audit logs.
             </p>
           </div>

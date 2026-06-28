@@ -107,12 +107,12 @@ export const DashboardPage: React.FC = () => {
                                 { region: 'LATAM', val: 18 },
                             ].map((item) => (
                                 <div key={item.region} className="space-y-2">
-                                    <div className="flex justify-between text-[11px] font-semibold text-slate-500 uppercase tracking-tight">
+                                    <div className="flex justify-between text-xs font-medium text-slate-500">
                                         <span>{item.region}</span>
                                         <span className="text-slate-900">{item.val}%</span>
                                     </div>
                                     <div className="w-full bg-slate-100 rounded-full h-1.5 overflow-hidden">
-                                        <div className="bg-[var(--primary)] h-full rounded-full transition-all duration-1000" style={{ width: `${item.val}%` }}></div>
+                                        <div className="bg-blue-600 h-full rounded-full transition-all duration-1000" style={{ width: `${item.val}%` }}></div>
                                     </div>
                                 </div>
                             ))}
@@ -186,13 +186,13 @@ export const DashboardPage: React.FC = () => {
             description="Monitoring real-time operational status and metrics."
             actions={actions}
         >
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4" style={{ gap: 'var(--ui-gap)' }}>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {DASHBOARD_STATS.map((stat) => (
                     <StatCard key={stat.label} stat={stat} />
                 ))}
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 transition-all duration-300" style={{ gap: 'var(--ui-gap)' }}>
+            <div className="grid grid-cols-1 lg:grid-cols-3 transition-all duration-300 gap-6">
                 {layout.map(config => renderWidget(config))}
             </div>
         </PageLayout>

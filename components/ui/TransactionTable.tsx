@@ -35,8 +35,8 @@ export const TransactionTable: React.FC = () => {
       label: 'Customer Identity',
       render: (tx) => (
         <div className="flex flex-col">
-          <span className="text-[11px] font-black text-slate-900 leading-tight uppercase tracking-tight">{tx.customer}</span>
-          <span className="text-[9px] text-slate-400 font-bold uppercase tracking-widest mt-0.5">{tx.email}</span>
+          <span className="text-sm font-semibold text-slate-900 leading-tight">{tx.customer}</span>
+          <span className="text-xs text-slate-400 font-medium mt-0.5">{tx.email}</span>
         </div>
       )
     },
@@ -47,7 +47,7 @@ export const TransactionTable: React.FC = () => {
         <Badge variant={
           tx.status === 'Completed' ? 'success' :
             tx.status === 'Pending' ? 'warning' : 'error'
-        } className="text-[9px] py-0 h-4 flex items-center justify-center font-black uppercase tracking-tighter">
+        } className="text-xs py-0 h-5 flex items-center justify-center font-semibold">
           {tx.status}
         </Badge>
       )
@@ -55,13 +55,13 @@ export const TransactionTable: React.FC = () => {
     {
       key: 'date',
       label: 'Timestamp',
-      cellClassName: 'text-[10px] font-bold text-slate-400 tabular-nums'
+      cellClassName: 'text-xs font-medium text-slate-400 tabular-nums'
     },
     {
       key: 'amount',
       label: 'Volume',
       align: 'right',
-      cellClassName: 'text-xs font-black text-slate-900 text-right tabular-nums'
+      cellClassName: 'text-xs font-semibold text-slate-900 text-right tabular-nums'
     },
     {
       key: 'actions',

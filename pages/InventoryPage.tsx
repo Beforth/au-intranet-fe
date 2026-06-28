@@ -51,7 +51,7 @@ export const InventoryPage: React.FC = () => {
           </div>
           <div className="flex flex-col">
             <span className="text-xs font-bold text-slate-800 leading-none">{item.name}</span>
-            <span className="text-[9px] font-mono text-slate-400 mt-1">{item.sku}</span>
+            <span className="text-xs font-mono text-slate-400 mt-1">{item.sku}</span>
           </div>
         </div>
       )
@@ -59,12 +59,12 @@ export const InventoryPage: React.FC = () => {
     {
       key: 'category',
       label: 'Category',
-      cellClassName: 'text-[10px] font-bold text-slate-500'
+      cellClassName: 'text-xs font-semibold text-slate-500'
     },
     {
       key: 'stock',
       label: 'Stock',
-      cellClassName: 'text-xs font-black text-slate-900 tabular-nums'
+      cellClassName: 'text-xs font-semibold text-slate-900 tabular-nums'
     },
     {
       key: 'status',
@@ -73,7 +73,7 @@ export const InventoryPage: React.FC = () => {
         <Badge variant={
           item.status === 'In Stock' ? 'success' :
             item.status === 'Low Stock' ? 'warning' : 'error'
-        } className="text-[9px] py-0 h-5 flex items-center justify-center w-fit">
+        } className="text-xs py-0 h-5 flex items-center justify-center w-fit">
           {item.status}
         </Badge>
       )
@@ -159,15 +159,15 @@ export const InventoryPage: React.FC = () => {
                   <AlertTriangle size={16} strokeWidth={2.5} />
                 </div>
                 <div>
-                  <h4 className="text-xs font-black text-slate-900 leading-tight">Critical Depletion</h4>
-                  <p className="text-[10px] text-slate-500 font-medium leading-relaxed mt-1">
+                  <h4 className="text-xs font-bold text-slate-900 leading-tight">Critical Depletion</h4>
+                  <p className="text-xs text-slate-500 font-medium leading-relaxed mt-1">
                     3 priority SKUs are currently below the safety stock margin.
                   </p>
                 </div>
               </div>
 
               <div className="space-y-2">
-                <div className="flex items-center justify-between text-[9px] font-black uppercase tracking-widest">
+                <div className="flex items-center justify-between text-xs font-medium">
                   <span className="text-slate-400">Urgency</span>
                   <span className="text-amber-600">85%</span>
                 </div>

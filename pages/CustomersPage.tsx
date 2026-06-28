@@ -89,7 +89,7 @@ export const CustomersPage: React.FC = () => {
                   </div>
                   <div className="min-w-0">
                     <h3 className="font-bold text-slate-900 text-sm truncate leading-none tracking-tight">{customer.name}</h3>
-                    <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-2 inline-block leading-none">{customer.id}</span>
+                    <span className="text-xs text-slate-400 font-medium mt-2 inline-block leading-none">{customer.id}</span>
                   </div>
                 </div>
                 <Button
@@ -103,15 +103,15 @@ export const CustomersPage: React.FC = () => {
               <div className="p-6 space-y-5">
                 <div className="grid grid-cols-2 gap-6">
                   <div className="space-y-1.5">
-                    <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Organization</p>
-                    <div className="flex items-center gap-2 text-[12px] font-semibold text-slate-700">
+                    <p className="text-xs font-medium text-slate-400">Organization</p>
+                    <div className="flex items-center gap-2 text-sm font-semibold text-slate-700">
                       <Building2 size={12} className="text-slate-300" />
                       <span className="truncate">{customer.company}</span>
                     </div>
                   </div>
                   <div className="space-y-1.5 text-right flex flex-col items-end">
-                    <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Status</p>
-                    <Badge className={`text-[8px] px-2 h-4.5 font-bold uppercase tracking-widest inline-flex items-center gap-1.5 border-none shadow-sm ${statusStyle.containerClass}`}>
+                    <p className="text-xs font-medium text-slate-400 mb-1.5">Status</p>
+                    <Badge className={`px-2 py-0.5 inline-flex items-center gap-1.5 border-none shadow-sm ${statusStyle.containerClass}`}>
                       <span className={`w-1 h-1 rounded-full ${statusStyle.dotClass}`} />
                       {customer.status}
                     </Badge>
@@ -122,7 +122,7 @@ export const CustomersPage: React.FC = () => {
               <div className="px-6 py-4 bg-slate-50/20 border-t border-slate-50 flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <ShieldCheck size={12} className="text-emerald-500/80" />
-                  <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Secure Client</span>
+                  <span className="text-xs font-medium text-slate-500">Secure Client</span>
                 </div>
                 <Button variant="link" size="xs" className="text-blue-600 hover:text-blue-700 font-bold" rightIcon={<ArrowUpRight size={12} strokeWidth={3} />}>
                   View Portfolio
@@ -132,7 +132,7 @@ export const CustomersPage: React.FC = () => {
           );
         }) : (
           <div className="col-span-full py-24 text-center">
-            <p className="text-slate-900 font-black text-sm uppercase tracking-widest">No matching indices</p>
+            <p className="text-sm text-slate-400">No matching indices</p>
           </div>
         )}
       </div>

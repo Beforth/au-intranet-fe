@@ -2,7 +2,7 @@
 import React, { useState, useMemo, createContext, useContext } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { DashboardLayout } from './components/layout/DashboardLayout';
-import { ThemeProvider } from './context/ThemeContext';
+import { LoginPage } from './pages/LoginPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { OrdersPage } from './pages/OrdersPage';
 import { QuotationsPage } from './pages/QuotationsPage';
@@ -112,6 +112,7 @@ const AppMain: React.FC = () => {
     <AppContext.Provider value={contextValue}>
       <BrowserRouter>
         <Routes>
+          <Route path="/login" element={<LoginPage />} />
           <Route path="/" element={<DashboardLayout />}>
             <Route index element={<DashboardPage />} />
             <Route path="orders" element={<OrdersPage />} />
@@ -131,10 +132,6 @@ const AppMain: React.FC = () => {
   );
 };
 
-const App: React.FC = () => (
-  <ThemeProvider>
-    <AppMain />
-  </ThemeProvider>
-);
+const App: React.FC = () => <AppMain />;
 
 export default App;

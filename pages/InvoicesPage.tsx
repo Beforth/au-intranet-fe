@@ -56,7 +56,7 @@ export const InvoicesPage: React.FC = () => {
     },
     { key: 'customer', label: 'Customer', cellClassName: 'text-sm font-semibold text-slate-600' },
     { key: 'date', label: 'Issued Date', cellClassName: 'text-xs font-medium text-slate-500' },
-    { key: 'amount', label: 'Amount', align: 'right', cellClassName: 'text-sm font-black text-slate-900 tabular-nums' },
+    { key: 'amount', label: 'Amount', align: 'right', cellClassName: 'text-sm font-semibold text-slate-900 tabular-nums' },
     {
       key: 'status',
       label: 'Status',
@@ -66,7 +66,7 @@ export const InvoicesPage: React.FC = () => {
           inv.status === 'Paid' ? 'success' :
             inv.status === 'Pending' ? 'warning' :
               inv.status === 'Overdue' ? 'error' : 'default'
-        } className="text-[10px] py-0">
+        } className="text-xs py-0">
           {inv.status}
         </Badge>
       )

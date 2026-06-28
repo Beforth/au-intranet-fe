@@ -41,19 +41,19 @@ export const ReportsPage: React.FC = () => {
           <div className="w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center border border-slate-100 group-hover:bg-white transition-colors">
             <FileText size={14} className="text-slate-400" />
           </div>
-          <span className="text-[11px] font-bold text-slate-800">{item.name}</span>
+          <span className="text-sm font-semibold text-slate-800">{item.name}</span>
         </div>
       )
     },
     {
       key: 'type',
       label: 'Audit Type',
-      cellClassName: 'text-[9px] text-slate-400 font-bold uppercase tracking-widest'
+      cellClassName: 'text-xs text-slate-400 font-medium'
     },
     {
       key: 'size',
       label: 'Capacity',
-      cellClassName: 'text-[9px] text-slate-400 font-bold uppercase'
+      cellClassName: 'text-xs text-slate-400 font-medium'
     },
     {
       key: 'actions',
@@ -88,18 +88,18 @@ export const ReportsPage: React.FC = () => {
           <Card
             key={item.title}
             onClick={() => showToast(`Opening ${item.title} directory`, 'info')}
-            className="hover:border-[var(--primary)]/30 transition-all cursor-pointer group"
+            className="hover:border-blue-600/30 transition-all cursor-pointer group"
           >
             <div className="flex items-start justify-between mb-3">
-              <div className="p-1.5 bg-slate-50 rounded-lg group-hover:bg-[var(--primary-muted)] transition-colors">
-                <item.icon className="text-slate-400 group-hover:text-[var(--primary)]" size={14} strokeWidth={2.5} />
+              <div className="p-1.5 bg-slate-50 rounded-lg group-hover:bg-blue-50 transition-colors">
+                <item.icon className="text-slate-400 group-hover:text-blue-600" size={14} strokeWidth={2.5} />
               </div>
               <ExternalLink size={10} className="text-slate-200 group-hover:text-slate-400" />
             </div>
-            <h3 className="font-bold text-slate-900 text-[12px] tracking-tight leading-none mb-1.5">{item.title}</h3>
+            <h3 className="font-bold text-slate-900 text-sm tracking-tight leading-none mb-1.5">{item.title}</h3>
             <div className="flex items-center justify-between">
-              <span className="text-[9px] text-slate-400 font-bold uppercase tracking-widest">{item.count} Reports</span>
-              <span className="text-[9px] font-bold text-slate-300 uppercase">{item.last}</span>
+              <span className="text-xs text-slate-400 font-medium">{item.count} Reports</span>
+              <span className="text-xs font-medium text-slate-300">{item.last}</span>
             </div>
           </Card>
         ))}
