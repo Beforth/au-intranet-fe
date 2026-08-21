@@ -2,7 +2,7 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SearchInput } from './SearchInput';
-import { Search, Bell, Settings, Command, ShoppingBag, ShieldAlert, Package, MessageSquare, ArrowRight, LayoutDashboard, FileText, PieChart, CreditCard } from 'lucide-react';
+import { Search, Bell, Settings, Command, ShoppingBag, ShieldAlert, Package, MessageSquare, ArrowRight, LayoutDashboard, FileText, PieChart, CreditCard, LogOut } from 'lucide-react';
 import { useApp } from '../../App';
 
 export const Navbar: React.FC = () => {
@@ -13,8 +13,31 @@ export const Navbar: React.FC = () => {
     unreadCount,
     notifications,
     markAsRead,
-    markAllAsRead
+    markAllAsRead,
+    logout,
+    authUser,
+    authEmployee,
   } = useApp();
+
+  const handleLogout = async () => {
+    await logout();
+    navigate('/login');
+  };
+
+  // Derive display values from real auth data
+  const displayName =
+    authUser
+      ? `${authUser.first_name} ${authUser.last_name}`.trim() || authUser.username
+      : 'User';
+
+  const displayRole =
+    authEmployee?.designation ?? (authUser?.is_superuser ? 'Administrator' : 'User');
+
+  const initials =
+    authUser
+      ? ((authUser.first_name?.[0] ?? '') + (authUser.last_name?.[0] ?? '')).toUpperCase() ||
+        authUser.username.slice(0, 2).toUpperCase()
+      : 'U';
 
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
@@ -74,9 +97,11 @@ export const Navbar: React.FC = () => {
   }, [globalSearch, SEARCHABLE_ITEMS]);
 
   return (
-    <header className="h-16 sticky top-0 bg-white/5 backdrop-blur-md z-40 ml-60 flex items-center justify-between relative transition-all duration-300">
+    <header className="h-16 sticky top-0 bg-white/5 backdrop-blur-md z-40 flex items-center justify-between relative transition-all duration-300">
       <div className="absolute bottom-0 left-8 right-8 h-px bg-slate-200/50" />
-      <div className="flex-1 max-w-lg relative pl-8">
+
+      {/* Search — left corner */}
+      <div className="w-[480px] relative pl-8 shrink-0">
         <SearchInput
           ref={searchInputRef}
           placeholder="Quick search... (⌘K)"
@@ -119,7 +144,9 @@ export const Navbar: React.FC = () => {
         )}
       </div>
 
+      {/* Right section */}
       <div className="flex items-center gap-3 pr-8">
+        {/* Notifications */}
         <div className="relative" ref={notificationRef}>
           <button
             onClick={() => setShowNotifications(!showNotifications)}
@@ -185,19 +212,29 @@ export const Navbar: React.FC = () => {
             </div>
           )}
         </div>
+
+        {/* Settings */}
         <button onClick={() => navigate('/settings')} className="p-2 text-slate-400 hover:text-slate-900 transition-all rounded-lg hover:bg-slate-100">
           <Settings size={20} strokeWidth={1.5} />
         </button>
-        <div className="flex items-center gap-2 px-2 py-1 rounded-lg hover:bg-slate-50 transition-colors">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs font-bold border-2 border-white shadow-sm">
-              AR
-            </div>
-            <div className="hidden md:block text-right">
-              <p className="text-xs font-semibold text-slate-900">Alex Rivera</p>
-              <p className="text-[10px] text-slate-500">Administrator</p>
-            </div>
+
+        {/* User pill — avatar + name + logout */}
+        <div className="flex items-center gap-2 pl-2 border-l border-slate-200">
+          <div className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs font-bold border-2 border-white shadow-sm shrink-0">
+            {initials}
           </div>
+          <div className="hidden md:block">
+            <p className="text-xs font-semibold text-slate-900 leading-tight">{displayName}</p>
+            <p className="text-[10px] text-slate-500 leading-tight">{displayRole}</p>
+          </div>
+          {/* Logout — pushed further right with ml-3 */}
+          <button
+            onClick={handleLogout}
+            title="Logout"
+            className="ml-3 p-1.5 text-slate-400 hover:text-rose-600 transition-all rounded-lg hover:bg-rose-50 active:scale-95"
+          >
+            <LogOut size={17} strokeWidth={1.5} />
+          </button>
         </div>
       </div>
     </header>

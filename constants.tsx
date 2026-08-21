@@ -2,27 +2,19 @@
 import React from 'react';
 import { 
   LayoutDashboard, 
-  Users, 
-  ShoppingBag, 
   CreditCard, 
   Settings, 
-  PieChart, 
   HelpCircle,
+  Users,
+  ShoppingBag,
   Package,
-  FileText,
-  Quote
+  ShieldCheck,
 } from 'lucide-react';
 import { NavItem, StatItem, Transaction } from './types';
 
 export const SIDEBAR_LINKS: NavItem[] = [
   { title: 'Dashboard', icon: LayoutDashboard, href: '/' },
-  { title: 'Orders', icon: ShoppingBag, href: '/orders', badge: '12' },
-  { title: 'Quotations', icon: Quote, href: '/quotations' },
-  { title: 'Customers', icon: Users, href: '/customers' },
-  { title: 'Inventory', icon: Package, href: '/inventory' },
-  { title: 'Financials', icon: CreditCard, href: '/financials' },
-  { title: 'Reports', icon: PieChart, href: '/reports' },
-  { title: 'Invoices', icon: FileText, href: '/invoices' },
+  { title: 'Admin', icon: ShieldCheck, href: '/admin' },
 ];
 
 export const SECONDARY_LINKS: NavItem[] = [

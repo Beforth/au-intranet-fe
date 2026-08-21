@@ -1,11 +1,20 @@
 import React, { useState } from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink, Link, useNavigate } from 'react-router-dom';
+import { LogOut } from 'lucide-react';
 import { SIDEBAR_LINKS, SECONDARY_LINKS } from '../../constants';
 import { NavItem } from '../../types';
 import { VersionsModal } from '../VersionsModal';
+import { useApp } from '../../App';
 
 export const Sidebar: React.FC = () => {
   const [showChangelog, setShowChangelog] = useState(false);
+  const { logout } = useApp();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    await logout();
+    navigate('/login');
+  };
 
   return (
     <aside className="w-60 h-screen bg-white border-r border-slate-200/60 flex flex-col fixed left-0 top-0 z-30">
@@ -48,6 +57,18 @@ export const Sidebar: React.FC = () => {
             {SECONDARY_LINKS.map((item) => (
               <SidebarItem key={item.title} item={item} />
             ))}
+            <button
+              type="button"
+              onClick={handleLogout}
+              className="group flex items-center gap-3 w-full rounded-lg text-[13px] transition-all duration-200 font-medium px-3 py-2 text-slate-600 hover:bg-rose-50 hover:text-rose-700"
+            >
+              <LogOut
+                size={18}
+                strokeWidth={1.8}
+                className="text-slate-400 group-hover:text-rose-600"
+              />
+              <span>Logout</span>
+            </button>
           </div>
 
           <div className="mt-4 flex items-center gap-2.5 p-2.5 rounded-xl border border-slate-100/80 bg-slate-50/50 hover:bg-slate-50 transition-colors cursor-pointer">
