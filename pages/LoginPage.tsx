@@ -4,7 +4,7 @@ import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
 import { Lock, User, AlertCircle, Eye, EyeOff } from 'lucide-react';
 import { useApp } from '../App';
-import { loginWithHRMS, saveAuth, isAuthenticated } from '../lib/auth';
+import { loginWithHRMS, saveAuth, savePermissions, isAuthenticated } from '../lib/auth';
 
 export const LoginPage: React.FC = () => {
   const [username, setUsername] = useState('');
@@ -14,7 +14,7 @@ export const LoginPage: React.FC = () => {
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
-  const { showToast, setAuthUser, setAuthEmployee } = useApp();
+  const { showToast, setAuthUser, setAuthEmployee, setAuthPermissions } = useApp();
 
   // If already authenticated, skip straight to the app
   useEffect(() => {
@@ -36,10 +36,12 @@ export const LoginPage: React.FC = () => {
 
       // Persist token + user to localStorage
       saveAuth(data.token, data.user, data.employee);
+      savePermissions(data.permissions ?? []);
 
       // Push into app context so UI updates immediately
       setAuthUser(data.user);
       setAuthEmployee(data.employee);
+      setAuthPermissions(data.permissions ?? []);
 
       showToast(`Welcome back, ${data.user.first_name || data.user.username}!`, 'success');
       navigate('/settings', { replace: true });

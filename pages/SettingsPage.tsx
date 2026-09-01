@@ -5,16 +5,8 @@ import { PageLayout } from '../components/layout/PageLayout';
 import { BreadcrumbItem } from '../UI/Breadcrumb';
 import { Button, Card, CardContent, Label } from '../UI';
 
-const MOCK_USER = {
-  firstName: 'Alex',
-  lastName: 'Rivera',
-  email: 'alex.rivera@aethererp.com',
-  role: 'System Administrator',
-  location: 'Austin, TX',
-};
-
 export const SettingsPage: React.FC = () => {
-  const { showToast } = useApp();
+  const { showToast, authUser, authEmployee } = useApp();
   const [isSaving, setIsSaving] = useState(false);
   const [emailConnected, setEmailConnected] = useState(false);
   const [emailConnectLoading, setEmailConnectLoading] = useState(false);
@@ -41,6 +33,18 @@ export const SettingsPage: React.FC = () => {
     showToast('Gmail account disconnected', 'info');
   };
 
+  const fullName =
+    `${authEmployee?.first_name ?? authUser?.first_name} ${authEmployee?.last_name ?? authUser?.last_name}`.trim() ||
+    authUser?.username ||
+    '';
+  const email = authUser?.email ?? authEmployee?.email ?? '';
+  const designation =
+    authEmployee?.designation ??
+    (authUser?.is_superuser ? 'Administrator' : 'User');
+  const initials = fullName
+    ? fullName.split(' ').map((part) => part[0]).filter(Boolean).slice(0, 2).join('').toUpperCase()
+    : (authUser?.username ?? 'U').slice(0, 2).toUpperCase();
+
   const breadcrumbs: BreadcrumbItem[] = [
     { label: 'Settings', href: '/settings' },
   ];
@@ -59,7 +63,7 @@ export const SettingsPage: React.FC = () => {
               <div className="flex items-start gap-8">
                 <div className="relative shrink-0">
                   <div className="w-20 h-20 rounded-2xl bg-slate-100 flex items-center justify-center border border-slate-200 overflow-hidden group">
-                    <span className="text-2xl font-semibold uppercase tracking-widest text-slate-400">AR</span>
+                    <span className="text-2xl font-semibold uppercase tracking-widest text-slate-400">{initials}</span>
                     <button className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white text-[10px] font-bold uppercase tracking-widest">
                       Update
                     </button>
@@ -69,15 +73,15 @@ export const SettingsPage: React.FC = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-5">
                     <div className="space-y-0.5">
                       <Label className="text-[11px] font-semibold uppercase tracking-widest text-slate-400">Full Name</Label>
-                      <div className="text-sm font-semibold text-slate-900">{MOCK_USER.firstName} {MOCK_USER.lastName}</div>
+                      <div className="text-sm font-semibold text-slate-900">{fullName}</div>
                     </div>
                     <div className="space-y-0.5">
                       <Label className="text-[11px] font-semibold uppercase tracking-widest text-slate-400">Email Address</Label>
-                      <div className="text-sm font-semibold text-slate-900">{MOCK_USER.email}</div>
+                      <div className="text-sm font-semibold text-slate-900">{email}</div>
                     </div>
                     <div className="space-y-0.5">
                       <Label className="text-[11px] font-semibold uppercase tracking-widest text-slate-400">Designation</Label>
-                      <div className="text-sm font-semibold text-slate-900">{MOCK_USER.role}</div>
+                      <div className="text-sm font-semibold text-slate-900">{designation}</div>
                     </div>
                     <div className="space-y-0.5">
                       <Label className="text-[11px] font-semibold uppercase tracking-widest text-slate-400">Status</Label>
@@ -108,7 +112,7 @@ export const SettingsPage: React.FC = () => {
                     <div className="flex items-center gap-4">
                       <div className="text-right">
                         <div className="text-xs text-emerald-600">Authenticated</div>
-                        <div className="text-xs font-semibold text-slate-400">{MOCK_USER.email}</div>
+                        <div className="text-xs font-semibold text-slate-400">{email}</div>
                       </div>
                       <Button variant="outline" size="xs" onClick={handleDisconnectEmail} className="h-8 px-3 border-slate-200">
                         Disconnect

@@ -13,10 +13,12 @@ import {
   getToken,
   getStoredUser,
   getStoredEmployee,
+  getStoredPermissions,
   clearAuth,
   logoutFromHRMS,
   AuthUser,
   AuthEmployee,
+  AuthPermission,
 } from './lib/auth';
 
 interface AppContextType {
@@ -38,8 +40,10 @@ interface AppContextType {
   // Auth
   authUser: AuthUser | null;
   authEmployee: AuthEmployee | null;
+  authPermissions: AuthPermission[];
   setAuthUser: (user: AuthUser | null) => void;
   setAuthEmployee: (employee: AuthEmployee | null) => void;
+  setAuthPermissions: (permissions: AuthPermission[]) => void;
   logout: () => Promise<void>;
 }
 
@@ -59,13 +63,7 @@ const ProtectedRoute: React.FC = () => {
   return <Outlet />;
 };
 
-const INITIAL_NOTIFICATIONS: AppNotification[] = [
-  { id: '1', title: 'New Order Received', message: 'Order #ORD-7237 processed for Sarah Jenkins.', time: '2m ago', type: 'order', read: false },
-  { id: '2', title: 'System Security Alert', message: 'New login detected from Austin, TX.', time: '15m ago', type: 'system', read: false },
-  { id: '3', title: 'Inventory Warning', message: 'Premium ERP License stock is below 15%.', time: '1h ago', type: 'inventory', read: false },
-  { id: '4', title: 'Payment Confirmed', message: 'Invoice #INV-2023-088 paid by Studio Hub.', time: '3h ago', type: 'system', read: false },
-  { id: '5', title: 'Customer Feedback', message: 'Alice Thompson rated the support experience 5/5.', time: '5h ago', type: 'customer', read: true },
-];
+const INITIAL_NOTIFICATIONS: AppNotification[] = [];
 
 const AppMain: React.FC = () => {
   const [globalSearch, setGlobalSearch] = useState('');
@@ -78,6 +76,7 @@ const AppMain: React.FC = () => {
   // Hydrate from localStorage on first render
   const [authUser, setAuthUser] = useState<AuthUser | null>(getStoredUser);
   const [authEmployee, setAuthEmployee] = useState<AuthEmployee | null>(getStoredEmployee);
+  const [authPermissions, setAuthPermissions] = useState<AuthPermission[]>(() => getStoredPermissions() ?? []);
 
   const showToast = (message: string, type: ToastType = 'success') => setToast({ message, type });
 
@@ -119,6 +118,7 @@ const AppMain: React.FC = () => {
     }
     setAuthUser(null);
     setAuthEmployee(null);
+    setAuthPermissions([]);
   };
 
   const contextValue = useMemo(() => ({
@@ -139,10 +139,12 @@ const AppMain: React.FC = () => {
     customers,
     authUser,
     authEmployee,
+    authPermissions,
     setAuthUser,
     setAuthEmployee,
+    setAuthPermissions,
     logout,
-  }), [globalSearch, notifications, unreadCount, toast, isDemoActive, orders, customers, authUser, authEmployee]);
+  }), [globalSearch, notifications, unreadCount, toast, isDemoActive, orders, customers, authUser, authEmployee, authPermissions]);
 
   return (
     <AppContext.Provider value={contextValue}>

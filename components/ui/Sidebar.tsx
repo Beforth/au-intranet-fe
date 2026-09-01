@@ -8,13 +8,24 @@ import { useApp } from '../../App';
 
 export const Sidebar: React.FC = () => {
   const [showChangelog, setShowChangelog] = useState(false);
-  const { logout } = useApp();
+  const { logout, authUser, authEmployee } = useApp();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
     await logout();
     navigate('/login');
   };
+
+  const fullName =
+    `${authEmployee?.first_name ?? authUser?.first_name} ${authEmployee?.last_name ?? authUser?.last_name}`.trim() ||
+    authUser?.username ||
+    'User';
+  const designation =
+    authEmployee?.designation ??
+    (authUser?.is_superuser ? 'Administrator' : 'User');
+  const initials = fullName
+    ? fullName.split(' ').map((part) => part[0]).filter(Boolean).slice(0, 2).join('').toUpperCase()
+    : (authUser?.username ?? 'U').slice(0, 2).toUpperCase();
 
   return (
     <aside className="w-60 h-screen bg-white border-r border-slate-200/60 flex flex-col fixed left-0 top-0 z-30">
@@ -73,11 +84,11 @@ export const Sidebar: React.FC = () => {
 
           <div className="mt-4 flex items-center gap-2.5 p-2.5 rounded-xl border border-slate-100/80 bg-slate-50/50 hover:bg-slate-50 transition-colors cursor-pointer">
             <div className="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center shrink-0 border border-blue-200/50">
-              <span className="text-blue-600 font-bold text-xs">AR</span>
+              <span className="text-blue-600 font-bold text-xs">{initials}</span>
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-[12px] font-semibold text-slate-900 truncate">Alex Rivera</p>
-              <p className="text-[10px] text-slate-500 font-medium truncate">Administrator</p>
+              <p className="text-[12px] font-semibold text-slate-900 truncate">{fullName}</p>
+              <p className="text-[10px] text-slate-500 font-medium truncate">{designation}</p>
             </div>
           </div>
         </div>

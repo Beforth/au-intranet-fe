@@ -78,30 +78,47 @@ export const Navbar: React.FC = () => {
   };
 
   const SEARCHABLE_ITEMS = useMemo(() => [
-    { id: 'nav-1', category: 'Pages', title: 'Dashboard', icon: LayoutDashboard, href: '/' },
-    { id: 'nav-2', category: 'Pages', title: 'Orders Registry', icon: ShoppingBag, href: '/orders' },
-    { id: 'nav-3', category: 'Pages', title: 'Customer Base', icon: LayoutDashboard, href: '/customers' },
-    { id: 'nav-4', category: 'Pages', title: 'Inventory Logs', icon: Package, href: '/inventory' },
-    { id: 'nav-5', category: 'Pages', title: 'Financial Ledger', icon: CreditCard, href: '/financials' },
-    { id: 'nav-6', category: 'Pages', title: 'Analytics Reports', icon: PieChart, href: '/reports' },
-    { id: 'nav-7', category: 'Pages', title: 'Invoice Manager', icon: FileText, href: '/invoices' },
+    { id: 'nav-1', title: 'Dashboard', icon: LayoutDashboard, href: '/admin', keywords: ['admin', 'home', 'desk'] },
+    { id: 'nav-2', title: 'Orders Registry', icon: ShoppingBag, href: '/orders', keywords: ['orders', 'sales'] },
+    { id: 'nav-3', title: 'Customer Base', icon: LayoutDashboard, href: '/customers', keywords: ['customers', 'clients'] },
+    { id: 'nav-4', title: 'Inventory Logs', icon: Package, href: '/inventory', keywords: ['inventory', 'stock'] },
+    { id: 'nav-5', title: 'Financial Ledger', icon: CreditCard, href: '/financials', keywords: ['finance', 'ledger', 'accounting'] },
+    { id: 'nav-6', title: 'Analytics Reports', icon: PieChart, href: '/reports', keywords: ['analytics', 'reports'] },
+    { id: 'nav-7', title: 'Invoice Manager', icon: FileText, href: '/invoices', keywords: ['invoices', 'billing'] },
+    { id: 'nav-8', title: 'Settings', icon: Settings, href: '/settings', keywords: ['settings', 'preferences'] },
   ], []);
 
   const searchResults = useMemo(() => {
     const term = globalSearch.trim().toLowerCase();
     if (!term) return [];
-    return SEARCHABLE_ITEMS.filter(item =>
-      item.title.toLowerCase().includes(term) ||
-      item.category.toLowerCase().includes(term)
-    );
+
+    return SEARCHABLE_ITEMS.filter((item) => {
+      const title = item.title.toLowerCase();
+      const words = title.split(/[\s/_-]+/).filter(Boolean);
+
+      // Single-character queries: only match word/keyword starts (avoids noisy substring hits)
+      if (term.length === 1) {
+        return (
+          words.some((word) => word.startsWith(term)) ||
+          item.keywords.some((keyword) => keyword.startsWith(term))
+        );
+      }
+
+      return (
+        title.includes(term) ||
+        words.some((word) => word.startsWith(term)) ||
+        item.keywords.some((keyword) => keyword.startsWith(term) || keyword.includes(term))
+      );
+    });
   }, [globalSearch, SEARCHABLE_ITEMS]);
 
-  return (
-    <header className="h-16 sticky top-0 bg-white/5 backdrop-blur-md z-40 flex items-center justify-between relative transition-all duration-300">
-      <div className="absolute bottom-0 left-8 right-8 h-px bg-slate-200/50" />
+  const trimmedSearch = globalSearch.trim();
+  const showSearchDropdown = isSearchFocused && trimmedSearch.length > 0;
 
-      {/* Search — left corner */}
-      <div className="w-[480px] relative pl-8 shrink-0">
+  return (
+    <header className="h-16 sticky top-0 bg-white/80 backdrop-blur-md z-40 flex items-center justify-between relative transition-all duration-300 border-b border-slate-200/60">
+      {/* Search */}
+      <div className="w-full max-w-[480px] relative px-6 sm:px-8 lg:px-10 shrink-0">
         <SearchInput
           ref={searchInputRef}
           placeholder="Quick search... (⌘K)"
@@ -119,15 +136,15 @@ export const Navbar: React.FC = () => {
           className="!h-9 !bg-slate-50/50 !border-slate-200/50 focus:!bg-white focus:!border-blue-500/30 transition-all font-medium"
         />
 
-        {isSearchFocused && globalSearch.length > 0 && (
-          <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-slate-200 shadow-xl rounded-xl overflow-hidden animate-in fade-in slide-in-from-top-1 duration-200">
+        {showSearchDropdown && (
+          <div className="absolute top-full left-6 right-6 sm:left-8 sm:right-8 lg:left-10 lg:right-10 mt-2 bg-white border border-slate-200 shadow-xl rounded-xl overflow-hidden animate-in fade-in slide-in-from-top-1 duration-200">
             <div className="p-1.5 max-h-[380px] overflow-y-auto">
               {searchResults.length > 0 ? (
                 <div className="space-y-1">
                   {searchResults.map(item => (
                     <button
                       key={item.id}
-                      onClick={() => { navigate(item.href); setGlobalSearch(''); }}
+                      onClick={() => { navigate(item.href); setGlobalSearch(''); setIsSearchFocused(false); }}
                       className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left hover:bg-slate-50 transition-colors group"
                     >
                       <item.icon size={14} className="text-slate-400 group-hover:text-blue-600" />
@@ -145,7 +162,7 @@ export const Navbar: React.FC = () => {
       </div>
 
       {/* Right section */}
-      <div className="flex items-center gap-3 pr-8">
+      <div className="flex items-center gap-3 px-6 sm:px-8 lg:px-10">
         {/* Notifications */}
         <div className="relative" ref={notificationRef}>
           <button
